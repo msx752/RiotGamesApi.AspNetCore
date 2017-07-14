@@ -27,7 +27,7 @@ namespace RiotGamesApi.AspNetCore
 
     public interface IProperty<T> where T : new()
     {
-        RiotGamesApiApiUrl ApiList { get; }
+        RiotGamesApiUrl ApiList { get; }
         string BaseUrl { get; }
         List<RiotGamesApiParameter> ParametersWithValue { get; }
         int SelectedApiIndex { get; }
@@ -73,11 +73,11 @@ namespace RiotGamesApi.AspNetCore
         public static string GenerateApiClass()
         {
             List<string> Classes = new List<string>();
-            foreach (var selected in RiotGamesApiOptions.RiotGamesApiApis)
+            foreach (var selected in RiotGamesApiOptions.RiotGamesApis)
             {
                 var urlType = selected.Key;
                 string @class = $"\r\n//\"{selected.Value.ApiUrl}\r\npublic static class {urlType.ToString()}\r\n{{";
-                foreach (var url in selected.Value.RiotGamesApiApiUrls)
+                foreach (var url in selected.Value.RiotGamesApiUrls)
                 {
                     string @class2 = $"\r\n//\"{url.SubUrl}/{url.Version}\r\npublic static class {url.SubUrl}_{url.Version.Replace(".", "_")}\r\n{{";
                     foreach (var urlSub in url.SubUrls)
@@ -155,8 +155,8 @@ namespace RiotGamesApi.AspNetCore
         {
             RiotGamesApiRequest<T> rit = new RiotGamesApiRequest<T>();
             rit.UrlType = apiType.GetUrlType();
-            rit.BaseUrl = RiotGamesApiSettings.RiotGamesApiOptions.RiotGamesApiApis[rit.UrlType].ApiUrl;
-            rit.ApiList = RiotGamesApiSettings.RiotGamesApiOptions.RiotGamesApiApis[rit.UrlType].RiotGamesApiApiUrls
+            rit.BaseUrl = RiotGamesApiSettings.RiotGamesApiOptions.RiotGamesApis[rit.UrlType].ApiUrl;
+            rit.ApiList = RiotGamesApiSettings.RiotGamesApiOptions.RiotGamesApis[rit.UrlType].RiotGamesApiUrls
                 .FirstOrDefault(p => p.SubUrl == apiType && p.CompareVersion(version));
             if (rit.ApiList == null)
                 throw new Exception($"{rit.UrlType} is not defined in RiotGamesApiBuilder or selected version:{version} is not defined");
@@ -174,7 +174,7 @@ namespace RiotGamesApi.AspNetCore
         {
         }
 
-        public RiotGamesApiApiUrl ApiList { get; internal set; }
+        public RiotGamesApiUrl ApiList { get; internal set; }
         public string BaseUrl { get; internal set; }
         public List<RiotGamesApiParameter> ParametersWithValue { get; private set; }
         public string RequestUrl { get; private set; }
@@ -192,8 +192,8 @@ namespace RiotGamesApi.AspNetCore
         //public IFor<T> SelectApi(ApiName apiType, double version = 3.0)
         //{
         //    UrlType = apiType.GetUrlType();
-        //    BaseUrl = RiotGamesApiSettings.RiotGamesApiOptions.RiotGamesApiApis[UrlType].ApiUrl;
-        //    ApiList = RiotGamesApiSettings.RiotGamesApiOptions.RiotGamesApiApis[UrlType].RiotGamesApiApiUrls
+        //    BaseUrl = RiotGamesApiSettings.RiotGamesApiOptions.RiotGamesApis[UrlType].ApiUrl;
+        //    ApiList = RiotGamesApiSettings.RiotGamesApiOptions.RiotGamesApis[UrlType].RiotGamesApiUrls
         //        .FirstOrDefault(p => p.SubUrl == apiType && p.CompareVersion(version));
         //    if (ApiList == null)
         //        throw new Exception($"{UrlType} is not defined in RiotGamesApiBuilder or selected version:{version} is not defined");

@@ -6,9 +6,9 @@ using System.Globalization;
 
 namespace RiotGamesApi.AspNetCore
 {
-    public class RiotGamesApiApiUrl
+    public class RiotGamesApiUrl
     {
-        public RiotGamesApiApiUrl(ApiName _newApiUrl, double _version)
+        public RiotGamesApiUrl(ApiName _newApiUrl, double _version)
         {
             SubUrls = new List<SubUrl>();
             SetVersion(_version);

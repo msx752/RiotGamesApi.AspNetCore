@@ -10,13 +10,13 @@ namespace RiotGamesApi.AspNetCore
 
         public RiotGamesApiOptions()
         {
-            RiotGamesApiApis = new Dictionary<UrlType, RiotGamesApiApi>();
+            RiotGamesApis = new Dictionary<UrlType, RiotGamesApi>();
         }
 
         public CacheOption CacheOptions { get; set; }
         public string NonStaticUrl { get { return $"{Url}/lol"; }/* set { _nonStaticUrl = value; }*/ }
         public string RiotApiKey { get; set; }
-        public Dictionary<UrlType, RiotGamesApiApi> RiotGamesApiApis { get; set; }
+        public Dictionary<UrlType, RiotGamesApi> RiotGamesApis { get; set; }
         public string StaticUrl { get { return $"{NonStaticUrl}"; }/* set { _staticUrl = value; } */}
 
         public string StatusUrl { get { return $"{Url}/lol"; } }

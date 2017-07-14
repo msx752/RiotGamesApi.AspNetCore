@@ -12,10 +12,10 @@ namespace RiotGamesApi.AspNetCore.Extensions
 {
     public static class Extension1
     {
-        public static RiotGamesApiApiUrl AddApi(this RiotGamesApiApi option, ApiName suffix1, double _version)
+        public static RiotGamesApiUrl AddApi(this RiotGamesApi option, ApiName suffix1, double _version)
         {
-            RiotGamesApiApiUrl sff1 = new RiotGamesApiApiUrl(suffix1, _version);
-            option.RiotGamesApiApiUrls.Add(sff1);
+            RiotGamesApiUrl sff1 = new RiotGamesApiUrl(suffix1, _version);
+            option.RiotGamesApiUrls.Add(sff1);
             return sff1;
         }
 
@@ -72,7 +72,7 @@ namespace RiotGamesApi.AspNetCore.Extensions
             return attr.ApiType;
         }
 
-        public static RiotGamesApiApiUrl SubApi(this RiotGamesApiApiUrl option, ApiMiddleName middleType, Type type, params ApiParam[] subApis)
+        public static RiotGamesApiUrl SubApi(this RiotGamesApiUrl option, ApiMiddleName middleType, Type type, params ApiParam[] subApis)
         {
             option.SubUrls.Add(new SubUrl(middleType, subApis, type));
             option.LastSubUrlIndex = option.SubUrls.Count - 1;
@@ -88,7 +88,7 @@ namespace RiotGamesApi.AspNetCore.Extensions
         /// </param>
         /// <returns>
         /// </returns>
-        public static RiotGamesApiApiUrl HasQueryParameters(this RiotGamesApiApiUrl option, Dictionary<string, Type> queryParameterTypes)
+        public static RiotGamesApiUrl HasQueryParameters(this RiotGamesApiUrl option, Dictionary<string, Type> queryParameterTypes)
         {
             try
             {
@@ -105,9 +105,9 @@ namespace RiotGamesApi.AspNetCore.Extensions
             return option;
         }
 
-        public static IRiotGamesApiBuilder UseNonStaticApi(this IRiotGamesApiBuilder option, Func<RiotGamesApiApi, RiotGamesApiApi> action)
+        public static IRiotGamesApiBuilder UseNonStaticApi(this IRiotGamesApiBuilder option, Func<RiotGamesApi, RiotGamesApi> action)
         {
-            option.RiotGamesApiOptions.RiotGamesApiApis[UrlType.NonStatic] = action(new RiotGamesApiApi(option.RiotGamesApiOptions.NonStaticUrl));
+            option.RiotGamesApiOptions.RiotGamesApis[UrlType.NonStatic] = action(new RiotGamesApi(option.RiotGamesApiOptions.NonStaticUrl));
             return option;
         }
 
@@ -118,15 +118,15 @@ namespace RiotGamesApi.AspNetCore.Extensions
             return app;
         }
 
-        public static IRiotGamesApiBuilder UseStaticApi(this IRiotGamesApiBuilder option, Func<RiotGamesApiApi, RiotGamesApiApi> action)
+        public static IRiotGamesApiBuilder UseStaticApi(this IRiotGamesApiBuilder option, Func<RiotGamesApi, RiotGamesApi> action)
         {
-            option.RiotGamesApiOptions.RiotGamesApiApis[UrlType.Static] = action(new RiotGamesApiApi(option.RiotGamesApiOptions.StaticUrl));
+            option.RiotGamesApiOptions.RiotGamesApis[UrlType.Static] = action(new RiotGamesApi(option.RiotGamesApiOptions.StaticUrl));
             return option;
         }
 
-        public static IRiotGamesApiBuilder UseStatusApi(this IRiotGamesApiBuilder option, Func<RiotGamesApiApi, RiotGamesApiApi> action)
+        public static IRiotGamesApiBuilder UseStatusApi(this IRiotGamesApiBuilder option, Func<RiotGamesApi, RiotGamesApi> action)
         {
-            option.RiotGamesApiOptions.RiotGamesApiApis[UrlType.Status] = action(new RiotGamesApiApi(option.RiotGamesApiOptions.StatusUrl));
+            option.RiotGamesApiOptions.RiotGamesApis[UrlType.Status] = action(new RiotGamesApi(option.RiotGamesApiOptions.StatusUrl));
             return option;
         }
     }

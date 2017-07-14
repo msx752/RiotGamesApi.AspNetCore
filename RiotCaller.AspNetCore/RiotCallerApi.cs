@@ -2,15 +2,15 @@
 
 namespace RiotGamesApi.AspNetCore
 {
-    public class RiotGamesApiApi
+    public class RiotGamesApi
     {
-        public RiotGamesApiApi(string baseUrl)
+        public RiotGamesApi(string baseUrl)
         {
             ApiUrl = baseUrl;
-            RiotGamesApiApiUrls = new List<RiotGamesApiApiUrl>();
+            RiotGamesApiUrls = new List<RiotGamesApiUrl>();
         }
 
         public string ApiUrl { get; set; }
-        public List<RiotGamesApiApiUrl> RiotGamesApiApiUrls { get; }
+        public List<RiotGamesApiUrl> RiotGamesApiUrls { get; }
     }
 }
