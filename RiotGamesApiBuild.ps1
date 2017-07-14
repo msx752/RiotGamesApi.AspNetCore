@@ -23,6 +23,9 @@ $newBuildNumber = "$buildYear.$month.$day.$hourMinute";
 
 Write-Host "New Nuget Package Version:" $newBuildNumber
 
+.\nuget restore
+dotnet restore
+
 dotnet clean -c Release
 dotnet build -c Release  /p:Version=$newBuildNumber --framework netcoreapp1.1
 .\nuget pack -version $newBuildNumber
