@@ -230,12 +230,12 @@ namespace RiotGamesApi.AspNetCore
             //"ChampionMastery/v3
             public static class ChampionMastery_v3
             {
-                public static IResult<List<global::RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.ChampionMastery.ChampionMasteryDto>> GetChampionMasteriesBySummoner(Platform platform, Int64 bysummoner)
+                public static IResult<List<RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.ChampionMastery.ChampionMasteryDto>> GetChampionMasteriesBySummoner(Platform platform, Int64 bysummoner)
                 {
                     var rit = new ApiCall()
-                        .SelectApi<List<global::RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.ChampionMastery.ChampionMasteryDto>>(ApiName.ChampionMastery)
+                        .SelectApi<List<RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.ChampionMastery.ChampionMasteryDto>>(ApiName.ChampionMastery)
                         .For(ApiMiddleName.ChampionMasteries)
-                        .AddParameter(new ApiParameter(ApiParam.BySummoner, (long)bysummoner)).Build(platform)
+                        .AddParameter(new ApiParameter(ApiParam.BySummoner, bysummoner)).Build(platform)
                         .Get();
                     return rit;
                 }
@@ -353,10 +353,10 @@ namespace RiotGamesApi.AspNetCore
                     return rit;
                 }
 
-                public static IResult<List<global::RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.League.LeagueListDTO>> GetLeaguesBySummoner(Platform platform, Int64 bysummoner)
+                public static IResult<List<RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.League.LeagueListDTO>> GetLeaguesBySummoner(Platform platform, Int64 bysummoner)
                 {
                     var rit = new ApiCall()
-                        .SelectApi<List<global::RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.League.LeagueListDTO>>(ApiName.League)
+                        .SelectApi<List<RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.League.LeagueListDTO>>(ApiName.League)
                         .For(ApiMiddleName.Leagues)
                         .AddParameter(new ApiParameter(ApiParam.BySummoner, bysummoner)).Build(platform)
                         .Get();
@@ -373,10 +373,10 @@ namespace RiotGamesApi.AspNetCore
                     return rit;
                 }
 
-                public static IResult<List<global::RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.League.LeaguePositionDTO>> GetPositionsBySummoner(Platform platform, Int64 bysummoner)
+                public static IResult<List<RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.League.LeaguePositionDTO>> GetPositionsBySummoner(Platform platform, Int64 bysummoner)
                 {
                     var rit = new ApiCall()
-                        .SelectApi<List<global::RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.League.LeaguePositionDTO>>(ApiName.League)
+                        .SelectApi<List<RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.League.LeaguePositionDTO>>(ApiName.League)
                         .For(ApiMiddleName.Positions)
                         .AddParameter(new ApiParameter(ApiParam.BySummoner, bysummoner)).Build(platform)
                         .Get();

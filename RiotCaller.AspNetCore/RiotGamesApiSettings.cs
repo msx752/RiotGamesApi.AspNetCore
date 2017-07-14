@@ -4,6 +4,8 @@ using RiotGamesApi.AspNetCore.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using RiotGamesApi.AspNetCore.Models;
+using RiotGamesApi.AspNetCore.RiotApi.Enums;
 
 namespace RiotGamesApi.AspNetCore
 {
@@ -31,31 +33,19 @@ namespace RiotGamesApi.AspNetCore
 
         #region api class generetor
 
-        private static Dictionary<string, string> References = new Dictionary<string, string>();
-
-        private static void AddNamespace(object obj)
-        {
-            References[$"using {obj.GetType().Namespace};"] = "";
-        }
-
         /// <summary>
         /// fun for developing, after coding, run this method and change with into Api.cs file 
         /// </summary>
         public static string GenerateApiClass()
         {
-            References.Clear();
             List<string> Classes = new List<string>();
             foreach (var selected in RiotGamesApiOptions.RiotGamesApis)
             {
                 var urlType = selected.Key;
                 string @class = $"\r\n//\"{selected.Value.ApiUrl}\r\npublic static class {urlType.ToString()}\r\n{{";
-                AddNamespace(urlType);
-                AddNamespace(selected.Value);
                 foreach (var url in selected.Value.RiotGamesApiUrls)
                 {
-                    AddNamespace(url);
                     string @class2 = $"\r\n//\"{url.SubUrl}/{url.Version}\r\npublic static class {url.SubUrl}_{url.Version.Replace(".", "_")}\r\n{{";
-                    AddNamespace(url.SubUrl);
                     foreach (var urlSub in url.SubUrls)
                     {
                         var t1 = urlSub.ReturnValueType.Name;
@@ -81,17 +71,17 @@ namespace RiotGamesApi.AspNetCore
                             string paramType = selectedParam.FindParameterType().Name;
                             @parameters += $", {paramType} {paramName.ToLower()}";
 
-                            @RiotGamesApiParameters += $"new ApiParameter(ApiParam.{paramName}, {paramName.ToLower()})";
+                            @RiotGamesApiParameters += $"new {nameof(ApiParameter)}({nameof(ApiParam)}.{paramName}, {paramName.ToLower()})";
                             if (i != urlSub.RiotGamesApiSubApiTypes.Length - 1)
                             {
                                 @RiotGamesApiParameters += ",\r\n";
                             }
                         }
-                        string @method = $"\r\npublic static IResult<{t1}> Get{urlSub.MiddleType}{uniqueParam}(Platform platform{@parameters})\r\n{{";
+                        string @method = $"\r\npublic static IResult<{t1}> Get{urlSub.MiddleType}{uniqueParam}({nameof(Platform)} platform{@parameters})\r\n{{";
 
-                        string @apiCall = $"\r\nvar rit = new ApiCall()\r\n" +
-                                          $".SelectApi<{t1}>(ApiName.{url.SubUrl})\r\n" +
-                                          $".For(ApiMiddleName.{urlSub.MiddleType})\r\n" +
+                        string @apiCall = $"\r\nvar rit = new {nameof(ApiCall)}()\r\n" +
+                                          $".SelectApi<{t1}>({nameof(ApiName)}.{url.SubUrl})\r\n" +
+                                          $".For({nameof(ApiMiddleName)}.{urlSub.MiddleType})\r\n" +
                                           $".AddParameter({@RiotGamesApiParameters})" +
                                           $".Build(platform)\r\n" +
                                           $".Get();";
@@ -107,7 +97,7 @@ namespace RiotGamesApi.AspNetCore
                 Classes.Add(@class);
             }
             string @references =
-                "using System;\r\nusing System.Collections.Generic;\r\nusing System.ComponentModel;\r\nusing System.Text;\r\nusing RiotGamesApi.AspNetCore.Enums;\r\nusing RiotGamesApi.AspNetCore.RiotApi.Enums;\r\nusing RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.ChampionMastery;\r\nusing RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.League;\r\nusing RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.Mastery;\r\nusing RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.Match;\r\nusing RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.Rune;\r\nusing RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.Spectator;\r\nusing RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.Summoner;\r\nusing RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.Champions;\r\nusing RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.Items;\r\nusing RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.LanguageStrings;\r\nusing RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.Maps;\r\nusing RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.Masteries;\r\nusing RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.Profile;\r\nusing RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.Realms;\r\nusing RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.Runes;\r\nusing RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.SummonerSpell;\r\nusing RiotGamesApi.AspNetCore.RiotApi.StatusEndPoints;\r\nusing MasteryDto = RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.Masteries.MasteryDto;\r\nusing RuneDto = RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.Runes.RuneDto;";
+                "using RiotGamesApi.AspNetCore.Enums;\r\nusing RiotGamesApi.AspNetCore.Interfaces;\r\nusing RiotGamesApi.AspNetCore.Models;\r\nusing RiotGamesApi.AspNetCore.RiotApi.Enums;\r\nusing RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.ChampionMastery;\r\nusing RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.League;\r\nusing RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.Mastery;\r\nusing RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.Match;\r\nusing RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.Rune;\r\nusing RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.Spectator;\r\nusing RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.Summoner;\r\nusing RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.Champions;\r\nusing RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.Items;\r\nusing RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.LanguageStrings;\r\nusing RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.Maps;\r\nusing RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.Masteries;\r\nusing RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.Profile;\r\nusing RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.Realms;\r\nusing RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.Runes;\r\nusing RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.SummonerSpell;\r\nusing RiotGamesApi.AspNetCore.RiotApi.StatusEndPoints;\r\nusing System;\r\nusing System.Collections.Generic;\r\nusing System.ComponentModel;\r\nusing System.Text;\r\nusing MasteryDto = RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.Masteries.MasteryDto;\r\nusing RuneDto = RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.Runes.RuneDto;";
 
             string @namespaces = @references + "\r\nnamespace RiotGamesApi.AspNetCore\r\n{";
             string @apiClass = $"\r\n// ReSharper disable InconsistentNaming\r\n//AUTO GENERATED CLASS DO NOT MODIFY\r\n public static class Api\r\n{{\r\n";
@@ -119,8 +109,6 @@ namespace RiotGamesApi.AspNetCore
             @namespaces += apiClass;
             @namespaces += "//\r\n}\r\n";
             Classes.Clear();
-            string refer = string.Join("\r\n", References);
-            References.Clear();
             return @namespaces;
         }
 
