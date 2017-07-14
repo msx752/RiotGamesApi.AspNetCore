@@ -13,9 +13,9 @@ namespace RiotGamesApi.AspNetCore.Extensions
 {
     public static class Extension1
     {
-        public static IRiotGamesApiBuilder UseNonStaticApi(this IRiotGamesApiBuilder option, Func<RiotGamesApi, RiotGamesApi> action)
+        public static IRiotGamesApiBuilder UseNonStaticApi(this IRiotGamesApiBuilder option, Func<Models.RiotGamesApi, Models.RiotGamesApi> action)
         {
-            option.RiotGamesApiOptions.RiotGamesApis[UrlType.NonStatic] = action(new RiotGamesApi(option.RiotGamesApiOptions.NonStaticUrl));
+            option.RiotGamesApiOptions.RiotGamesApis[UrlType.NonStatic] = action(new Models.RiotGamesApi(option.RiotGamesApiOptions.NonStaticUrl));
             return option;
         }
 
@@ -26,15 +26,15 @@ namespace RiotGamesApi.AspNetCore.Extensions
             return app;
         }
 
-        public static IRiotGamesApiBuilder UseStaticApi(this IRiotGamesApiBuilder option, Func<RiotGamesApi, RiotGamesApi> action)
+        public static IRiotGamesApiBuilder UseStaticApi(this IRiotGamesApiBuilder option, Func<Models.RiotGamesApi, Models.RiotGamesApi> action)
         {
-            option.RiotGamesApiOptions.RiotGamesApis[UrlType.Static] = action(new RiotGamesApi(option.RiotGamesApiOptions.StaticUrl));
+            option.RiotGamesApiOptions.RiotGamesApis[UrlType.Static] = action(new Models.RiotGamesApi(option.RiotGamesApiOptions.StaticUrl));
             return option;
         }
 
-        public static IRiotGamesApiBuilder UseStatusApi(this IRiotGamesApiBuilder option, Func<RiotGamesApi, RiotGamesApi> action)
+        public static IRiotGamesApiBuilder UseStatusApi(this IRiotGamesApiBuilder option, Func<Models.RiotGamesApi, Models.RiotGamesApi> action)
         {
-            option.RiotGamesApiOptions.RiotGamesApis[UrlType.Status] = action(new RiotGamesApi(option.RiotGamesApiOptions.StatusUrl));
+            option.RiotGamesApiOptions.RiotGamesApis[UrlType.Status] = action(new Models.RiotGamesApi(option.RiotGamesApiOptions.StatusUrl));
             return option;
         }
     }

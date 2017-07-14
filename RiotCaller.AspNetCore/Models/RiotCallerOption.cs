@@ -1,9 +1,9 @@
-﻿using RiotGamesApi.AspNetCore.Enums;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using RiotGamesApi.AspNetCore.Cache;
+using RiotGamesApi.AspNetCore.Enums;
 using RiotGamesApi.AspNetCore.Interfaces;
 
-namespace RiotGamesApi.AspNetCore
+namespace RiotGamesApi.AspNetCore.Models
 {
     public class RiotGamesApiOptions : IRiotGamesApiOption
     {
@@ -11,13 +11,13 @@ namespace RiotGamesApi.AspNetCore
 
         public RiotGamesApiOptions()
         {
-            RiotGamesApis = new Dictionary<UrlType, RiotGamesApi>();
+            RiotGamesApis = new Dictionary<UrlType, Models.RiotGamesApi>();
         }
 
         public CacheOption CacheOptions { get; set; }
         public string NonStaticUrl { get { return $"{Url}/lol"; }/* set { _nonStaticUrl = value; }*/ }
         public string RiotApiKey { get; set; }
-        public Dictionary<UrlType, RiotGamesApi> RiotGamesApis { get; set; }
+        public Dictionary<UrlType, Models.RiotGamesApi> RiotGamesApis { get; set; }
         public string StaticUrl { get { return $"{NonStaticUrl}"; }/* set { _staticUrl = value; } */}
 
         public string StatusUrl { get { return $"{Url}/lol"; } }

@@ -1,6 +1,6 @@
 ﻿using RiotGamesApi.AspNetCore.Enums;
 
-namespace RiotGamesApi.AspNetCore
+namespace RiotGamesApi.AspNetCore.Models
 {
     public class RiotGamesApiParameter
     {

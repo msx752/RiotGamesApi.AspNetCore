@@ -1,4 +1,5 @@
 ﻿using RiotGamesApi.AspNetCore.Interfaces;
+using RiotGamesApi.AspNetCore.Models;
 
 namespace RiotGamesApi.AspNetCore.Builder
 {

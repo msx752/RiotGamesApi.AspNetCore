@@ -1,17 +1,14 @@
-﻿using Newtonsoft.Json;
-using RiotGamesApi.AspNetCore.Enums;
-using RiotGamesApi.AspNetCore.Extensions;
-using RiotGamesApi.AspNetCore.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Net.Http;
-using System.Reflection;
+using Newtonsoft.Json;
+using RiotGamesApi.AspNetCore.Enums;
+using RiotGamesApi.AspNetCore.Extensions;
 using RiotGamesApi.AspNetCore.Interfaces;
 using Platform = RiotGamesApi.AspNetCore.RiotApi.Enums.Platform;
 
-namespace RiotGamesApi.AspNetCore
+namespace RiotGamesApi.AspNetCore.Models
 {
     internal class RiotGamesApiRequest<T> :
      /*   IRSelectApi<T>,*/ IFor<T>, IAddParameter<T>, IBuild<T>, IGet<T>, IProperty<T> where T : new()

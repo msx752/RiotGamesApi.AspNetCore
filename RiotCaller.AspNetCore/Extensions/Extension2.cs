@@ -5,6 +5,7 @@ using RiotGamesApi.AspNetCore.Builder;
 using RiotGamesApi.AspNetCore.Cache;
 using RiotGamesApi.AspNetCore.Enums;
 using RiotGamesApi.AspNetCore.Interfaces;
+using RiotGamesApi.AspNetCore.Models;
 using RiotGamesApi.AspNetCore.RiotApi.Enums;
 using RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.ChampionMastery;
 using RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.League;
@@ -30,7 +31,7 @@ namespace RiotGamesApi.AspNetCore.Extensions
 {
     public static class Extension2
     {
-        public static RiotGamesApiUrl AddApi(this RiotGamesApi option, ApiName suffix1, double _version)
+        public static RiotGamesApiUrl AddApi(this Models.RiotGamesApi option, ApiName suffix1, double _version)
         {
             RiotGamesApiUrl sff1 = new RiotGamesApiUrl(suffix1, _version);
             option.RiotGamesApiUrls.Add(sff1);

@@ -9,6 +9,7 @@ using RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.Rune;
 using RiotGamesApi.AspNetCore;
 using RiotGamesApi.AspNetCore.Enums;
 
+using RiotGamesApi.AspNetCore.Models;
 using RiotGamesApi.AspNetCore.RiotApi.Enums;
 using Xunit;
 

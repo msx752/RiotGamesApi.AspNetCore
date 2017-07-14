@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace RiotGamesApi.AspNetCore
+namespace RiotGamesApi.AspNetCore.Models
 {
     public class RiotGamesApi
     {

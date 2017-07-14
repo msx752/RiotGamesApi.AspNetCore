@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Text;
 using RiotGamesApi.AspNetCore.Enums;
 using RiotGamesApi.AspNetCore.Interfaces;
+using RiotGamesApi.AspNetCore.Models;
 using RiotGamesApi.AspNetCore.RiotApi.Enums;
 using RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.ChampionMastery;
 using RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.League;

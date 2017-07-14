@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using RiotGamesApi.AspNetCore.Enums;
+using RiotGamesApi.AspNetCore.Models;
 
 namespace RiotGamesApi.AspNetCore.Interfaces
 {

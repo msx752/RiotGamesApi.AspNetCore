@@ -9,6 +9,7 @@ using RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.Spectator;
 using RiotGamesApi.AspNetCore;
 using RiotGamesApi.AspNetCore.Enums;
 
+using RiotGamesApi.AspNetCore.Models;
 using RiotGamesApi.AspNetCore.RiotApi.Enums;
 using Xunit;
 
