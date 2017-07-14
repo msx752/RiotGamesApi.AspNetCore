@@ -1,0 +1,18 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+using Newtonsoft.Json;
+
+namespace RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.Rune
+{
+    public class RunePagesDto
+    {
+        //Collection of rune pages associated with the summoner.
+        [JsonProperty("pages")]
+        public List<RunePageDto> pages { get; set; }
+
+        //Summoner ID.
+        [JsonProperty("summonerId")]
+        public long summonerId { get; set; }
+    }
+}
