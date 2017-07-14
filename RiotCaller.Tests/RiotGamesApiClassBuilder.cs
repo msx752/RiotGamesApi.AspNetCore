@@ -10,7 +10,7 @@ using RiotGamesApi.AspNetCore.Extensions;
 
 namespace RiotGamesApi.Tests
 {
-    public class RiotGamesApiBuilderJson : BaseTestClass
+    public class RiotGamesApiClassBuilder : BaseTestClass
     {
         [Fact]
         public void RiotGamesApiToJson()
