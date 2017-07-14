@@ -82,7 +82,7 @@ namespace RiotGamesApi.AspNetCore
                         string @apiCall = $"\r\nvar rit = new {nameof(ApiCall)}()\r\n" +
                                           $".SelectApi<{t1}>({nameof(ApiName)}.{url.SubUrl})\r\n" +
                                           $".For({nameof(ApiMiddleName)}.{urlSub.MiddleType})\r\n" +
-                                          $".AddParameter({@RiotGamesApiParameters})" +
+                                          $".AddParameter({@RiotGamesApiParameters})\r\n" +
                                           $".Build(platform)\r\n" +
                                           $".Get();";
                         @method += @apiCall;
