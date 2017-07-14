@@ -23,8 +23,8 @@ namespace RiotGamesApi.Tests
             var rit = new ApiCall()
                 .SelectApi<CurrentGameInfo>(ApiName.Spectator)
                 .For(ApiMiddleName.ActiveGames)
-                .AddParameter(new RiotGamesApiParameter(ApiParam.BySummoner, summonerId1))
-                .Build(Platform.TR1)
+                .AddParameter(new RiotGamesApiParameter(ApiParam.BySummoner, SummonerId1))
+                .Build(PlatformType)
                 .Get();
             if (rit.HasError)
                 Assert.Equal("Data not found:404", rit.Exception.Message);
@@ -39,7 +39,7 @@ namespace RiotGamesApi.Tests
                 .SelectApi<FeaturedGames>(ApiName.Spectator)
                 .For(ApiMiddleName.FeaturedGames)
                 .AddParameter()
-                .Build(Platform.TR1)
+                .Build(PlatformType)
                 .Get();
             Assert.False(rit.HasError);
         }

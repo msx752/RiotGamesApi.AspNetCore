@@ -23,7 +23,7 @@ namespace RiotGamesApi.Tests
                 .SelectApi<ChampionListDto>(ApiName.Platform)
                 .For(ApiMiddleName.Champions)
                 .AddParameter()
-                .Build(Platform.TR1)
+                .Build(PlatformType)
                 .Get();
             Assert.False(rit.HasError);
         }
@@ -34,8 +34,8 @@ namespace RiotGamesApi.Tests
             var rit = new ApiCall()
                 .SelectApi<ChampionDto>(ApiName.Platform)
                 .For(ApiMiddleName.Champions)
-                .AddParameter(new RiotGamesApiParameter(ApiParam.OnlyId, championId1))
-                .Build(Platform.TR1)
+                .AddParameter(new RiotGamesApiParameter(ApiParam.OnlyId, ChampionId1))
+                .Build(PlatformType)
                 .Get();
             Assert.False(rit.HasError);
         }

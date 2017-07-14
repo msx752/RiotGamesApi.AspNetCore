@@ -30,7 +30,7 @@ namespace RiotGamesApi.Tests
                 .SelectApi<ChampionListDto>(ApiName.StaticData)
                 .For(ApiMiddleName.Champions)
                 .AddParameter()
-                .Build(Platform.TR1)
+                .Build(PlatformType)
                 .Get();
             Assert.False(rit.HasError);
         }
@@ -42,7 +42,7 @@ namespace RiotGamesApi.Tests
                 .SelectApi<ChampionDto>(ApiName.StaticData)
                 .For(ApiMiddleName.Champions)
                 .AddParameter(new RiotGamesApiParameter(ApiParam.OnlyId, (long)1))
-                .Build(Platform.TR1)
+                .Build(PlatformType)
                 .Get();
             Assert.False(rit.HasError);
         }
@@ -54,7 +54,7 @@ namespace RiotGamesApi.Tests
                 .SelectApi<ItemListDto>(ApiName.StaticData)
                 .For(ApiMiddleName.Champions)
                 .AddParameter()
-                .Build(Platform.TR1)
+                .Build(PlatformType)
                 .Get();
             Assert.False(rit.HasError);
         }
@@ -66,7 +66,7 @@ namespace RiotGamesApi.Tests
                 .SelectApi<ItemDto>(ApiName.StaticData)
                 .For(ApiMiddleName.Items)
                 .AddParameter(new RiotGamesApiParameter(ApiParam.OnlyId, (long)1))
-                .Build(Platform.TR1)
+                .Build(PlatformType)
                 .Get();
             Assert.False(rit.HasError);
         }
@@ -78,7 +78,7 @@ namespace RiotGamesApi.Tests
                 .SelectApi<LanguageStringsDto>(ApiName.StaticData)
                 .For(ApiMiddleName.LanguageStrings)
                 .AddParameter()
-                .Build(Platform.TR1)
+                .Build(PlatformType)
                 .Get();
             Assert.False(rit.HasError);
         }
@@ -90,7 +90,7 @@ namespace RiotGamesApi.Tests
                 .SelectApi<List<string>>(ApiName.StaticData)
                 .For(ApiMiddleName.Languages)
                 .AddParameter()
-                .Build(Platform.TR1)
+                .Build(PlatformType)
                 .Get();
             Assert.False(rit.HasError);
         }
@@ -102,7 +102,7 @@ namespace RiotGamesApi.Tests
                 .SelectApi<MapDataDto>(ApiName.StaticData)
                 .For(ApiMiddleName.Maps)
                 .AddParameter()
-                .Build(Platform.TR1)
+                .Build(PlatformType)
                 .Get();
             Assert.False(rit.HasError);
         }
@@ -114,7 +114,7 @@ namespace RiotGamesApi.Tests
                 .SelectApi<MasteryListDto>(ApiName.StaticData)
                 .For(ApiMiddleName.Masteries)
                 .AddParameter()
-                .Build(Platform.TR1)
+                .Build(PlatformType)
                 .Get();
             Assert.False(rit.HasError);
         }
@@ -126,7 +126,7 @@ namespace RiotGamesApi.Tests
                 .SelectApi<MasteryDto>(ApiName.StaticData)
                 .For(ApiMiddleName.Masteries)
                 .AddParameter(new RiotGamesApiParameter(ApiParam.OnlyId, (long)1))
-                .Build(Platform.TR1)
+                .Build(PlatformType)
                 .Get();
             Assert.False(rit.HasError);
         }
@@ -138,7 +138,7 @@ namespace RiotGamesApi.Tests
                 .SelectApi<RealmDto>(ApiName.StaticData)
                 .For(ApiMiddleName.Realms)
                 .AddParameter()
-                .Build(Platform.TR1)
+                .Build(PlatformType)
                 .Get();
             Assert.False(rit.HasError);
         }
@@ -150,7 +150,7 @@ namespace RiotGamesApi.Tests
                 .SelectApi<RuneListDto>(ApiName.StaticData)
                 .For(ApiMiddleName.Runes)
                 .AddParameter()
-                .Build(Platform.TR1)
+                .Build(PlatformType)
                 .Get();
             Assert.False(rit.HasError);
         }
@@ -162,7 +162,7 @@ namespace RiotGamesApi.Tests
                 .SelectApi<RuneDto>(ApiName.StaticData)
                 .For(ApiMiddleName.Runes)
                 .AddParameter(new RiotGamesApiParameter(ApiParam.OnlyId, (long)1))
-                .Build(Platform.TR1)
+                .Build(PlatformType)
                 .Get();
             Assert.False(rit.HasError);
         }
@@ -174,7 +174,7 @@ namespace RiotGamesApi.Tests
                 .SelectApi<SummonerSpellListDto>(ApiName.StaticData)
                 .For(ApiMiddleName.SummonerSpells)
                 .AddParameter()
-                .Build(Platform.TR1)
+                .Build(PlatformType)
                 .Get();
             Assert.False(rit.HasError);
         }
@@ -186,7 +186,7 @@ namespace RiotGamesApi.Tests
                 .SelectApi<SummonerSpellDto>(ApiName.StaticData)
                 .For(ApiMiddleName.SummonerSpells)
                 .AddParameter(new RiotGamesApiParameter(ApiParam.OnlyId, (long)1))
-                .Build(Platform.TR1)
+                .Build(PlatformType)
                 .Get();
             Assert.False(rit.HasError);
         }
@@ -198,7 +198,7 @@ namespace RiotGamesApi.Tests
                 .SelectApi<List<string>>(ApiName.StaticData)
                 .For(ApiMiddleName.Versions)
                 .AddParameter()
-                .Build(Platform.TR1)
+                .Build(PlatformType)
                 .Get();
             Assert.False(rit.HasError);
         }

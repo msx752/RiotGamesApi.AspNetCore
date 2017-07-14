@@ -15,8 +15,8 @@ namespace RiotGamesApi.Tests
             var rit = new ApiCall()
                 .SelectApi<SummonerDto>(ApiName.Summoner)
                 .For(ApiMiddleName.Summoners)
-                .AddParameter(new RiotGamesApiParameter(ApiParam.ByAccount, accountId))
-                .Build(Platform.TR1)
+                .AddParameter(new RiotGamesApiParameter(ApiParam.ByAccount, AccountId))
+                .Build(PlatformType)
                 .Get();
             Assert.False(rit.HasError);
         }
@@ -27,8 +27,8 @@ namespace RiotGamesApi.Tests
             var rit = new ApiCall()
                 .SelectApi<SummonerDto>(ApiName.Summoner)
                 .For(ApiMiddleName.Summoners)
-                .AddParameter(new RiotGamesApiParameter(ApiParam.ByName, summonerName1))
-                .Build(Platform.TR1)
+                .AddParameter(new RiotGamesApiParameter(ApiParam.ByName, SummonerName1))
+                .Build(PlatformType)
                 .Get();
             Assert.False(rit.HasError);
         }
@@ -39,8 +39,8 @@ namespace RiotGamesApi.Tests
             var rit = new ApiCall()
                 .SelectApi<SummonerDto>(ApiName.Summoner)
                 .For(ApiMiddleName.Summoners)
-                .AddParameter(new RiotGamesApiParameter(ApiParam.OnlySummonerId, summonerId1))
-                .Build(Platform.TR1)
+                .AddParameter(new RiotGamesApiParameter(ApiParam.OnlySummonerId, SummonerId1))
+                .Build(PlatformType)
                 .Get();
             Assert.False(rit.HasError);
         }
