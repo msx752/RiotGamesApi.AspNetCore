@@ -17,16 +17,16 @@ namespace RiotGamesApi.Tests
     {
         public IServiceProvider ServiceProvider { get; }
 
-        public TestServer _server { get; }
+        public TestServer Server { get; }
 
-        public HttpClient _client { get; }
+        public HttpClient Client { get; }
 
         public AspNetCoreTestServer()
         {
-            _server = new TestServer(new WebHostBuilder()
+            Server = new TestServer(new WebHostBuilder()
                 .UseStartup<Startup>());
-            _client = _server.CreateClient();
-            ServiceProvider = _server.Host.Services;
+            Client = Server.CreateClient();
+            ServiceProvider = Server.Host.Services;
         }
     }
 }
