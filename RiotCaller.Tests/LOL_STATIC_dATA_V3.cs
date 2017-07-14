@@ -41,7 +41,7 @@ namespace RiotGamesApi.Tests
             var rit = new ApiCall()
                 .SelectApi<ChampionDto>(ApiName.StaticData)
                 .For(ApiMiddleName.Champions)
-                .AddParameter(new RiotGamesApiParameter(ApiParam.OnlyId, (long)1))
+                .AddParameter(new ApiParameter(ApiParam.OnlyId, (long)1))
                 .Build(PlatformType)
                 .Get();
             Assert.False(rit.HasError);
@@ -65,7 +65,7 @@ namespace RiotGamesApi.Tests
             var rit = new ApiCall()
                 .SelectApi<ItemDto>(ApiName.StaticData)
                 .For(ApiMiddleName.Items)
-                .AddParameter(new RiotGamesApiParameter(ApiParam.OnlyId, (long)1))
+                .AddParameter(new ApiParameter(ApiParam.OnlyId, (long)1))
                 .Build(PlatformType)
                 .Get();
             Assert.False(rit.HasError);
@@ -125,7 +125,7 @@ namespace RiotGamesApi.Tests
             var rit = new ApiCall()
                 .SelectApi<MasteryDto>(ApiName.StaticData)
                 .For(ApiMiddleName.Masteries)
-                .AddParameter(new RiotGamesApiParameter(ApiParam.OnlyId, (long)1))
+                .AddParameter(new ApiParameter(ApiParam.OnlyId, (long)1))
                 .Build(PlatformType)
                 .Get();
             Assert.False(rit.HasError);
@@ -161,7 +161,7 @@ namespace RiotGamesApi.Tests
             var rit = new ApiCall()
                 .SelectApi<RuneDto>(ApiName.StaticData)
                 .For(ApiMiddleName.Runes)
-                .AddParameter(new RiotGamesApiParameter(ApiParam.OnlyId, (long)1))
+                .AddParameter(new ApiParameter(ApiParam.OnlyId, (long)1))
                 .Build(PlatformType)
                 .Get();
             Assert.False(rit.HasError);
@@ -185,7 +185,7 @@ namespace RiotGamesApi.Tests
             var rit = new ApiCall()
                 .SelectApi<SummonerSpellDto>(ApiName.StaticData)
                 .For(ApiMiddleName.SummonerSpells)
-                .AddParameter(new RiotGamesApiParameter(ApiParam.OnlyId, (long)1))
+                .AddParameter(new ApiParameter(ApiParam.OnlyId, (long)1))
                 .Build(PlatformType)
                 .Get();
             Assert.False(rit.HasError);

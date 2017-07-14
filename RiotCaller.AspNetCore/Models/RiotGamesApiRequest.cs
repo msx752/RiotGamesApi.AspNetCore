@@ -21,7 +21,7 @@ namespace RiotGamesApi.AspNetCore.Models
 
         public RiotGamesApiUrl ApiList { get; internal set; }
         public string BaseUrl { get; internal set; }
-        public List<RiotGamesApiParameter> ParametersWithValue { get; private set; }
+        public List<ApiParameter> ParametersWithValue { get; private set; }
         public string RequestUrl { get; private set; }
 
         public IResult<T> RiotResult
@@ -46,7 +46,7 @@ namespace RiotGamesApi.AspNetCore.Models
         //    return this;
         //}
 
-        public IBuild<T> AddParameter(params RiotGamesApiParameter[] parameters)
+        public IBuild<T> AddParameter(params ApiParameter[] parameters)
         {
             if (parameters.Any())
             {

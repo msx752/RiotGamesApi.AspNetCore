@@ -23,7 +23,7 @@ namespace RiotGamesApi.Tests
             var rit = new ApiCall()
                 .SelectApi<LeagueListDTO>(ApiName.League)
                 .For(ApiMiddleName.ChallengerLeagues)
-                .AddParameter(new RiotGamesApiParameter(ApiParam.ByQueue, Queue.RANKED_SOLO_5x5))
+                .AddParameter(new ApiParameter(ApiParam.ByQueue, Queue.RANKED_SOLO_5x5))
                 .Build(PlatformType)
                 .Get();
             Assert.False(rit.HasError);
@@ -35,7 +35,7 @@ namespace RiotGamesApi.Tests
             var rit = new ApiCall()
                 .SelectApi<List<LeagueListDTO>>(ApiName.League)
                 .For(ApiMiddleName.Leagues)
-                .AddParameter(new RiotGamesApiParameter(ApiParam.BySummoner, SummonerId1))
+                .AddParameter(new ApiParameter(ApiParam.BySummoner, SummonerId1))
                 .Build(PlatformType)
                 .Get();
             Assert.False(rit.HasError);
@@ -47,7 +47,7 @@ namespace RiotGamesApi.Tests
             var rit = new ApiCall()
                 .SelectApi<LeagueListDTO>(ApiName.League)
                 .For(ApiMiddleName.MasterLeagues)
-                .AddParameter(new RiotGamesApiParameter(ApiParam.ByQueue, Queue.RANKED_SOLO_5x5))
+                .AddParameter(new ApiParameter(ApiParam.ByQueue, Queue.RANKED_SOLO_5x5))
                 .Build(PlatformType)
                 .Get();
             Assert.False(rit.HasError);
@@ -59,7 +59,7 @@ namespace RiotGamesApi.Tests
             var rit = new ApiCall()
                 .SelectApi<List<LeaguePositionDTO>>(ApiName.League)
                 .For(ApiMiddleName.Positions)
-                .AddParameter(new RiotGamesApiParameter(ApiParam.BySummoner, SummonerId1))
+                .AddParameter(new ApiParameter(ApiParam.BySummoner, SummonerId1))
                 .Build(PlatformType)
                 .Get();
             Assert.False(rit.HasError);

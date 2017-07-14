@@ -23,7 +23,7 @@ namespace RiotGamesApi.Tests
             var rit = new ApiCall()
                 .SelectApi<MasteryPagesDto>(ApiName.Platform)
                 .For(ApiMiddleName.Masteries)
-                .AddParameter(new RiotGamesApiParameter(ApiParam.BySummoner, SummonerId1))
+                .AddParameter(new ApiParameter(ApiParam.BySummoner, SummonerId1))
                 .Build(PlatformType)
                 .Get();
             Assert.False(rit.HasError);

@@ -23,7 +23,7 @@ namespace RiotGamesApi.Tests
             var rit = new ApiCall()
                 .SelectApi<CurrentGameInfo>(ApiName.Spectator)
                 .For(ApiMiddleName.ActiveGames)
-                .AddParameter(new RiotGamesApiParameter(ApiParam.BySummoner, SummonerId1))
+                .AddParameter(new ApiParameter(ApiParam.BySummoner, SummonerId1))
                 .Build(PlatformType)
                 .Get();
             if (rit.HasError)

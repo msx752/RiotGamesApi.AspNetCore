@@ -2,9 +2,9 @@
 
 namespace RiotGamesApi.AspNetCore.Models
 {
-    public class RiotGamesApiParameter
+    public class ApiParameter
     {
-        public RiotGamesApiParameter(ApiParam SubApiType, object value)
+        public ApiParameter(ApiParam SubApiType, object value)
         {
             this.Type = SubApiType;
             this.Value = value;

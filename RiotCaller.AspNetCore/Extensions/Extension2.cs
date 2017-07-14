@@ -234,7 +234,7 @@ namespace RiotGamesApi.AspNetCore.Extensions
                 riotGamesApiOption.CacheOptions = new CacheOption();//default settings
             }
 
-            services.AddSingleton<IRiotGamesApiOption>(riotGamesApiOption);
+            services.AddSingleton<IApiOption>(riotGamesApiOption);
         }
     }
 }

@@ -5,7 +5,7 @@ using RiotGamesApi.AspNetCore.Interfaces;
 
 namespace RiotGamesApi.AspNetCore.Models
 {
-    public class RiotGamesApiOptions : IRiotGamesApiOption
+    public class RiotGamesApiOptions : IApiOption
     {
         private string _url = "";
 

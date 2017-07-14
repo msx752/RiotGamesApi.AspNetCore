@@ -4,7 +4,7 @@ using RiotGamesApi.AspNetCore.Enums;
 
 namespace RiotGamesApi.AspNetCore.Interfaces
 {
-    public interface IRiotGamesApiOption
+    public interface IApiOption
     {
         CacheOption CacheOptions { get; set; }
         string NonStaticUrl { get; }

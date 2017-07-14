@@ -18,7 +18,7 @@ namespace RiotGamesApi.Web.Controllers
             var rit1 = new ApiCall()
                 .SelectApi<List<ChampionMasteryDto>>(ApiName.ChampionMastery)
                 .For(ApiMiddleName.ChampionMasteries)
-                .AddParameter(new RiotGamesApiParameter(ApiParam.BySummoner, (long)466244))
+                .AddParameter(new ApiParameter(ApiParam.BySummoner, (long)466244))
                 .Build(Platform.TR1)
                 .Get();
 

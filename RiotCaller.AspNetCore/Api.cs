@@ -75,7 +75,7 @@ namespace RiotGamesApi.AspNetCore
                     var rit = new ApiCall()
                         .SelectApi<ChampionDto>(ApiName.StaticData)
                         .For(ApiMiddleName.Champions)
-                        .AddParameter(new RiotGamesApiParameter(ApiParam.OnlyId, onlyıd)).Build(platform)
+                        .AddParameter(new ApiParameter(ApiParam.OnlyId, onlyıd)).Build(platform)
                         .Get();
                     return rit;
                 }
@@ -95,7 +95,7 @@ namespace RiotGamesApi.AspNetCore
                     var rit = new ApiCall()
                         .SelectApi<ItemDto>(ApiName.StaticData)
                         .For(ApiMiddleName.Items)
-                        .AddParameter(new RiotGamesApiParameter(ApiParam.OnlyId, onlyıd)).Build(platform)
+                        .AddParameter(new ApiParameter(ApiParam.OnlyId, onlyıd)).Build(platform)
                         .Get();
                     return rit;
                 }
@@ -145,7 +145,7 @@ namespace RiotGamesApi.AspNetCore
                     var rit = new ApiCall()
                         .SelectApi<MasteryDto>(ApiName.StaticData)
                         .For(ApiMiddleName.Masteries)
-                        .AddParameter(new RiotGamesApiParameter(ApiParam.OnlyId, onlyıd)).Build(platform)
+                        .AddParameter(new ApiParameter(ApiParam.OnlyId, onlyıd)).Build(platform)
                         .Get();
                     return rit;
                 }
@@ -185,7 +185,7 @@ namespace RiotGamesApi.AspNetCore
                     var rit = new ApiCall()
                         .SelectApi<RuneDto>(ApiName.StaticData)
                         .For(ApiMiddleName.Runes)
-                        .AddParameter(new RiotGamesApiParameter(ApiParam.OnlyId, onlyıd)).Build(platform)
+                        .AddParameter(new ApiParameter(ApiParam.OnlyId, onlyıd)).Build(platform)
                         .Get();
                     return rit;
                 }
@@ -205,7 +205,7 @@ namespace RiotGamesApi.AspNetCore
                     var rit = new ApiCall()
                         .SelectApi<SummonerSpellDto>(ApiName.StaticData)
                         .For(ApiMiddleName.SummonerSpells)
-                        .AddParameter(new RiotGamesApiParameter(ApiParam.OnlyId, onlyıd)).Build(platform)
+                        .AddParameter(new ApiParameter(ApiParam.OnlyId, onlyıd)).Build(platform)
                         .Get();
                     return rit;
                 }
@@ -235,7 +235,7 @@ namespace RiotGamesApi.AspNetCore
                     var rit = new ApiCall()
                         .SelectApi<List<global::RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.ChampionMastery.ChampionMasteryDto>>(ApiName.ChampionMastery)
                         .For(ApiMiddleName.ChampionMasteries)
-                        .AddParameter(new RiotGamesApiParameter(ApiParam.BySummoner, (long)bysummoner)).Build(platform)
+                        .AddParameter(new ApiParameter(ApiParam.BySummoner, (long)bysummoner)).Build(platform)
                         .Get();
                     return rit;
                 }
@@ -245,8 +245,8 @@ namespace RiotGamesApi.AspNetCore
                     var rit = new ApiCall()
                         .SelectApi<ChampionMasteryDto>(ApiName.ChampionMastery)
                         .For(ApiMiddleName.ChampionMasteries)
-                        .AddParameter(new RiotGamesApiParameter(ApiParam.BySummoner, bysummoner),
-                            new RiotGamesApiParameter(ApiParam.ByChampion, bychampion)).Build(platform)
+                        .AddParameter(new ApiParameter(ApiParam.BySummoner, bysummoner),
+                            new ApiParameter(ApiParam.ByChampion, bychampion)).Build(platform)
                         .Get();
                     return rit;
                 }
@@ -256,7 +256,7 @@ namespace RiotGamesApi.AspNetCore
                     var rit = new ApiCall()
                         .SelectApi<Int32>(ApiName.ChampionMastery)
                         .For(ApiMiddleName.Scores)
-                        .AddParameter(new RiotGamesApiParameter(ApiParam.BySummoner, bysummoner)).Build(platform)
+                        .AddParameter(new ApiParameter(ApiParam.BySummoner, bysummoner)).Build(platform)
                         .Get();
                     return rit;
                 }
@@ -270,7 +270,7 @@ namespace RiotGamesApi.AspNetCore
                     var rit = new ApiCall()
                         .SelectApi<SummonerDto>(ApiName.Summoner)
                         .For(ApiMiddleName.Summoners)
-                        .AddParameter(new RiotGamesApiParameter(ApiParam.ByAccount, byaccount)).Build(platform)
+                        .AddParameter(new ApiParameter(ApiParam.ByAccount, byaccount)).Build(platform)
                         .Get();
                     return rit;
                 }
@@ -280,7 +280,7 @@ namespace RiotGamesApi.AspNetCore
                     var rit = new ApiCall()
                         .SelectApi<SummonerDto>(ApiName.Summoner)
                         .For(ApiMiddleName.Summoners)
-                        .AddParameter(new RiotGamesApiParameter(ApiParam.ByName, byname)).Build(platform)
+                        .AddParameter(new ApiParameter(ApiParam.ByName, byname)).Build(platform)
                         .Get();
                     return rit;
                 }
@@ -290,7 +290,7 @@ namespace RiotGamesApi.AspNetCore
                     var rit = new ApiCall()
                         .SelectApi<SummonerDto>(ApiName.Summoner)
                         .For(ApiMiddleName.Summoners)
-                        .AddParameter(new RiotGamesApiParameter(ApiParam.OnlySummonerId, onlysummonerıd)).Build(platform)
+                        .AddParameter(new ApiParameter(ApiParam.OnlySummonerId, onlysummonerıd)).Build(platform)
                         .Get();
                     return rit;
                 }
@@ -314,7 +314,7 @@ namespace RiotGamesApi.AspNetCore
                     var rit = new ApiCall()
                         .SelectApi<ChampionDto>(ApiName.Platform)
                         .For(ApiMiddleName.Champions)
-                        .AddParameter(new RiotGamesApiParameter(ApiParam.OnlyId, onlyıd)).Build(platform)
+                        .AddParameter(new ApiParameter(ApiParam.OnlyId, onlyıd)).Build(platform)
                         .Get();
                     return rit;
                 }
@@ -324,7 +324,7 @@ namespace RiotGamesApi.AspNetCore
                     var rit = new ApiCall()
                         .SelectApi<MasteryPagesDto>(ApiName.Platform)
                         .For(ApiMiddleName.Masteries)
-                        .AddParameter(new RiotGamesApiParameter(ApiParam.BySummoner, bysummoner)).Build(platform)
+                        .AddParameter(new ApiParameter(ApiParam.BySummoner, bysummoner)).Build(platform)
                         .Get();
                     return rit;
                 }
@@ -334,7 +334,7 @@ namespace RiotGamesApi.AspNetCore
                     var rit = new ApiCall()
                         .SelectApi<RunePagesDto>(ApiName.Platform)
                         .For(ApiMiddleName.Runes)
-                        .AddParameter(new RiotGamesApiParameter(ApiParam.BySummoner, bysummoner)).Build(platform)
+                        .AddParameter(new ApiParameter(ApiParam.BySummoner, bysummoner)).Build(platform)
                         .Get();
                     return rit;
                 }
@@ -348,7 +348,7 @@ namespace RiotGamesApi.AspNetCore
                     var rit = new ApiCall()
                         .SelectApi<LeagueListDTO>(ApiName.League)
                         .For(ApiMiddleName.ChallengerLeagues)
-                        .AddParameter(new RiotGamesApiParameter(ApiParam.ByQueue, byqueue)).Build(platform)
+                        .AddParameter(new ApiParameter(ApiParam.ByQueue, byqueue)).Build(platform)
                         .Get();
                     return rit;
                 }
@@ -358,7 +358,7 @@ namespace RiotGamesApi.AspNetCore
                     var rit = new ApiCall()
                         .SelectApi<List<global::RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.League.LeagueListDTO>>(ApiName.League)
                         .For(ApiMiddleName.Leagues)
-                        .AddParameter(new RiotGamesApiParameter(ApiParam.BySummoner, bysummoner)).Build(platform)
+                        .AddParameter(new ApiParameter(ApiParam.BySummoner, bysummoner)).Build(platform)
                         .Get();
                     return rit;
                 }
@@ -368,7 +368,7 @@ namespace RiotGamesApi.AspNetCore
                     var rit = new ApiCall()
                         .SelectApi<LeagueListDTO>(ApiName.League)
                         .For(ApiMiddleName.MasterLeagues)
-                        .AddParameter(new RiotGamesApiParameter(ApiParam.ByQueue, byqueue)).Build(platform)
+                        .AddParameter(new ApiParameter(ApiParam.ByQueue, byqueue)).Build(platform)
                         .Get();
                     return rit;
                 }
@@ -378,7 +378,7 @@ namespace RiotGamesApi.AspNetCore
                     var rit = new ApiCall()
                         .SelectApi<List<global::RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.League.LeaguePositionDTO>>(ApiName.League)
                         .For(ApiMiddleName.Positions)
-                        .AddParameter(new RiotGamesApiParameter(ApiParam.BySummoner, bysummoner)).Build(platform)
+                        .AddParameter(new ApiParameter(ApiParam.BySummoner, bysummoner)).Build(platform)
                         .Get();
                     return rit;
                 }
@@ -392,7 +392,7 @@ namespace RiotGamesApi.AspNetCore
                     var rit = new ApiCall()
                         .SelectApi<MatchDto>(ApiName.Match)
                         .For(ApiMiddleName.Matches)
-                        .AddParameter(new RiotGamesApiParameter(ApiParam.OnlyMatchId, onlymatchıd)).Build(platform)
+                        .AddParameter(new ApiParameter(ApiParam.OnlyMatchId, onlymatchıd)).Build(platform)
                         .Get();
                     return rit;
                 }
@@ -402,7 +402,7 @@ namespace RiotGamesApi.AspNetCore
                     var rit = new ApiCall()
                         .SelectApi<MatchlistDto>(ApiName.Match)
                         .For(ApiMiddleName.MatchLists)
-                        .AddParameter(new RiotGamesApiParameter(ApiParam.ByAccount, byaccount)).Build(platform)
+                        .AddParameter(new ApiParameter(ApiParam.ByAccount, byaccount)).Build(platform)
                         .Get();
                     return rit;
                 }
@@ -412,7 +412,7 @@ namespace RiotGamesApi.AspNetCore
                     var rit = new ApiCall()
                         .SelectApi<MatchlistDto>(ApiName.Match)
                         .For(ApiMiddleName.MatchLists)
-                        .AddParameter(new RiotGamesApiParameter(ApiParam.ByAccountRecent, byaccountrecent)).Build(platform)
+                        .AddParameter(new ApiParameter(ApiParam.ByAccountRecent, byaccountrecent)).Build(platform)
                         .Get();
                     return rit;
                 }
@@ -422,7 +422,7 @@ namespace RiotGamesApi.AspNetCore
                     var rit = new ApiCall()
                         .SelectApi<MatchTimelineDto>(ApiName.Match)
                         .For(ApiMiddleName.Timelines)
-                        .AddParameter(new RiotGamesApiParameter(ApiParam.ByMatch, bymatch)).Build(platform)
+                        .AddParameter(new ApiParameter(ApiParam.ByMatch, bymatch)).Build(platform)
                         .Get();
                     return rit;
                 }
@@ -432,7 +432,7 @@ namespace RiotGamesApi.AspNetCore
                     var rit = new ApiCall()
                         .SelectApi<List<System.Int64>>(ApiName.Match)
                         .For(ApiMiddleName.Matches)
-                        .AddParameter(new RiotGamesApiParameter(ApiParam.ByTournamentCodeIds, bytournamentcodeıds)).Build(platform)
+                        .AddParameter(new ApiParameter(ApiParam.ByTournamentCodeIds, bytournamentcodeıds)).Build(platform)
                         .Get();
                     return rit;
                 }
@@ -442,8 +442,8 @@ namespace RiotGamesApi.AspNetCore
                     var rit = new ApiCall()
                         .SelectApi<MatchDto>(ApiName.Match)
                         .For(ApiMiddleName.Matches)
-                        .AddParameter(new RiotGamesApiParameter(ApiParam.OnlyMatchId, onlymatchıd),
-                            new RiotGamesApiParameter(ApiParam.ByTournamentCode, bytournamentcode)).Build(platform)
+                        .AddParameter(new ApiParameter(ApiParam.OnlyMatchId, onlymatchıd),
+                            new ApiParameter(ApiParam.ByTournamentCode, bytournamentcode)).Build(platform)
                         .Get();
                     return rit;
                 }
@@ -457,7 +457,7 @@ namespace RiotGamesApi.AspNetCore
                     var rit = new ApiCall()
                         .SelectApi<CurrentGameInfo>(ApiName.Spectator)
                         .For(ApiMiddleName.ActiveGames)
-                        .AddParameter(new RiotGamesApiParameter(ApiParam.BySummoner, bysummoner)).Build(platform)
+                        .AddParameter(new ApiParameter(ApiParam.BySummoner, bysummoner)).Build(platform)
                         .Get();
                     return rit;
                 }

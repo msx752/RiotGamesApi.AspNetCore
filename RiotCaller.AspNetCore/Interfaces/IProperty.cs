@@ -8,7 +8,7 @@ namespace RiotGamesApi.AspNetCore.Interfaces
     {
         RiotGamesApiUrl ApiList { get; }
         string BaseUrl { get; }
-        List<RiotGamesApiParameter> ParametersWithValue { get; }
+        List<ApiParameter> ParametersWithValue { get; }
         int SelectedApiIndex { get; }
         UrlType UrlType { get; }
     }

@@ -10,11 +10,11 @@ namespace RiotGamesApi.AspNetCore
     {
         private static IServiceProvider _serviceProvider = null;
 
-        public static IRiotGamesApiOption RiotGamesApiOptions
+        public static IApiOption RiotGamesApiOptions
         {
             get
             {
-                return (IRiotGamesApiOption)ServiceProvider.GetService(typeof(IRiotGamesApiOption));
+                return (IApiOption)ServiceProvider.GetService(typeof(IApiOption));
             }
         }
 
