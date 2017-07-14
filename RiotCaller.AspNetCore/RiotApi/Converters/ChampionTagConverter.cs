@@ -1,10 +1,10 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using RiotGamesApi.AspNetCore.RiotApi.Extensions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using RiotGamesApi.AspNetCore.RiotApi.Extensions;
 
 namespace RiotGamesApi.AspNetCore.RiotApi.Converters
 {

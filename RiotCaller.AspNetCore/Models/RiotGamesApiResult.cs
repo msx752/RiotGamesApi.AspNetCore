@@ -1,5 +1,5 @@
-﻿using System;
-using RiotGamesApi.AspNetCore.Interfaces;
+﻿using RiotGamesApi.AspNetCore.Interfaces;
+using System;
 
 namespace RiotGamesApi.AspNetCore.Models
 {

@@ -1,11 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using RiotGamesApi.AspNetCore.RiotApi.Enums;
+﻿using RiotGamesApi.AspNetCore.RiotApi.Enums;
 
 using RiotGamesApi.AspNetCore.RiotApi.Enums;
 
 using RiotGamesApi.Enums;
+using System;
+using System.Collections.Generic;
+using System.Text;
 
 namespace RiotGamesApi.AspNetCore.RiotApi.Extensions
 {

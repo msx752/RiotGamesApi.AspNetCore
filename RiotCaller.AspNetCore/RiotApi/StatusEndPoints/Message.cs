@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using RiotGamesApi.AspNetCore.RiotApi.StatusEndPoints;
+using System.Collections.Generic;
 
 namespace RiotGamesApi.AspNetCore.RiotApi.StatusEndPoints
 {

@@ -1,6 +1,6 @@
-﻿using System;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using RiotGamesApi.AspNetCore.RiotApi.Converters;
+using System;
 
 namespace RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.ChampionMastery
 {

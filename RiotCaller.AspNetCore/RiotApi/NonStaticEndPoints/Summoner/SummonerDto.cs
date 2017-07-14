@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using RiotGamesApi.AspNetCore.RiotApi.Converters;
 using RiotGamesApi.AspNetCore.RiotApi.Enums;
+using System;
+using System.Collections.Generic;
+using System.Text;
 
 namespace RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.Summoner
 {

@@ -3,11 +3,11 @@ using Microsoft.Extensions.DependencyInjection;
 using RiotGamesApi.AspNetCore.Attributes;
 using RiotGamesApi.AspNetCore.Builder;
 using RiotGamesApi.AspNetCore.Enums;
+using RiotGamesApi.AspNetCore.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using RiotGamesApi.AspNetCore.Interfaces;
 
 namespace RiotGamesApi.AspNetCore.Extensions
 {

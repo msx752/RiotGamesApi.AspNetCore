@@ -1,8 +1,8 @@
-﻿using System;
+﻿using RiotGamesApi.AspNetCore.Enums;
+using RiotGamesApi.AspNetCore.Extensions;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
-using RiotGamesApi.AspNetCore.Enums;
-using RiotGamesApi.AspNetCore.Extensions;
 
 namespace RiotGamesApi.AspNetCore.Models
 {

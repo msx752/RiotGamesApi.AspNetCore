@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Text;
-using RiotGamesApi.AspNetCore.Enums;
+﻿using RiotGamesApi.AspNetCore.Enums;
 using RiotGamesApi.AspNetCore.Interfaces;
 using RiotGamesApi.AspNetCore.Models;
 using RiotGamesApi.AspNetCore.RiotApi.Enums;
@@ -23,6 +19,10 @@ using RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.Realms;
 using RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.Runes;
 using RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.SummonerSpell;
 using RiotGamesApi.AspNetCore.RiotApi.StatusEndPoints;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Text;
 using MasteryDto = RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.Masteries.MasteryDto;
 using RuneDto = RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.Runes.RuneDto;
 

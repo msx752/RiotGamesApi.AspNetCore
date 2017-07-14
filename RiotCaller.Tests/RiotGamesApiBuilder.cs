@@ -1,19 +1,19 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using RiotGamesApi.AspNetCore;
+using RiotGamesApi.AspNetCore.Enums;
+using RiotGamesApi.AspNetCore.Extensions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Newtonsoft.Json;
-using RiotGamesApi.AspNetCore;
-using RiotGamesApi.AspNetCore.Enums;
 using Xunit;
-using RiotGamesApi.AspNetCore.Extensions;
 
 namespace RiotGamesApi.Tests
 {
-    public class RiotGamesApiClassBuilder : BaseTestClass
+    public class RiotGamesApiBuilder : BaseTestClass
     {
         [Fact]
-        public void RiotGamesApiToJson()
+        public void ApiToStaticClass()
         {
             //RiotGamesApi.AspNetCore.Api auto cs generetor
             //after api developing use this method and change Api.cs with output

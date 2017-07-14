@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using RiotGamesApi.AspNetCore;
-using RiotGamesApi.AspNetCore.Enums;
+﻿using RiotGamesApi.AspNetCore;
 
 using RiotGamesApi.AspNetCore;
+
+using RiotGamesApi.AspNetCore.Enums;
+
 using RiotGamesApi.AspNetCore.Enums;
 
 using RiotGamesApi.AspNetCore.Models;
@@ -17,6 +16,9 @@ using RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.Masteries;
 using RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.Realms;
 using RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.Runes;
 using RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.SummonerSpell;
+using System;
+using System.Collections.Generic;
+using System.Text;
 using Xunit;
 
 namespace RiotGamesApi.Tests

@@ -1,8 +1,9 @@
-using System;
-using System.Collections.Generic;
 using RiotGamesApi.AspNetCore.Enums;
 using RiotGamesApi.AspNetCore.Extensions;
 using RiotGamesApi.AspNetCore.Interfaces;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace RiotGamesApi.AspNetCore
 {
@@ -30,19 +31,31 @@ namespace RiotGamesApi.AspNetCore
 
         #region api class generetor
 
+        private static Dictionary<string, string> References = new Dictionary<string, string>();
+
+        private static void AddNamespace(object obj)
+        {
+            References[$"using {obj.GetType().Namespace};"] = "";
+        }
+
         /// <summary>
         /// fun for developing, after coding, run this method and change with into Api.cs file 
         /// </summary>
         public static string GenerateApiClass()
         {
+            References.Clear();
             List<string> Classes = new List<string>();
             foreach (var selected in RiotGamesApiOptions.RiotGamesApis)
             {
                 var urlType = selected.Key;
                 string @class = $"\r\n//\"{selected.Value.ApiUrl}\r\npublic static class {urlType.ToString()}\r\n{{";
+                AddNamespace(urlType);
+                AddNamespace(selected.Value);
                 foreach (var url in selected.Value.RiotGamesApiUrls)
                 {
+                    AddNamespace(url);
                     string @class2 = $"\r\n//\"{url.SubUrl}/{url.Version}\r\npublic static class {url.SubUrl}_{url.Version.Replace(".", "_")}\r\n{{";
+                    AddNamespace(url.SubUrl);
                     foreach (var urlSub in url.SubUrls)
                     {
                         var t1 = urlSub.ReturnValueType.Name;
@@ -68,7 +81,7 @@ namespace RiotGamesApi.AspNetCore
                             string paramType = selectedParam.FindParameterType().Name;
                             @parameters += $", {paramType} {paramName.ToLower()}";
 
-                            @RiotGamesApiParameters += $"new RiotGamesApiParameter(ApiParam.{paramName}, {paramName.ToLower()})";
+                            @RiotGamesApiParameters += $"new ApiParameter(ApiParam.{paramName}, {paramName.ToLower()})";
                             if (i != urlSub.RiotGamesApiSubApiTypes.Length - 1)
                             {
                                 @RiotGamesApiParameters += ",\r\n";
@@ -106,6 +119,8 @@ namespace RiotGamesApi.AspNetCore
             @namespaces += apiClass;
             @namespaces += "//\r\n}\r\n";
             Classes.Clear();
+            string refer = string.Join("\r\n", References);
+            References.Clear();
             return @namespaces;
         }
 

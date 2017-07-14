@@ -1,6 +1,6 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Reflection;
-using Newtonsoft.Json;
 
 namespace RiotGamesApi.AspNetCore.RiotApi.Converters
 {

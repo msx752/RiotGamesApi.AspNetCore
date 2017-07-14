@@ -1,9 +1,9 @@
+using RiotGamesApi.AspNetCore.Attributes;
+using RiotGamesApi.AspNetCore.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using RiotGamesApi.AspNetCore.Attributes;
-using RiotGamesApi.AspNetCore.Enums;
 
 namespace RiotGamesApi.AspNetCore.Extensions
 {

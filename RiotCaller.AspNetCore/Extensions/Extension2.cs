@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using Microsoft.Extensions.DependencyInjection;
 using RiotGamesApi.AspNetCore.Builder;
 using RiotGamesApi.AspNetCore.Cache;
@@ -24,6 +22,8 @@ using RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.Realms;
 using RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.Runes;
 using RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.SummonerSpell;
 using RiotGamesApi.AspNetCore.RiotApi.StatusEndPoints;
+using System;
+using System.Collections.Generic;
 using MasteryDto = RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.Masteries.MasteryDto;
 using RuneDto = RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.Runes.RuneDto;
 

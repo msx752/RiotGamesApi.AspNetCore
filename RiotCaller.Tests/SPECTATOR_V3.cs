@@ -1,16 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using RiotGamesApi.AspNetCore;
-using RiotGamesApi.AspNetCore.Enums;
-using RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.Champion;
-using RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.Spectator;
+﻿using RiotGamesApi.AspNetCore;
 
 using RiotGamesApi.AspNetCore;
+
+using RiotGamesApi.AspNetCore.Enums;
+
 using RiotGamesApi.AspNetCore.Enums;
 
 using RiotGamesApi.AspNetCore.Models;
 using RiotGamesApi.AspNetCore.RiotApi.Enums;
+using RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.Champion;
+using RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.Spectator;
+using System;
+using System.Collections.Generic;
+using System.Text;
 using Xunit;
 
 namespace RiotGamesApi.Tests

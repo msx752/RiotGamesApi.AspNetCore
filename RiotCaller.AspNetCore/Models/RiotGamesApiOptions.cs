@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
-using RiotGamesApi.AspNetCore.Cache;
+﻿using RiotGamesApi.AspNetCore.Cache;
 using RiotGamesApi.AspNetCore.Enums;
 using RiotGamesApi.AspNetCore.Interfaces;
+using System.Collections.Generic;
 
 namespace RiotGamesApi.AspNetCore.Models
 {
