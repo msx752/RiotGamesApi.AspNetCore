@@ -1,8 +1,8 @@
-﻿using RiotGamesApi.AspNetCore.Enums;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using RiotGamesApi.AspNetCore.Cache;
+using RiotGamesApi.AspNetCore.Enums;
 
-namespace RiotGamesApi.AspNetCore
+namespace RiotGamesApi.AspNetCore.Interfaces
 {
     public interface IRiotGamesApiOption
     {

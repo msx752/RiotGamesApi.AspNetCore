@@ -1,4 +1,6 @@
-﻿namespace RiotGamesApi.AspNetCore.Builder
+﻿using RiotGamesApi.AspNetCore.Interfaces;
+
+namespace RiotGamesApi.AspNetCore.Builder
 {
     public class RiotGamesApiBuilder : IRiotGamesApiBuilder
     {

@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using RiotGamesApi.AspNetCore.Builder;
 using RiotGamesApi.AspNetCore.Cache;
 using RiotGamesApi.AspNetCore.Enums;
+using RiotGamesApi.AspNetCore.Interfaces;
 using RiotGamesApi.AspNetCore.RiotApi.Enums;
 using RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.ChampionMastery;
 using RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.League;
@@ -29,10 +30,50 @@ namespace RiotGamesApi.AspNetCore.Extensions
 {
     public static class Extension2
     {
+        public static RiotGamesApiUrl AddApi(this RiotGamesApi option, ApiName suffix1, double _version)
+        {
+            RiotGamesApiUrl sff1 = new RiotGamesApiUrl(suffix1, _version);
+            option.RiotGamesApiUrls.Add(sff1);
+            return sff1;
+        }
+
+        public static RiotGamesApiUrl SubApi(this RiotGamesApiUrl option, ApiMiddleName middleType, Type type, params ApiParam[] subApis)
+        {
+            option.SubUrls.Add(new SubUrl(middleType, subApis, type));
+            option.LastSubUrlIndex = option.SubUrls.Count - 1;
+            return option;
+        }
+
+        /// <summary>
+        /// </summary>
+        /// <param name="option">
+        /// </param>
+        /// <param name="queryParameterTypes">
+        /// NAME,TYPE 
+        /// </param>
+        /// <returns>
+        /// </returns>
+        public static RiotGamesApiUrl HasQueryParameters(this RiotGamesApiUrl option, Dictionary<string, Type> queryParameterTypes)
+        {
+            try
+            {
+                if (option.SubUrl != ApiName.StaticData)
+                    throw new Exception("QueryParameters only for static-data's api");
+
+                option.SubUrls[option.LastSubUrlIndex].QueryParameterTypes = queryParameterTypes;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+            return option;
+        }
+
         public static void AddRiotGamesApi(this IServiceCollection services, string riotApiKey, Func<CacheOption, CacheOption> cacheOption = null)
         {
             //can convertable to json
-            var RiotGamesApiBuilder = new RiotGamesApiBuilder()
+            var riotGamesApiBuilder = new RiotGamesApiBuilder()
                 .UseRiotApiKey(riotApiKey)
                 .UseApiUrl("api.riotgames.com")
                 .UseStatusApi((api) =>
@@ -181,18 +222,18 @@ namespace RiotGamesApi.AspNetCore.Extensions
                     return api;
                 });
 
-            var RiotGamesApiOption = RiotGamesApiBuilder.Build();
+            var riotGamesApiOption = riotGamesApiBuilder.Build();
 
             if (cacheOption != null)
             {
-                RiotGamesApiOption.CacheOptions = cacheOption(new CacheOption());//user settings
+                riotGamesApiOption.CacheOptions = cacheOption(new CacheOption());//user settings
             }
             else
             {
-                RiotGamesApiOption.CacheOptions = new CacheOption();//default settings
+                riotGamesApiOption.CacheOptions = new CacheOption();//default settings
             }
 
-            services.AddSingleton<IRiotGamesApiOption>(RiotGamesApiOption);
+            services.AddSingleton<IRiotGamesApiOption>(riotGamesApiOption);
         }
     }
 }

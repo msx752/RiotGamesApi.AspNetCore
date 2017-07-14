@@ -1,6 +1,7 @@
 ﻿using RiotGamesApi.AspNetCore.Enums;
 using System.Collections.Generic;
 using RiotGamesApi.AspNetCore.Cache;
+using RiotGamesApi.AspNetCore.Interfaces;
 
 namespace RiotGamesApi.AspNetCore
 {
