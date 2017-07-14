@@ -7,6 +7,12 @@
   <PropertyGroup>
     <PackageTargetFallback>$(PackageTargetFallback);portable-net45+win8+wp8+wpa81;</PackageTargetFallback>
   </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DocumentationFile>bin\Release\netcoreapp1.1\RiotGamesApi.Web.xml</DocumentationFile>
+    <NoWarn>40059,42024</NoWarn>
+    <WarningLevel>1</WarningLevel>
+  </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.0.0" />
     <PackageReference Include="Microsoft.AspNetCore" Version="1.1.2" />
@@ -21,5 +27,4 @@
   <ItemGroup>
     <ProjectReference Include="..\RiotCaller.AspNetCore\RiotGamesApi.AspNetCore.csproj" />
   </ItemGroup>
-
 </Project>

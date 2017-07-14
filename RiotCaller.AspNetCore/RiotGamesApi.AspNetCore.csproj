@@ -6,6 +6,8 @@
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <DocumentationFile>bin\Release\netcoreapp1.1\RiotGamesApi.AspNetCore.xml</DocumentationFile>
+     <NoWarn>40059,42024</NoWarn>  
+    <WarningLevel>1</WarningLevel>
   </PropertyGroup>
 
   <ItemGroup>
