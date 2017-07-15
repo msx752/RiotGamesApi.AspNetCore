@@ -15,14 +15,16 @@ namespace RiotGamesApi.Web.Controllers
     {
         public IActionResult Index()
         {
-            var rit1 = new ApiCall()
-                .SelectApi<List<ChampionMasteryDto>>(ApiName.ChampionMastery)
-                .For(ApiMiddleName.ChampionMasteries)
-                .AddParameter(new ApiParameter(ApiParam.BySummoner, (long)466244))
-                .Build(Platform.TR1)
-                .Get();
+            //var rit1 = new ApiCall()
+            //    .SelectApi<List<ChampionMasteryDto>>(ApiName.ChampionMastery)
+            //    .For(ApiMiddleName.ChampionMasteries)
+            //    .AddParameter(new ApiParameter(ApiParam.BySummoner, (long)466244))
+            //    .Build(Platform.TR1)
+            //    .Get();
 
             var rit = Api.NonStatic.ChampionMastery_v3.GetChampionMasteriesBySummoner(Platform.TR1, 466244);
+
+            var rit2 = Api.Static.StaticData_v3.GetChampions(Platform.TR1);
             return View(rit);
         }
 

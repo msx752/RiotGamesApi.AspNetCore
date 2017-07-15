@@ -7,6 +7,7 @@ using RiotGamesApi.AspNetCore.Enums;
 using RiotGamesApi.AspNetCore.Enums;
 
 using RiotGamesApi.AspNetCore.Models;
+using RiotGamesApi.AspNetCore.Extensions;
 using RiotGamesApi.AspNetCore.RiotApi.Enums;
 using RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.Champions;
 using RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.Items;

@@ -6,6 +6,6 @@ namespace RiotGamesApi.AspNetCore.Interfaces
     {
         string RequestUrl { get; }
 
-        IResult<T> Get(params KeyValuePair<string, string>[] optionalParameters);
+        IResult<T> Get(Dictionary<string, string> optionalParameters = null);
     }
 }

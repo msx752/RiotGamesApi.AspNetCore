@@ -156,7 +156,7 @@ namespace RiotGamesApi.AspNetCore.Models
             return this;
         }
 
-        public IResult<T> Get(params KeyValuePair<string, string>[] optionalParameters)
+        public IResult<T> Get(Dictionary<string, string> optionalParameters = null)
         {
             try
             {
@@ -164,9 +164,13 @@ namespace RiotGamesApi.AspNetCore.Models
                     throw new Exception("api_key is not found, please set key to 'RiotApiMain.Api_Key' ");
 
                 this.RequestUrl += $"?api_key={RiotGamesApiSettings.RiotGamesApiOptions.RiotApiKey}";
-                foreach (KeyValuePair<string, string> parameter in optionalParameters)
+                if (optionalParameters != null)
                 {
-                    this.RequestUrl += $"&{parameter.Key}={parameter.Value}";
+                    foreach (var parameter in optionalParameters)
+                    {
+                        if (!string.IsNullOrWhiteSpace(parameter.Value))
+                            this.RequestUrl += $"&{parameter.Key}={parameter.Value}";
+                    }
                 }
                 HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, this.RequestUrl);
                 request.Headers.Add("UserAgent", "RiotGamesApi");

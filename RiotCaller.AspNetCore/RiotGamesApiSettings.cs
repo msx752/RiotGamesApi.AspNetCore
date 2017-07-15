@@ -56,8 +56,8 @@ namespace RiotGamesApi.AspNetCore
                                     .Split(new string[] { "," }, StringSplitOptions.None)[0];
                             t1 = $"List<{t2}>";
                         }
-                        string @parameters = $"";
-                        string @RiotGamesApiParameters = $"";
+                        string @parameters = "";
+                        string @RiotGamesApiParameters = "";
                         ApiParam? uniqueParam = null;
                         for (int i = 0; i < urlSub.RiotGamesApiSubApiTypes.Length; i++)
                         {
@@ -69,13 +69,54 @@ namespace RiotGamesApi.AspNetCore
                             string paramName = selectedParam.ToString();
 
                             string paramType = selectedParam.FindParameterType().Name;
-                            @parameters += $", {paramType} {paramName.ToLower()}";
+                            @parameters += $", {paramType} _{paramName}";
 
-                            @RiotGamesApiParameters += $"new {nameof(ApiParameter)}({nameof(ApiParam)}.{paramName}, {paramName.ToLower()})";
+                            @RiotGamesApiParameters += $"new {nameof(ApiParameter)}({nameof(ApiParam)}.{paramName}, _{paramName})";
                             if (i != urlSub.RiotGamesApiSubApiTypes.Length - 1)
                             {
                                 @RiotGamesApiParameters += ",\r\n";
                             }
+                        }
+                        string @queryParameters = "";
+                        string @optionalParameters = "new Dictionary<string, string>()\r\n{\r\n";
+                        foreach (var query in urlSub.QueryParameterTypes)
+                        {
+                            string paramName = $"_{query.Key}";
+                            string paramType = query.Value.Name;
+                            if (paramType == "List`1")
+                            {
+                                string paramType_t2 =
+                                    query.Value.FullName.Split(new string[] { "[[" }, StringSplitOptions.None)[1]
+                                        .Split(new string[] { "," }, StringSplitOptions.None)[0];
+                                paramType = $"List<{paramType_t2}>";
+                            }
+                            //string.Join(\"&tags=\", tags)
+                            string @defaultParamValue = paramType == "Boolean" ? "false" : "null";
+                            @queryParameters += $", {paramType} {paramName} = {@defaultParamValue}";
+                            if (paramType.StartsWith("List<"))
+                            {
+                                @optionalParameters += $"{{\"{query.Key}\",string.Join(\"&tags=\", {paramName}  ?? new {paramType}()) }},\r\n";
+                            }
+                            else
+                            {
+                                if (paramType == "Boolean")
+                                {
+                                    @optionalParameters += $"{{\"{query.Key}\",{paramName}.ToString().ToLower() }},\r\n";
+                                }
+                                else
+                                {
+                                    @optionalParameters += $"{{\"{query.Key}\",{paramName} }},\r\n";
+                                }
+                            }
+                        }
+                        @optionalParameters += "\r\n}\r\n";
+                        if (!string.IsNullOrWhiteSpace(@queryParameters))
+                        {
+                            @parameters += @queryParameters;
+                        }
+                        else
+                        {
+                            @optionalParameters = "";
                         }
                         string @method = $"\r\npublic static IResult<{t1}> Get{urlSub.MiddleType}{uniqueParam}({nameof(Platform)} platform{@parameters})\r\n{{";
 
@@ -84,7 +125,7 @@ namespace RiotGamesApi.AspNetCore
                                           $".For({nameof(ApiMiddleName)}.{urlSub.MiddleType})\r\n" +
                                           $".AddParameter({@RiotGamesApiParameters})\r\n" +
                                           $".Build(platform)\r\n" +
-                                          $".Get();";
+                                          $".Get({@optionalParameters});";
                         @method += @apiCall;
                         @method += "\r\nreturn rit;\r\n}";
                         class2 += @method;
