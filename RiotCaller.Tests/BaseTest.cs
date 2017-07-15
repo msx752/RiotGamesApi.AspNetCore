@@ -16,56 +16,50 @@ namespace RiotGamesApi.Tests
         public static long AccountId { get; }
         public static AspNetCoreTestServer AspNetCoreTestServer { get; }
 
-        public static long ChampionId1 { get; }
+        public static long ChampionId { get; }
 
         public static IConfigurationRoot Configuration { get; }
-        public static long GameId1 { get; }
-
-        public static long ItemId1 { get; }
+        public static long MatchId { get; }
+        public static long ItemId { get; }
 
         public static Region RegionType { get; }
         public static Platform PlatformType { get; }
 
-        public static long SummonerId1 { get; }
+        public static long SummonerId { get; }
 
-        public static long SummonerId2 { get; }
+        public static string SummonerName { get; }
+        public static string TournamentCode { get; }
 
-        public static string SummonerName1 { get; }
-
-        public static string SummonerName2 { get; }
-
-        public static string TeamName1 { get; }
-
-        public static string TeamName2 { get; }
+        public static long MasteryId { get; }
 
         static BaseTestClass()
         {
             var builder = new ConfigurationBuilder()
                 .AddJsonFile(Directory.GetCurrentDirectory() + "\\appsettings.json",
                     optional: false, reloadOnChange: true);
+
             Configuration = builder.Build();
 
-            ChampionId1 = long.Parse(Configuration["championId1"]);
+            ChampionId = long.Parse(Configuration["championId"]);
 
-            GameId1 = long.Parse(Configuration["gameId1"]);
+            MatchId = long.Parse(Configuration["matchId"]);
 
-            ItemId1 = long.Parse(Configuration["itemId1"]);
+            ItemId = long.Parse(Configuration["itemId"]);
 
             RegionType = (Region)Enum.Parse(typeof(Region), Configuration["region"]);
+
             PlatformType = RegionType.ToPlatform();
-            SummonerId1 = long.Parse(Configuration["summonerId1"]);
 
-            SummonerId2 = long.Parse(Configuration["summonerId2"]);
+            SummonerId = long.Parse(Configuration["summonerId"]);
 
-            SummonerName1 = Configuration["summonerName1"];
-
-            SummonerName2 = Configuration["summonerName2"];
-
-            TeamName1 = Configuration["teamId1"];
-
-            TeamName2 = Configuration["teamId2"];
+            SummonerName = Configuration["summonerName"];
 
             AccountId = long.Parse(Configuration["accountId"]);
+
+            TournamentCode = Configuration["tournamentCode"];
+
+            MasteryId = long.Parse(Configuration["masteryId"]);
+
             AspNetCoreTestServer = new AspNetCoreTestServer();
         }
     }

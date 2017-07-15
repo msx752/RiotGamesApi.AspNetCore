@@ -25,7 +25,7 @@ namespace RiotGamesApi.Tests
             var rit = new ApiCall()
                 .SelectApi<MatchDto>(ApiName.Match)
                 .For(ApiMiddleName.Matches)
-                .AddParameter(new ApiParameter(ApiParam.OnlyMatchId, (long)1))//not tested
+                .AddParameter(new ApiParameter(ApiParam.OnlyMatchId, MatchId))//not tested
                 .Build(PlatformType)
                 .Get();
             if (rit.HasError)
@@ -67,7 +67,7 @@ namespace RiotGamesApi.Tests
             var rit = new ApiCall()
                 .SelectApi<MatchTimelineDto>(ApiName.Match)
                 .For(ApiMiddleName.Timelines)
-                .AddParameter(new ApiParameter(ApiParam.ByMatch, (long)1))//not tested
+                .AddParameter(new ApiParameter(ApiParam.ByMatch, MatchId))//not tested
                 .Build(PlatformType)
                 .Get();
             if (rit.HasError)
@@ -82,7 +82,7 @@ namespace RiotGamesApi.Tests
             var rit = new ApiCall()
                 .SelectApi<List<long>>(ApiName.Match)
                 .For(ApiMiddleName.Matches)
-                .AddParameter(new ApiParameter(ApiParam.ByTournamentCodeIds, "code"))//not tested
+                .AddParameter(new ApiParameter(ApiParam.ByTournamentCodeIds, TournamentCode))//not tested
                 .Build(PlatformType)
                 .Get();
             Assert.False(rit.HasError);
@@ -95,8 +95,8 @@ namespace RiotGamesApi.Tests
                 .SelectApi<MatchDto>(ApiName.Match)
                 .For(ApiMiddleName.Matches)
                 .AddParameter(
-                    new ApiParameter(ApiParam.OnlyMatchId, (long)1),
-                    new ApiParameter(ApiParam.ByTournamentCode, "code"))//not tested
+                    new ApiParameter(ApiParam.OnlyMatchId, MatchId),
+                    new ApiParameter(ApiParam.ByTournamentCode, TournamentCode))//not tested
                 .Build(PlatformType)
                 .Get();
             Assert.False(rit.HasError);

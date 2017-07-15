@@ -36,7 +36,7 @@ namespace RiotGamesApi.Tests
             var rit = new ApiCall()
                 .SelectApi<ChampionDto>(ApiName.Platform)
                 .For(ApiMiddleName.Champions)
-                .AddParameter(new ApiParameter(ApiParam.OnlyId, ChampionId1))
+                .AddParameter(new ApiParameter(ApiParam.OnlyId, ChampionId))
                 .Build(PlatformType)
                 .Get();
             Assert.False(rit.HasError);

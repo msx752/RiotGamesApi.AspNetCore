@@ -16,7 +16,7 @@ namespace RiotGamesApi.Tests
             var rit = new ApiCall()
                 .SelectApi<List<ChampionMasteryDto>>(ApiName.ChampionMastery)
                 .For(ApiMiddleName.ChampionMasteries)
-                .AddParameter(new ApiParameter(ApiParam.BySummoner, SummonerId1))
+                .AddParameter(new ApiParameter(ApiParam.BySummoner, SummonerId))
                 .Build(PlatformType)
                 .Get();
             Assert.False(rit.HasError);
@@ -28,8 +28,8 @@ namespace RiotGamesApi.Tests
             var rit = new ApiCall()
                 .SelectApi<ChampionMasteryDto>(ApiName.ChampionMastery)
                 .For(ApiMiddleName.ChampionMasteries)
-                .AddParameter(new ApiParameter(ApiParam.BySummoner, SummonerId1),
-                               new ApiParameter(ApiParam.ByChampion, ChampionId1))
+                .AddParameter(new ApiParameter(ApiParam.BySummoner, SummonerId),
+                               new ApiParameter(ApiParam.ByChampion, ChampionId))
                 .Build(PlatformType)
                 .Get();
             Assert.False(rit.HasError);
@@ -41,7 +41,7 @@ namespace RiotGamesApi.Tests
             var rit = new ApiCall()
                 .SelectApi<int>(ApiName.ChampionMastery)
                 .For(ApiMiddleName.Scores)
-                .AddParameter(new ApiParameter(ApiParam.BySummoner, SummonerId1))
+                .AddParameter(new ApiParameter(ApiParam.BySummoner, SummonerId))
                 .Build(PlatformType)
                 .Get();
             Assert.False(rit.HasError);

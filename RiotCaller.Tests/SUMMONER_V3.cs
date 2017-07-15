@@ -27,7 +27,7 @@ namespace RiotGamesApi.Tests
             var rit = new ApiCall()
                 .SelectApi<SummonerDto>(ApiName.Summoner)
                 .For(ApiMiddleName.Summoners)
-                .AddParameter(new ApiParameter(ApiParam.ByName, SummonerName1))
+                .AddParameter(new ApiParameter(ApiParam.ByName, SummonerName))
                 .Build(PlatformType)
                 .Get();
             Assert.False(rit.HasError);
@@ -39,7 +39,7 @@ namespace RiotGamesApi.Tests
             var rit = new ApiCall()
                 .SelectApi<SummonerDto>(ApiName.Summoner)
                 .For(ApiMiddleName.Summoners)
-                .AddParameter(new ApiParameter(ApiParam.OnlySummonerId, SummonerId1))
+                .AddParameter(new ApiParameter(ApiParam.OnlySummonerId, SummonerId))
                 .Build(PlatformType)
                 .Get();
             Assert.False(rit.HasError);

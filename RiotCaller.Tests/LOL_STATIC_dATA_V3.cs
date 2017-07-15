@@ -44,7 +44,7 @@ namespace RiotGamesApi.Tests
             var rit = new ApiCall()
                 .SelectApi<ChampionDto>(ApiName.StaticData)
                 .For(ApiMiddleName.Champions)
-                .AddParameter(new ApiParameter(ApiParam.OnlyId, (long)1))
+                .AddParameter(new ApiParameter(ApiParam.OnlyId, ChampionId))
                 .Build(PlatformType)
                 .Get();
             Assert.False(rit.HasError);
@@ -68,7 +68,7 @@ namespace RiotGamesApi.Tests
             var rit = new ApiCall()
                 .SelectApi<ItemDto>(ApiName.StaticData)
                 .For(ApiMiddleName.Items)
-                .AddParameter(new ApiParameter(ApiParam.OnlyId, (long)1))
+                .AddParameter(new ApiParameter(ApiParam.OnlyId, ItemId))
                 .Build(PlatformType)
                 .Get();
             Assert.False(rit.HasError);
