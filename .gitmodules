@@ -1,3 +1,4 @@
 [submodule "RiotGamesApi.AspNetCore.RiotApi"]
 	path = RiotGamesApi.AspNetCore.RiotApi
 	url = git@github.com:msx752/RiotGamesApi.AspNetCore.RiotApi.git
+	branch = master
