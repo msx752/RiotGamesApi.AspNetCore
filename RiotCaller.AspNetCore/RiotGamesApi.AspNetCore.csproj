@@ -16,4 +16,8 @@
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="1.1.1" />
     <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
   </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\RiotGamesApi.AspNetCore.RiotApi\RiotGamesApi.AspNetCore.RiotApi.csproj" />
+  </ItemGroup>
 </Project>

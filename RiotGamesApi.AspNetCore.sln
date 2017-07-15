@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RiotGamesApi.Tests", "RiotC
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RiotGamesApi.Web", "RiotCaller.Web\RiotGamesApi.Web.csproj", "{E6C9DA99-0B26-4563-8C7C-F565E0055380}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RiotGamesApi.AspNetCore.RiotApi", "..\RiotGamesApi.AspNetCore.RiotApi\RiotGamesApi.AspNetCore.RiotApi.csproj", "{08B56EC5-89BD-4129-B125-24924715B923}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{E6C9DA99-0B26-4563-8C7C-F565E0055380}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E6C9DA99-0B26-4563-8C7C-F565E0055380}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E6C9DA99-0B26-4563-8C7C-F565E0055380}.Release|Any CPU.Build.0 = Release|Any CPU
+		{08B56EC5-89BD-4129-B125-24924715B923}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{08B56EC5-89BD-4129-B125-24924715B923}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{08B56EC5-89BD-4129-B125-24924715B923}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{08B56EC5-89BD-4129-B125-24924715B923}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
