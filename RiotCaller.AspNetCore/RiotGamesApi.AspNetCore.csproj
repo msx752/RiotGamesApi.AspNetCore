@@ -15,9 +15,6 @@
     <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="1.1.2" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="1.1.1" />
     <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\RiotGamesApi.AspNetCore.RiotApi\RiotGamesApi.AspNetCore.RiotApi.csproj" />
+    <PackageReference Include="RiotGamesApi.AspNetCore.RiotApi" Version="1.7.15.146" />
   </ItemGroup>
 </Project>
