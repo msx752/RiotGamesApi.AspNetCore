@@ -128,7 +128,7 @@ namespace RiotGamesApi.Tests
             var rit = new ApiCall()
                 .SelectApi<MasteryDto>(ApiName.StaticData)
                 .For(ApiMiddleName.Masteries)
-                .AddParameter(new ApiParameter(ApiParam.OnlyId, (long)1))
+                .AddParameter(new ApiParameter(ApiParam.OnlyId, MasteryId))
                 .Build(PlatformType)
                 .Get();
             Assert.False(rit.HasError);
