@@ -34,7 +34,7 @@ namespace RiotGamesApi.AspNetCore
         #region api class generetor
 
         /// <summary>
-        /// fun for developing, after coding, run this method and change with into Api.cs file 
+        /// after coding, run this method and change with into Api.cs file 
         /// </summary>
         public static string GenerateApiClass()
         {
