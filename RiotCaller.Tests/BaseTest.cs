@@ -2,7 +2,7 @@
 using RiotGamesApi.AspNetCore.Enums;
 using RiotGamesApi.AspNetCore.RiotApi.Enums;
 using RiotGamesApi.AspNetCore.RiotApi.Extensions;
-using RiotGamesApi.Enums;
+
 using System;
 using System.Collections.Generic;
 using System.IO;
