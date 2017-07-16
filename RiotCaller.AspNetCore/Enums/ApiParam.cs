@@ -40,6 +40,9 @@ namespace RiotGamesApi.AspNetCore.Enums
         [StringValue("by-tournament-code/{tournamentCode}")]
         ByTournamentCode,
 
+        [StringValue("{tournamentCode}")]
+        OnlyTournamentCode,
+
         [StringValue("by-match/{matchId}")]
         ByMatch,
 

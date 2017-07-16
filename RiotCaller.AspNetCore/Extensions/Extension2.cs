@@ -24,6 +24,7 @@ using RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.SummonerSpell;
 using RiotGamesApi.AspNetCore.RiotApi.StatusEndPoints;
 using System;
 using System.Collections.Generic;
+using RiotGamesApi.AspNetCore.RiotApi.TournamentStubEndPoints;
 using MasteryDto = RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.Masteries.MasteryDto;
 using RuneDto = RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.Runes.RuneDto;
 
@@ -220,6 +221,18 @@ namespace RiotGamesApi.AspNetCore.Extensions
                     api.AddApi(ApiName.Spectator, 3.0)
                         .SubApi(ApiMiddleName.ActiveGames, typeof(CurrentGameInfo), ApiParam.BySummoner)
                         .SubApi(ApiMiddleName.FeaturedGames, typeof(FeaturedGames));
+
+                    //api.AddApi(ApiName.TournamentStub, 3.0)
+                    //    .SubApi(ApiMiddleName.Codes, typeof(List<string>))
+                    //    .SubApi(ApiMiddleName.LobbyEvents, typeof(LobbyEventDTOWrapper), ApiParam.ByCode)
+                    //    .SubApi(ApiMiddleName.Providers, typeof(int))
+                    //    .SubApi(ApiMiddleName.Tournaments, typeof(int));
+
+                    //api.AddApi(ApiName.Tournament, 3.0)
+                    //    .SubApi(ApiMiddleName.Codes, typeof(List<string>))
+                    //    .SubApi(ApiMiddleName.Codes, typeof(List<string>), ApiParam.OnlyTournamentCode)
+                    ;
+
                     return api;
                 });
 

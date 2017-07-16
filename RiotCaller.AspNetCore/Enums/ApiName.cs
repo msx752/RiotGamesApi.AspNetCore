@@ -34,5 +34,13 @@ namespace RiotGamesApi.AspNetCore.Enums
 
         [UrlType(UrlType.Status)]
         Status,
+
+        [UrlType(UrlType.Static)]
+        [StringValue("tournament-stub")]
+        TournamentStub,
+
+        [UrlType(UrlType.Static)]
+        [StringValue("tournament")]
+        Tournament,
     }
 }
