@@ -13,26 +13,26 @@ namespace RiotGamesApi.Tests
 {
     public class BaseTestClass
     {
-        public static long AccountId { get; }
-        public static AspNetCoreTestServer AspNetCoreTestServer { get; }
+        public long AccountId { get; }
+        public AspNetCoreTestServer AspNetCoreTestServer { get; }
 
-        public static long ChampionId { get; }
+        public long ChampionId { get; }
 
-        public static IConfigurationRoot Configuration { get; }
-        public static long MatchId { get; }
-        public static long ItemId { get; }
+        public IConfigurationRoot Configuration { get; }
+        public long MatchId { get; }
+        public long ItemId { get; }
 
-        public static Region RegionType { get; }
-        public static Platform PlatformType { get; }
+        public Region RegionType { get; }
+        public Platform PlatformType { get; }
 
-        public static long SummonerId { get; }
+        public long SummonerId { get; }
 
-        public static string SummonerName { get; }
-        public static string TournamentCode { get; }
+        public string SummonerName { get; }
+        public string TournamentCode { get; }
 
-        public static long MasteryId { get; }
+        public long MasteryId { get; }
 
-        static BaseTestClass()
+        public BaseTestClass()
         {
             var builder = new ConfigurationBuilder()
                 .AddJsonFile(Directory.GetCurrentDirectory() + "\\appsettings.json",

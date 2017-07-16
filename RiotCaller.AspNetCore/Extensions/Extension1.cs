@@ -21,8 +21,8 @@ namespace RiotGamesApi.AspNetCore.Extensions
 
         public static IApplicationBuilder UseRiotGamesApi(this IApplicationBuilder app)
         {
-            IServiceProvider SProvider = app.ApplicationServices;
-            RiotGamesApiSettings.ServiceProvider = SProvider;
+            var sProvider = app.ApplicationServices;
+            ApiSettings.ServiceProvider = sProvider;
             return app;
         }
 

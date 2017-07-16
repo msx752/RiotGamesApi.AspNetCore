@@ -61,10 +61,5 @@ namespace RiotGamesApi.AspNetCore.Extensions
                 throw new Exception("UrlTypeAttribute not found");
             return attr.ApiType;
         }
-
-        public static string ListToTagQuery(List<Enum> enumVal)
-        {
-            return "";
-        }
     }
 }

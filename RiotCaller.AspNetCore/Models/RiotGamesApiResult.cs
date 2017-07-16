@@ -17,5 +17,6 @@ namespace RiotGamesApi.AspNetCore.Models
         public Exception Exception { get; set; }
         public bool HasError { get { return Exception != null; } }
         public T Result { get; set; }
+        public bool IsCache { get; set; } = false;
     }
 }

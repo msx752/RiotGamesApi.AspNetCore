@@ -17,7 +17,7 @@ namespace RiotGamesApi.Tests
         {
             //RiotGamesApi.AspNetCore.Api auto cs generetor
             //after api developing use this method and change Api.cs with output
-            string output = RiotGamesApiSettings.GenerateApiClass();
+            string output = ApiSettings.GenerateApiClass();
         }
     }
 }

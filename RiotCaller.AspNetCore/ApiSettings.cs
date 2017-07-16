@@ -4,20 +4,38 @@ using RiotGamesApi.AspNetCore.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.Extensions.Caching.Memory;
+using RiotGamesApi.AspNetCore.Cache;
 using RiotGamesApi.AspNetCore.Models;
 using RiotGamesApi.AspNetCore.RiotApi.Enums;
 
 namespace RiotGamesApi.AspNetCore
 {
-    public static class RiotGamesApiSettings
+    public static class ApiSettings
     {
         private static IServiceProvider _serviceProvider = null;
 
-        public static IApiOption RiotGamesApiOptions
+        public static IApiOption ApiOptions
         {
             get
             {
                 return (IApiOption)ServiceProvider.GetService(typeof(IApiOption));
+            }
+        }
+
+        internal static IMemoryCache MemoryCache
+        {
+            get
+            {
+                return (IMemoryCache)ServiceProvider.GetService(typeof(IMemoryCache));
+            }
+        }
+
+        public static IApiCache ApiCache
+        {
+            get
+            {
+                return (IApiCache)ServiceProvider.GetService(typeof(IApiCache));
             }
         }
 
@@ -39,7 +57,7 @@ namespace RiotGamesApi.AspNetCore
         public static string GenerateApiClass()
         {
             List<string> Classes = new List<string>();
-            foreach (var selected in RiotGamesApiOptions.RiotGamesApis)
+            foreach (var selected in ApiOptions.RiotGamesApis)
             {
                 var urlType = selected.Key;
                 string @class = $"\r\n//\"{selected.Value.ApiUrl}\r\npublic static class {urlType.ToString()}\r\n{{";

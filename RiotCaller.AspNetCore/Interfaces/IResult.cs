@@ -7,5 +7,6 @@ namespace RiotGamesApi.AspNetCore.Interfaces
         Exception Exception { get; set; }
         bool HasError { get; }
         T Result { get; set; }
+        bool IsCache { get; set; }
     }
 }

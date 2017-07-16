@@ -7,6 +7,6 @@ namespace RiotGamesApi.AspNetCore.Cache
     public class CacheOption
     {
         public bool EnableStaticApiCaching { get; set; } = false;
-        public TimeSpan StaticApiCacheExpiry { get; set; } = new TimeSpan(1, 0, 0);
+        public TimeSpan StaticApiCacheExpiry { get; set; } = new TimeSpan(0, 30, 0);
     }
 }

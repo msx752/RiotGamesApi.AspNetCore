@@ -6,6 +6,15 @@ namespace RiotGamesApi.AspNetCore.Interfaces
     {
         string RequestUrl { get; }
 
+        /// <summary>
+        /// before using cache set EnableStaticApiCaching to True 
+        /// </summary>
+        /// <param name="useCache">
+        /// </param>
+        /// <returns>
+        /// </returns>
+        IGet<T> UseCache(bool useCache = false);
+
         IResult<T> Get(Dictionary<string, string> optionalParameters = null);
     }
 }

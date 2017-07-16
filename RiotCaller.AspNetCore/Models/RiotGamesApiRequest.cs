@@ -24,6 +24,17 @@ namespace RiotGamesApi.AspNetCore.Models
         public List<ApiParameter> ParametersWithValue { get; private set; }
         public string RequestUrl { get; private set; }
 
+        public bool Caching { get; internal set; } = false;
+
+        public String CacheKey
+        {
+            get
+            {
+                return RequestUrl
+                    .Replace($"?api_key={ApiSettings.ApiOptions.RiotApiKey}", "");
+            }
+        }
+
         public IResult<T> RiotResult
         {
             get { return _riotResult ?? (_riotResult = new RiotGamesApiResult<T>()); }
@@ -156,20 +167,39 @@ namespace RiotGamesApi.AspNetCore.Models
             return this;
         }
 
+        public IGet<T> UseCache(bool useCache = false)
+        {
+            if (ApiSettings.ApiOptions.CacheOptions.EnableStaticApiCaching &&
+                this.UrlType == UrlType.Static)
+                Caching = useCache;
+            return this;
+        }
+
         public IResult<T> Get(Dictionary<string, string> optionalParameters = null)
         {
             try
             {
-                if (string.IsNullOrWhiteSpace(RiotGamesApiSettings.RiotGamesApiOptions.RiotApiKey))
+                if (string.IsNullOrWhiteSpace(ApiSettings.ApiOptions.RiotApiKey))
                     throw new Exception("api_key is not found, please set key to 'RiotApiMain.Api_Key' ");
 
-                this.RequestUrl += $"?api_key={RiotGamesApiSettings.RiotGamesApiOptions.RiotApiKey}";
+                this.RequestUrl += $"?api_key={ApiSettings.ApiOptions.RiotApiKey}";
                 if (optionalParameters != null)
                 {
                     foreach (var parameter in optionalParameters)
                     {
                         if (!string.IsNullOrWhiteSpace(parameter.Value))
                             this.RequestUrl += $"&{parameter.Key}={parameter.Value}";
+                    }
+                }
+                if (Caching)
+                {
+                    T data;
+                    var rslt = ApiSettings.ApiCache.Get<T>(this, out data);
+                    if (rslt)
+                    {
+                        RiotResult.IsCache = true;
+                        RiotResult.Result = data;
+                        return RiotResult;
                     }
                 }
                 HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, this.RequestUrl);
@@ -216,6 +246,10 @@ namespace RiotGamesApi.AspNetCore.Models
                             RiotResult.Result = JsonConvert.DeserializeObject<T>(json);
                         }
                     }
+                }
+                if (Caching)
+                {
+                    ApiSettings.ApiCache.Add<T>(this);
                 }
             }
             catch (Exception e)
