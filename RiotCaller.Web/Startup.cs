@@ -40,9 +40,8 @@ namespace RiotGamesApi.Web
             //necessary
             services.AddRiotGamesApi("RGAPI-00000000-0000-0000-0000-000000000000", (cache) =>
             {
-                //optional cache configuration(default false), (not implemented yet)
-                cache.EnableStaticApiCaching = false;
-                cache.StaticApiCacheTime = new TimeSpan(1, 0, 0);
+                cache.EnableStaticApiCaching = true;
+                cache.StaticApiCacheExpiry = new TimeSpan(1, 0, 0);
                 return cache;
             });
             //use your key
