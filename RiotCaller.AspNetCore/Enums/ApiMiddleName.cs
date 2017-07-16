@@ -73,6 +73,7 @@ namespace RiotGamesApi.AspNetCore.Enums
         [StringValue("lobby-events")]
         LobbyEvents,
 
+        ShardData,
         Providers,
 
         Tournaments,
