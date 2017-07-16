@@ -51,19 +51,18 @@ namespace RiotGamesApi.AspNetCore
 
         #region api class generetor
 
-        /// <summary>
-        /// after coding, run this method and change with into Api.cs file 
-        /// </summary>
         public static string GenerateApiClass()
         {
-            List<string> Classes = new List<string>();
+            Dictionary<UrlType, string> Classes = new Dictionary<UrlType, string>();
             foreach (var selected in ApiOptions.RiotGamesApis)
             {
                 var urlType = selected.Key;
-                string @class = $"\r\n//\"{selected.Value.ApiUrl}\r\npublic static class {urlType.ToString()}\r\n{{";
+                string @class = $"\r\n//\"{selected.Value.ApiUrl}\r\n" +
+                                $"public static class {urlType.ToString()}\r\n{{";
                 foreach (var url in selected.Value.RiotGamesApiUrls)
                 {
-                    string @class2 = $"\r\n//\"{url.SubUrl}/{url.Version}\r\npublic static class {url.SubUrl}_{url.Version.Replace(".", "_")}\r\n{{";
+                    string @class2 = $"\r\n//\"{url.SubUrl}/{url.Version}\r\n" +
+                                     $"public static class {url.SubUrl}_{url.Version.Replace(".", "_")}\r\n{{";
                     foreach (var urlSub in url.SubUrls)
                     {
                         var t1 = urlSub.ReturnValueType.Name;
@@ -160,22 +159,58 @@ namespace RiotGamesApi.AspNetCore
                 }
 
                 @class += "\r\n}\r\n";
-                Classes.Add(@class);
+                Classes[urlType] = @class;
             }
-            string @references =
-                "using RiotGamesApi.AspNetCore.Enums;\r\nusing RiotGamesApi.AspNetCore.Interfaces;\r\nusing RiotGamesApi.AspNetCore.Models;\r\nusing RiotGamesApi.AspNetCore.RiotApi.Enums;\r\nusing RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.ChampionMastery;\r\nusing RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.League;\r\nusing RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.Mastery;\r\nusing RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.Match;\r\nusing RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.Rune;\r\nusing RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.Spectator;\r\nusing RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.Summoner;\r\nusing RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.Champions;\r\nusing RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.Items;\r\nusing RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.LanguageStrings;\r\nusing RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.Maps;\r\nusing RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.Masteries;\r\nusing RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.Profile;\r\nusing RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.Realms;\r\nusing RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.Runes;\r\nusing RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.SummonerSpell;\r\nusing RiotGamesApi.AspNetCore.RiotApi.StatusEndPoints;\r\nusing System;\r\nusing System.Collections.Generic;\r\nusing System.ComponentModel;\r\nusing System.Text;\r\nusing MasteryDto = RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.Masteries.MasteryDto;\r\nusing RuneDto = RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.Runes.RuneDto;";
+            string nameOfNs = typeof(ApiSettings).Namespace;
+            string @references = Reference(nameOfNs);
+            string @namespaces = @references + $"\r\nnamespace {nameOfNs}\r\n{{";
+            string @apiClass = $"\r\n// ReSharper disable InconsistentNaming\r\n" +
+                               $"//AUTO GENERATED CLASS DO NOT MODIFY\r\n " +
+                               $"public static class Api\r\n{{\r\n";
 
-            string @namespaces = @references + "\r\nnamespace RiotGamesApi.AspNetCore\r\n{";
-            string @apiClass = $"\r\n// ReSharper disable InconsistentNaming\r\n//AUTO GENERATED CLASS DO NOT MODIFY\r\n public static class Api\r\n{{\r\n";
-            for (int i = 0; i < Classes.Count; i++)
+            foreach (var clss in Classes)
             {
-                @apiClass += $"//Class{(i + 1)}\r\n\r\n" + Classes[i];
+                @apiClass += $"//{clss.Key} API" + clss.Value;
             }
             @apiClass += "//\r\n}\r\n";
             @namespaces += apiClass;
             @namespaces += "//\r\n}\r\n";
             Classes.Clear();
             return @namespaces;
+        }
+
+        private static string Reference(string Namespace)
+        {
+            string @references =
+                $"using {Namespace}.Enums;\r\n" +
+                $"using {Namespace}.Interfaces;\r\n" +
+                $"using {Namespace}.Models;\r\n" +
+                $"using {Namespace}.RiotApi.Enums;\r\n" +
+                $"using {Namespace}.RiotApi.NonStaticEndPoints.ChampionMastery;\r\n" +
+                $"using {Namespace}.RiotApi.NonStaticEndPoints.League;\r\n" +
+                $"using {Namespace}.RiotApi.NonStaticEndPoints.Mastery;\r\n" +
+                $"using {Namespace}.RiotApi.NonStaticEndPoints.Match;\r\n" +
+                $"using {Namespace}.RiotApi.NonStaticEndPoints.Rune;\r\n" +
+                $"using {Namespace}.RiotApi.NonStaticEndPoints.Spectator;\r\n" +
+                $"using {Namespace}.RiotApi.NonStaticEndPoints.Summoner;\r\n" +
+                $"using {Namespace}.RiotApi.StaticEndPoints.Champions;\r\n" +
+                $"using {Namespace}.RiotApi.StaticEndPoints.Items;\r\n" +
+                $"using {Namespace}.RiotApi.StaticEndPoints.LanguageStrings;\r\n" +
+                $"using {Namespace}.RiotApi.StaticEndPoints.Maps;\r\n" +
+                $"using {Namespace}.RiotApi.StaticEndPoints.Masteries;\r\n" +
+                $"using {Namespace}.RiotApi.StaticEndPoints.Profile;\r\n" +
+                $"using {Namespace}.RiotApi.StaticEndPoints.Realms;\r\n" +
+                $"using {Namespace}.RiotApi.StaticEndPoints.Runes;\r\n" +
+                $"using {Namespace}.RiotApi.StaticEndPoints.SummonerSpell;\r\n" +
+                $"using {Namespace}.RiotApi.StatusEndPoints;\r\n" +
+                $"using System;\r\n" +
+                $"using System.Collections.Generic;\r\n" +
+                $"using System.ComponentModel;\r\n" +
+                $"using System.Text;\r\n" +
+                $"using MasteryDto = {Namespace}.RiotApi.StaticEndPoints.Masteries.MasteryDto;\r\n" +
+                $"using RuneDto = {Namespace}.RiotApi.StaticEndPoints.Runes.RuneDto;";
+
+            return @references;
         }
 
         #endregion api class generetor

@@ -32,8 +32,7 @@ namespace RiotGamesApi.AspNetCore
     //AUTO GENERATED CLASS DO NOT MODIFY
     public static class Api
     {
-        //Class1
-
+        //Status API
         //"https://{platformId}.api.riotgames.com/lol
         public static class Status
         {
@@ -53,8 +52,7 @@ namespace RiotGamesApi.AspNetCore
             }
         }
 
-        //Class2
-
+        //Static API
         //"https://{platformId}.api.riotgames.com/lol
         public static class Static
         {
@@ -334,8 +332,7 @@ namespace RiotGamesApi.AspNetCore
             }
         }
 
-        //Class3
-
+        //NonStatic API
         //"https://{platformId}.api.riotgames.com/lol
         public static class NonStatic
         {
