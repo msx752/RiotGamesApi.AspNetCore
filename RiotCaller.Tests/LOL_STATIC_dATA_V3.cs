@@ -1,11 +1,5 @@
 ﻿using RiotGamesApi.AspNetCore;
-
-using RiotGamesApi.AspNetCore;
-
 using RiotGamesApi.AspNetCore.Enums;
-
-using RiotGamesApi.AspNetCore.Enums;
-
 using RiotGamesApi.AspNetCore.Models;
 using RiotGamesApi.AspNetCore.Extensions;
 using RiotGamesApi.AspNetCore.RiotApi.Enums;
@@ -34,6 +28,7 @@ namespace RiotGamesApi.Tests
                 .For(ApiMiddleName.Champions)
                 .AddParameter()
                 .Build(PlatformType)
+                .UseCache(false)
                 .Get();
             Assert.False(rit.HasError);
         }
@@ -46,6 +41,7 @@ namespace RiotGamesApi.Tests
                 .For(ApiMiddleName.Champions)
                 .AddParameter(new ApiParameter(ApiParam.OnlyId, ChampionId))
                 .Build(PlatformType)
+                .UseCache(false)
                 .Get();
             Assert.False(rit.HasError);
         }
@@ -58,6 +54,7 @@ namespace RiotGamesApi.Tests
                 .For(ApiMiddleName.Champions)
                 .AddParameter()
                 .Build(PlatformType)
+                .UseCache(false)
                 .Get();
             Assert.False(rit.HasError);
         }
@@ -70,6 +67,7 @@ namespace RiotGamesApi.Tests
                 .For(ApiMiddleName.Items)
                 .AddParameter(new ApiParameter(ApiParam.OnlyId, ItemId))
                 .Build(PlatformType)
+                .UseCache(false)
                 .Get();
             Assert.False(rit.HasError);
         }
@@ -82,6 +80,7 @@ namespace RiotGamesApi.Tests
                 .For(ApiMiddleName.LanguageStrings)
                 .AddParameter()
                 .Build(PlatformType)
+                .UseCache(false)
                 .Get();
             Assert.False(rit.HasError);
         }
@@ -94,6 +93,7 @@ namespace RiotGamesApi.Tests
                 .For(ApiMiddleName.Languages)
                 .AddParameter()
                 .Build(PlatformType)
+                .UseCache(false)
                 .Get();
             Assert.False(rit.HasError);
         }
@@ -106,6 +106,7 @@ namespace RiotGamesApi.Tests
                 .For(ApiMiddleName.Maps)
                 .AddParameter()
                 .Build(PlatformType)
+                .UseCache(false)
                 .Get();
             Assert.False(rit.HasError);
         }
@@ -118,6 +119,7 @@ namespace RiotGamesApi.Tests
                 .For(ApiMiddleName.Masteries)
                 .AddParameter()
                 .Build(PlatformType)
+                .UseCache(false)
                 .Get();
             Assert.False(rit.HasError);
         }
@@ -130,6 +132,7 @@ namespace RiotGamesApi.Tests
                 .For(ApiMiddleName.Masteries)
                 .AddParameter(new ApiParameter(ApiParam.OnlyId, MasteryId))
                 .Build(PlatformType)
+                .UseCache(false)
                 .Get();
             Assert.False(rit.HasError);
         }
@@ -142,6 +145,7 @@ namespace RiotGamesApi.Tests
                 .For(ApiMiddleName.Realms)
                 .AddParameter()
                 .Build(PlatformType)
+                .UseCache(false)
                 .Get();
             Assert.False(rit.HasError);
         }
@@ -154,6 +158,7 @@ namespace RiotGamesApi.Tests
                 .For(ApiMiddleName.Runes)
                 .AddParameter()
                 .Build(PlatformType)
+                .UseCache(false)
                 .Get();
             Assert.False(rit.HasError);
         }
@@ -166,6 +171,7 @@ namespace RiotGamesApi.Tests
                 .For(ApiMiddleName.Runes)
                 .AddParameter(new ApiParameter(ApiParam.OnlyId, (long)1))
                 .Build(PlatformType)
+                .UseCache(false)
                 .Get();
             Assert.False(rit.HasError);
         }
@@ -178,6 +184,7 @@ namespace RiotGamesApi.Tests
                 .For(ApiMiddleName.SummonerSpells)
                 .AddParameter()
                 .Build(PlatformType)
+                .UseCache(false)
                 .Get();
             Assert.False(rit.HasError);
         }
@@ -190,6 +197,7 @@ namespace RiotGamesApi.Tests
                 .For(ApiMiddleName.SummonerSpells)
                 .AddParameter(new ApiParameter(ApiParam.OnlyId, (long)1))
                 .Build(PlatformType)
+                .UseCache(false)
                 .Get();
             Assert.False(rit.HasError);
         }
@@ -202,6 +210,7 @@ namespace RiotGamesApi.Tests
                 .For(ApiMiddleName.Versions)
                 .AddParameter()
                 .Build(PlatformType)
+                .UseCache(false)
                 .Get();
             Assert.False(rit.HasError);
         }
