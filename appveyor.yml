@@ -68,7 +68,6 @@ install:
     {
         Write-Host "AppVeyor was not detected";
     }
-cache: packages
 build_script:
 - ps: >-
     if($($env:APPVEYOR))
