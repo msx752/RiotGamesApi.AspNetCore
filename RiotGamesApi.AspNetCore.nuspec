@@ -3,19 +3,19 @@
     <metadata>
          <id>RiotGamesApi.AspNetCore</id>
         <version>1.0.0.0</version>
-        <title>RiotGames new API v3 for AspNetCore</title>
+         <title>LeagueOfLegends v3 API wrapper AspNetCore</title>
         <authors>Mustafa Salih ASLIM</authors>
         <owners>Mustafa Salih ASLIM</owners>
         <licenseUrl>https://github.com/msx752/RiotGamesApi.AspNetCore/blob/master/LICENSE</licenseUrl>
         <projectUrl>https://github.com/msx752/RiotGamesApi.AspNetCore</projectUrl>
         <iconUrl>https://github.com/msx752/RiotGamesApi.AspNetCore/blob/master/wfc.png?raw=true</iconUrl>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
-        <description>C# AspNetCore cross-platform RiotGames API.</description>
-        <summary>C# AspNetCore wrapper for League Of Legends API</summary>
+        <description>C# AspNetCore LeagueOfLegends RiotGames API.</description>
+        <summary>C# AspNetCore wrapper for LeagueOfLegends API v3</summary>
         <releaseNotes></releaseNotes>
         <copyright>Copyright 2017</copyright>
         <language />
-        <tags>RiotGames League Of Legends API with C# AspNetCore 1.1 project</tags>
+        <tags>RiotGames LeagueOfLegends API with C# AspNetCore 1.1 project</tags>
         <dependencies>
             <group targetFramework=".NETCoreApp1.1">
                 <dependency id="Microsoft.Extensions.DependencyInjection" version="1.1.1" exclude="Build,Analyzers" />
