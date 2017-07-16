@@ -95,6 +95,12 @@ namespace RiotGamesApi.AspNetCore
                                 @RiotGamesApiParameters += ",\r\n";
                             }
                         }
+                        string @useCacheMethod = "";
+                        if (selected.Key == UrlType.Static)//useCache parameter
+                        {
+                            @parameters += ", bool _useCache = false";
+                            @useCacheMethod = $".UseCache(_useCache)\r\n";
+                        }
                         string @queryParameters = "";
                         string @optionalParameters = "new Dictionary<string, string>()\r\n{\r\n";
                         foreach (var query in urlSub.QueryParameterTypes)
@@ -138,11 +144,12 @@ namespace RiotGamesApi.AspNetCore
                         }
                         string @method = $"\r\npublic static IResult<{t1}> Get{urlSub.MiddleType}{uniqueParam}({nameof(Platform)} platform{@parameters})\r\n{{";
 
-                        string @apiCall = $"\r\nvar rit = new {nameof(ApiCall)}()\r\n" +
+                        string @apiCall = $"\r\nIResult<{t1}> rit = new {nameof(ApiCall)}()\r\n" +
                                           $".SelectApi<{t1}>({nameof(ApiName)}.{url.SubUrl})\r\n" +
                                           $".For({nameof(ApiMiddleName)}.{urlSub.MiddleType})\r\n" +
                                           $".AddParameter({@RiotGamesApiParameters})\r\n" +
-                                          $".Build(platform)\r\n" +
+                                          ".Build(platform)\r\n" +
+                                          @useCacheMethod +
                                           $".Get({@optionalParameters});";
                         @method += @apiCall;
                         @method += "\r\nreturn rit;\r\n}";
