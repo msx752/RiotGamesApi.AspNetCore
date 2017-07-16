@@ -78,23 +78,23 @@ build_script:
 
     Write-Host "$($env:APPVEYOR_PROJECT_NAME) Version:$SVersion";
 
-    $sourceNugetExe = "https://dist.nuget.org/win-x86-commandline/latest/nuget.exe"
+    $sourceNugetExe = "https://dist.nuget.org/win-x86-commandline/latest/nuget.exe";
 
-    $targetNugetExe = "$rootPath\nuget.exe"
+    $targetNugetExe = "$rootPath\nuget.exe";
 
-    Invoke-WebRequest $sourceNugetExe -OutFile $targetNugetExe
+    Invoke-WebRequest $sourceNugetExe -OutFile $targetNugetExe;
 
     Set-Alias nuget $targetNugetExe -Scope Global -Verbose;
 
-    nuget restore
+    dotnet clean -c Release;
 
-    dotnet restore
+    nuget restore;
 
-    dotnet clean -c Release
+    dotnet restore;
 
-    dotnet build -c Release  /p:Version=$newBuildNumber --framework netcoreapp1.1
+    dotnet build -c Release  /p:Version=$newBuildNumber --framework netcoreapp1.1;
 
-    nuget pack -version $newBuildNumber
+    nuget pack -version $newBuildNumber;
 
     Push-AppveyorArtifact "$($env:APPVEYOR_BUILD_FOLDER)\$($env:APPVEYOR_PROJECT_NAME).$SVersion.nupkg" -FileName "$($env:APPVEYOR_PROJECT_NAME).$SVersion.nupkg" -DeploymentName "NugetPackage1";
 
