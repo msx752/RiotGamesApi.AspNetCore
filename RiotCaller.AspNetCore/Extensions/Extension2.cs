@@ -41,17 +41,17 @@ namespace RiotGamesApi.AspNetCore.Extensions
             return sff1;
         }
 
-        public static RiotGamesApiUrl GetApi(this RiotGamesApiUrl option, ApiMiddleName middleType, Type type, params ApiParam[] subApis)
+        public static RiotGamesApiUrl GetApi(this RiotGamesApiUrl option, ApiMiddleName middleType, Type returnType, params ApiParam[] subApis)
         {
-            option.SubUrls.Add(new SubUrl(middleType, subApis, type, ApiRequestType.GET));
+            option.SubUrls.Add(new SubUrl(middleType, subApis, returnType, ApiRequestType.GET));
             option.LastSubUrlIndex = option.SubUrls.Count - 1;
             return option;
         }
 
-        public static RiotGamesApiUrl PostApi(this RiotGamesApiUrl option, ApiMiddleName middleType, Type type, Type bodyValueType, bool IsBodyRequired,
+        public static RiotGamesApiUrl PostApi(this RiotGamesApiUrl option, ApiMiddleName middleType, Type returnType, Type bodyValueType, bool IsBodyRequired,
             params ApiParam[] subApis)
         {
-            option.SubUrls.Add(new SubUrl(middleType, subApis, type, ApiRequestType.POST, bodyValueType, IsBodyRequired));
+            option.SubUrls.Add(new SubUrl(middleType, subApis, returnType, ApiRequestType.POST, bodyValueType, IsBodyRequired));
             option.LastSubUrlIndex = option.SubUrls.Count - 1;
             return option;
         }
