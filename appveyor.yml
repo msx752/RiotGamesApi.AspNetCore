@@ -89,3 +89,5 @@ build_script:
     Write-Host "AppVeyor was not detected";
     }
 test: off
+hosts:
+  api.nuget.org: 93.184.221.200
