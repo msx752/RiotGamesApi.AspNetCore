@@ -77,13 +77,6 @@ build_script:
     Write-Host "$($env:APPVEYOR_PROJECT_NAME) Version:$SVersion";
 
     dotnet clean -c Release;
-
-    $sourceNugetExe = "https://dist.nuget.org/win-x86-commandline/latest/nuget.exe";
-    $targetNugetExe = "$rootPath\nuget.exe";
-    Invoke-WebRequest $sourceNugetExe -OutFile $targetNugetExe;
-    Write-Host "# Nuget alias is setting";
-    Set-Alias nuget $targetNugetExe -Scope Global -Verbose;
-
     nuget restore;
     dotnet msbuild /p:Configuration=Release /p:Version=$newBuildNumber;
     nuget pack -version $newBuildNumber;
