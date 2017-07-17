@@ -15,7 +15,7 @@ namespace RiotGamesApi.AspNetCore.Extensions
     {
         public static IApiBuilder UseTournamentApi(this IApiBuilder option, Func<Models.RiotGamesApi, Models.RiotGamesApi> action)
         {
-            option.RiotGamesApiOptions.RiotGamesApis[UrlType.Tournament] = action(new Models.RiotGamesApi(option.RiotGamesApiOptions.NonStaticUrl));
+            option.RiotGamesApiOptions.RiotGamesApis[UrlType.Tournament] = action(new Models.RiotGamesApi(option.RiotGamesApiOptions.TournamentUrl));
             return option;
         }
 

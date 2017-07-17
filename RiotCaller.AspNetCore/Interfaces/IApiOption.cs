@@ -11,6 +11,7 @@ namespace RiotGamesApi.AspNetCore.Interfaces
         string RiotApiKey { get; set; }
         Dictionary<UrlType, Models.RiotGamesApi> RiotGamesApis { get; set; }
         string StaticUrl { get; }
+        string TournamentUrl { get; }
         string StatusUrl { get; }
         string Url { get; set; }
     }

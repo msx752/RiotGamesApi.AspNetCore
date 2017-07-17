@@ -20,6 +20,7 @@ namespace RiotGamesApi.AspNetCore.Models
         public Dictionary<UrlType, Models.RiotGamesApi> RiotGamesApis { get; set; }
         public string StaticUrl { get { return $"{NonStaticUrl}"; }/* set { _staticUrl = value; } */}
 
+        public string TournamentUrl { get { return $"{Url}/lol"; } }
         public string StatusUrl { get { return $"{Url}/lol"; } }
 
         public string Url { get { return _url; } set { _url = value; } }
