@@ -24,6 +24,7 @@ using RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.SummonerSpell;
 using RiotGamesApi.AspNetCore.RiotApi.StatusEndPoints;
 using System;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Builder;
 using RiotGamesApi.AspNetCore.RiotApi.TournamentEndPoints;
 using LobbyEventDTOWrapper = RiotGamesApi.AspNetCore.RiotApi.TournamentStubEndPoints.LobbyEventDTOWrapper;
 using MasteryDto = RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.Masteries.MasteryDto;
@@ -94,6 +95,13 @@ namespace RiotGamesApi.AspNetCore.Extensions
                 throw;
             }
             return option;
+        }
+
+        public static IApplicationBuilder UseRiotGamesApi(this IApplicationBuilder app)
+        {
+            var sProvider = app.ApplicationServices;
+            ApiSettings.ServiceProvider = sProvider;
+            return app;
         }
 
         public static void AddRiotGamesApi(this IServiceCollection services, string riotApiKey, Func<CacheOption, CacheOption> cacheOption = null)

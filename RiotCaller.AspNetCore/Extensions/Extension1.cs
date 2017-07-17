@@ -25,13 +25,6 @@ namespace RiotGamesApi.AspNetCore.Extensions
             return option;
         }
 
-        public static IApplicationBuilder UseRiotGamesApi(this IApplicationBuilder app)
-        {
-            var sProvider = app.ApplicationServices;
-            ApiSettings.ServiceProvider = sProvider;
-            return app;
-        }
-
         public static IApiBuilder UseStaticApi(this IApiBuilder option, Func<Models.RiotGamesApi, Models.RiotGamesApi> action)
         {
             option.RiotGamesApiOptions.RiotGamesApis[UrlType.Static] = action(new Models.RiotGamesApi(option.RiotGamesApiOptions.StaticUrl));
