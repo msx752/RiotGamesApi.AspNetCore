@@ -16,11 +16,23 @@ namespace RiotGamesApi.Tests
         {
             var rit = new ApiCall()
                 .SelectApi<LobbyEventDTOWrapper>(ApiName.TournamentStub)
-                .For(ApiMethodName.Codes)
-                .AddParameter()
+                .For(ApiMethodName.LobbyEvents)
+                .AddParameter(new ApiParameter(ApiPath.ByCode, TournamentCode))
                 .Build(PlatformType)
                 .Get();
             Assert.False(rit.HasError);
+        }
+
+        [Fact]
+        public void PostCodes()
+        {
+            //var rit = new ApiCall()
+            //    .SelectApi<LobbyEventDTOWrapper>(ApiName.TournamentStub)
+            //    .For(ApiMethodName.Codes)
+            //    .AddParameter()
+            //    .Build(PlatformType)
+            //    .Get();
+            //Assert.False(rit.HasError);
         }
     }
 }
