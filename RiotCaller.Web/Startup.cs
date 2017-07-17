@@ -38,7 +38,7 @@ namespace RiotGamesApi.Web
             services.AddMvc();
 
             //necessary
-            services.AddRiotGamesApi("RGAPI-00000000-0000-0000-0000-000000000000", (cache) =>
+            services.AddRiotGamesApi("RGAPI-dbc4490e-7f71-4755-9926-67013da154c8", (cache) =>
             {
                 cache.EnableStaticApiCaching = true;
                 cache.StaticApiCacheExpiry = new TimeSpan(1, 0, 0);

@@ -37,14 +37,25 @@ namespace RiotGamesApi.AspNetCore.Models
 
     public class SubUrl
     {
-        public SubUrl(ApiMiddleName md, ApiParam[] array, Type returnValueType)
+        public SubUrl(ApiMiddleName md, ApiParam[] array, Type returnValueType, ApiRequestType requestType, Type _bodyValueType, bool _isBodyRequired)
+            : this(md, array, returnValueType, requestType)
+        {
+            BodyValueType = _bodyValueType;
+            IsBodyRequired = _isBodyRequired;
+        }
+
+        public SubUrl(ApiMiddleName md, ApiParam[] array, Type returnValueType, ApiRequestType requestType)
         {
             this.MiddleType = md;
             this.RiotGamesApiSubApiTypes = array ?? new ApiParam[0];
             ReturnValueType = returnValueType;
             QueryParameterTypes = new Dictionary<string, Type>();
+            RequestType = requestType;
         }
 
+        public bool IsBodyRequired { get; set; }
+        public Type BodyValueType { get; set; }
+        public ApiRequestType RequestType { get; set; }
         public ApiMiddleName MiddleType { get; set; }
 
         public ApiParam[] RiotGamesApiSubApiTypes { get; set; }

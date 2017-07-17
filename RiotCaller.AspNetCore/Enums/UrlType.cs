@@ -4,6 +4,7 @@
     {
         Static,
         NonStatic,
-        Status
+        Status,
+        Tournament
     }
 }

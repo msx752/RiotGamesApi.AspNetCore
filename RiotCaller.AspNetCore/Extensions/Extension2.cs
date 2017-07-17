@@ -24,9 +24,11 @@ using RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.SummonerSpell;
 using RiotGamesApi.AspNetCore.RiotApi.StatusEndPoints;
 using System;
 using System.Collections.Generic;
-using RiotGamesApi.AspNetCore.RiotApi.TournamentStubEndPoints;
+using RiotGamesApi.AspNetCore.RiotApi.TournamentEndPoints;
+using LobbyEventDTOWrapper = RiotGamesApi.AspNetCore.RiotApi.TournamentStubEndPoints.LobbyEventDTOWrapper;
 using MasteryDto = RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.Masteries.MasteryDto;
 using RuneDto = RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.Runes.RuneDto;
+using TournamentCodeParameters = RiotGamesApi.AspNetCore.RiotApi.TournamentStubEndPoints.TournamentCodeParameters;
 
 namespace RiotGamesApi.AspNetCore.Extensions
 {
@@ -39,9 +41,25 @@ namespace RiotGamesApi.AspNetCore.Extensions
             return sff1;
         }
 
-        public static RiotGamesApiUrl SubApi(this RiotGamesApiUrl option, ApiMiddleName middleType, Type type, params ApiParam[] subApis)
+        public static RiotGamesApiUrl GetApi(this RiotGamesApiUrl option, ApiMiddleName middleType, Type type, params ApiParam[] subApis)
         {
-            option.SubUrls.Add(new SubUrl(middleType, subApis, type));
+            option.SubUrls.Add(new SubUrl(middleType, subApis, type, ApiRequestType.GET));
+            option.LastSubUrlIndex = option.SubUrls.Count - 1;
+            return option;
+        }
+
+        public static RiotGamesApiUrl PostApi(this RiotGamesApiUrl option, ApiMiddleName middleType, Type type, Type bodyValueType, bool IsBodyRequired,
+            params ApiParam[] subApis)
+        {
+            option.SubUrls.Add(new SubUrl(middleType, subApis, type, ApiRequestType.POST, bodyValueType, IsBodyRequired));
+            option.LastSubUrlIndex = option.SubUrls.Count - 1;
+            return option;
+        }
+
+        public static RiotGamesApiUrl PutApi(this RiotGamesApiUrl option, ApiMiddleName middleType, Type bodyValueType, bool IsBodyRequired,
+            params ApiParam[] subApis)
+        {
+            option.SubUrls.Add(new SubUrl(middleType, subApis, null, ApiRequestType.PUT, bodyValueType, IsBodyRequired));
             option.LastSubUrlIndex = option.SubUrls.Count - 1;
             return option;
         }
@@ -59,10 +77,16 @@ namespace RiotGamesApi.AspNetCore.Extensions
         {
             try
             {
-                if (option.SubUrl != ApiName.StaticData)
-                    throw new Exception("QueryParameters only for static-data's api");
-
-                option.SubUrls[option.LastSubUrlIndex].QueryParameterTypes = queryParameterTypes;
+                if (option.SubUrl == ApiName.StaticData ||
+                    option.SubUrl == ApiName.Tournament ||
+                    option.SubUrl == ApiName.TournamentStub)
+                {
+                    option.SubUrls[option.LastSubUrlIndex].QueryParameterTypes = queryParameterTypes;
+                }
+                else
+                {
+                    throw new Exception("QueryParameters only for static-data and tournament");
+                }
             }
             catch (Exception e)
             {
@@ -78,16 +102,16 @@ namespace RiotGamesApi.AspNetCore.Extensions
             var riotGamesApiBuilder = new RiotGamesApiBuilder()
                 .UseRiotApiKey(riotApiKey)
                 .UseApiUrl("api.riotgames.com")
-                .UseStatusApi((api) =>
+                .UseStatusApi((apis) =>
                 {
-                    api.AddApi(ApiName.Status, 3.0)
-                        .SubApi(ApiMiddleName.ShardData, typeof(ShardStatus));
-                    return api;
+                    apis.AddApi(ApiName.Status, 3.0)
+                        .GetApi(ApiMiddleName.ShardData, typeof(ShardStatus));
+                    return apis;
                 })
-                .UseStaticApi((api) =>
+                .UseStaticApi((apis) =>
                 {
-                    api.AddApi(ApiName.StaticData, 3.0)
-                        .SubApi(ApiMiddleName.Champions, typeof(ChampionListDto))
+                    apis.AddApi(ApiName.StaticData, 3.0)
+                        .GetApi(ApiMiddleName.Champions, typeof(ChampionListDto))
                         .HasQueryParameters(new Dictionary<string, Type>()
                         {
                             {"locale",typeof(string)},
@@ -95,7 +119,7 @@ namespace RiotGamesApi.AspNetCore.Extensions
                             {"tags",typeof(List<ChampionTag>)},
                             {"dataById",typeof(bool)},
                         })
-                        .SubApi(ApiMiddleName.Champions, typeof(ChampionDto), ApiParam.OnlyId)
+                        .GetApi(ApiMiddleName.Champions, typeof(ChampionDto), ApiParam.OnlyId)
                         .HasQueryParameters(new Dictionary<string, Type>()
                         {
                             {"locale",typeof(string)},
@@ -103,67 +127,67 @@ namespace RiotGamesApi.AspNetCore.Extensions
                             {"tags",typeof(List<ChampionTag>)},
                             {"dataById",typeof(bool)},
                         })
-                        .SubApi(ApiMiddleName.Items, typeof(ItemListDto))
+                        .GetApi(ApiMiddleName.Items, typeof(ItemListDto))
                         .HasQueryParameters(new Dictionary<string, Type>()
                         {
                             {"locale",typeof(string)},
                             {"version",typeof(string)},
                             {"tags",typeof(List<ItemTag>)},
                         })
-                        .SubApi(ApiMiddleName.Items, typeof(ItemDto), ApiParam.OnlyId)
+                        .GetApi(ApiMiddleName.Items, typeof(ItemDto), ApiParam.OnlyId)
                         .HasQueryParameters(new Dictionary<string, Type>()
                         {
                             {"locale",typeof(string)},
                             {"version",typeof(string)},
                             {"tags",typeof(List<ItemTag>)},
                         })
-                        .SubApi(ApiMiddleName.LanguageStrings, typeof(LanguageStringsDto))
+                        .GetApi(ApiMiddleName.LanguageStrings, typeof(LanguageStringsDto))
                         .HasQueryParameters(new Dictionary<string, Type>()
                         {
                             {"locale",typeof(string)},
                             {"version",typeof(string)},
                         })
-                        .SubApi(ApiMiddleName.Languages, typeof(List<string>))
-                        .SubApi(ApiMiddleName.Maps, typeof(MapDataDto))
+                        .GetApi(ApiMiddleName.Languages, typeof(List<string>))
+                        .GetApi(ApiMiddleName.Maps, typeof(MapDataDto))
                         .HasQueryParameters(new Dictionary<string, Type>()
                         {
                             {"locale",typeof(string)},
                             {"version",typeof(string)},
                         })
-                        .SubApi(ApiMiddleName.Masteries, typeof(MasteryListDto)).HasQueryParameters(new Dictionary<string, Type>()
+                        .GetApi(ApiMiddleName.Masteries, typeof(MasteryListDto)).HasQueryParameters(new Dictionary<string, Type>()
                         {
                             {"locale",typeof(string)},
                             {"version",typeof(string)},
                             {"tags",typeof(List<MasteryTag>)},
                         })
-                        .SubApi(ApiMiddleName.Masteries, typeof(MasteryDto), ApiParam.OnlyId).HasQueryParameters(new Dictionary<string, Type>()
+                        .GetApi(ApiMiddleName.Masteries, typeof(MasteryDto), ApiParam.OnlyId).HasQueryParameters(new Dictionary<string, Type>()
                         {
                             {"locale",typeof(string)},
                             {"version",typeof(string)},
                             {"tags",typeof(List<MasteryTag>)},
                         })
-                        .SubApi(ApiMiddleName.ProfileIcons, typeof(ProfileIconDataDto))
+                        .GetApi(ApiMiddleName.ProfileIcons, typeof(ProfileIconDataDto))
                         .HasQueryParameters(new Dictionary<string, Type>()
                         {
                             {"locale",typeof(string)},
                             {"version",typeof(string)},
                         })
-                        .SubApi(ApiMiddleName.Realms, typeof(RealmDto))
-                        .SubApi(ApiMiddleName.Runes, typeof(RuneListDto))
+                        .GetApi(ApiMiddleName.Realms, typeof(RealmDto))
+                        .GetApi(ApiMiddleName.Runes, typeof(RuneListDto))
                         .HasQueryParameters(new Dictionary<string, Type>()
                         {
                             {"locale",typeof(string)},
                             {"version",typeof(string)},
                             {"tags",typeof(List<RuneTag>)},
                         })
-                        .SubApi(ApiMiddleName.Runes, typeof(RuneDto), ApiParam.OnlyId)
+                        .GetApi(ApiMiddleName.Runes, typeof(RuneDto), ApiParam.OnlyId)
                         .HasQueryParameters(new Dictionary<string, Type>()
                         {
                             {"locale",typeof(string)},
                             {"version",typeof(string)},
                             {"tags",typeof(List<RuneTag>)},
                         })
-                        .SubApi(ApiMiddleName.SummonerSpells, typeof(SummonerSpellListDto))
+                        .GetApi(ApiMiddleName.SummonerSpells, typeof(SummonerSpellListDto))
                         .HasQueryParameters(new Dictionary<string, Type>()
                         {
                             {"locale",typeof(string)},
@@ -171,7 +195,7 @@ namespace RiotGamesApi.AspNetCore.Extensions
                             {"dataById",typeof(bool) },
                             {"tags",typeof(List<SummonerSpellTag>) }
                         })
-                        .SubApi(ApiMiddleName.SummonerSpells, typeof(SummonerSpellDto), ApiParam.OnlyId)
+                        .GetApi(ApiMiddleName.SummonerSpells, typeof(SummonerSpellDto), ApiParam.OnlyId)
                         .HasQueryParameters(new Dictionary<string, Type>()
                         {
                             {"locale",typeof(string)},
@@ -179,61 +203,74 @@ namespace RiotGamesApi.AspNetCore.Extensions
                             {"dataById",typeof(bool) },
                             {"tags",typeof(List<SummonerSpellTag>) }
                         })
-                        .SubApi(ApiMiddleName.Versions, typeof(List<string>));
-                    return api;
+                        .GetApi(ApiMiddleName.Versions, typeof(List<string>));
+                    return apis;
                 })
-                .UseNonStaticApi(api =>
+                .UseNonStaticApi(apis =>
                 {
-                    api.AddApi(ApiName.ChampionMastery, 3.0)
-                        .SubApi(ApiMiddleName.ChampionMasteries, typeof(List<ChampionMasteryDto>), ApiParam.BySummoner)
-                        .SubApi(ApiMiddleName.ChampionMasteries, typeof(ChampionMasteryDto), ApiParam.BySummoner, ApiParam.ByChampion)
-                        .SubApi(ApiMiddleName.Scores, typeof(int), ApiParam.BySummoner);
+                    apis.AddApi(ApiName.ChampionMastery, 3.0)
+                        .GetApi(ApiMiddleName.ChampionMasteries, typeof(List<ChampionMasteryDto>), ApiParam.BySummoner)
+                        .GetApi(ApiMiddleName.ChampionMasteries, typeof(ChampionMasteryDto), ApiParam.BySummoner, ApiParam.ByChampion)
+                        .GetApi(ApiMiddleName.Scores, typeof(int), ApiParam.BySummoner);
 
-                    api.AddApi(ApiName.Summoner, 3.0)
-                        .SubApi(ApiMiddleName.Summoners, typeof(SummonerDto), ApiParam.ByAccount)
-                        .SubApi(ApiMiddleName.Summoners, typeof(SummonerDto), ApiParam.ByName)
-                        .SubApi(ApiMiddleName.Summoners, typeof(SummonerDto), ApiParam.OnlySummonerId);
+                    apis.AddApi(ApiName.Summoner, 3.0)
+                        .GetApi(ApiMiddleName.Summoners, typeof(SummonerDto), ApiParam.ByAccount)
+                        .GetApi(ApiMiddleName.Summoners, typeof(SummonerDto), ApiParam.ByName)
+                        .GetApi(ApiMiddleName.Summoners, typeof(SummonerDto), ApiParam.OnlySummonerId);
 
-                    api.AddApi(ApiName.Platform, 3.0)
-                        .SubApi(ApiMiddleName.Champions, typeof(RiotApi.NonStaticEndPoints.Champion.ChampionListDto))
-                        .SubApi(ApiMiddleName.Champions, typeof(RiotApi.NonStaticEndPoints.Champion.ChampionDto), ApiParam.OnlyId)
-                        .SubApi(ApiMiddleName.Masteries, typeof(MasteryPagesDto), ApiParam.BySummoner)
-                        .SubApi(ApiMiddleName.Runes, typeof(RunePagesDto), ApiParam.BySummoner);
+                    apis.AddApi(ApiName.Platform, 3.0)
+                        .GetApi(ApiMiddleName.Champions, typeof(RiotApi.NonStaticEndPoints.Champion.ChampionListDto))
+                        .GetApi(ApiMiddleName.Champions, typeof(RiotApi.NonStaticEndPoints.Champion.ChampionDto), ApiParam.OnlyId)
+                        .GetApi(ApiMiddleName.Masteries, typeof(MasteryPagesDto), ApiParam.BySummoner)
+                        .GetApi(ApiMiddleName.Runes, typeof(RunePagesDto), ApiParam.BySummoner);
 
-                    api.AddApi(ApiName.League, 3.0)
-                        .SubApi(ApiMiddleName.ChallengerLeagues, typeof(LeagueListDTO), ApiParam.ByQueue)
-                        .SubApi(ApiMiddleName.Leagues, typeof(List<LeagueListDTO>), ApiParam.BySummoner)
-                        .SubApi(ApiMiddleName.MasterLeagues, typeof(LeagueListDTO), ApiParam.ByQueue)
-                        .SubApi(ApiMiddleName.Positions, typeof(List<LeaguePositionDTO>), ApiParam.BySummoner);
+                    apis.AddApi(ApiName.League, 3.0)
+                        .GetApi(ApiMiddleName.ChallengerLeagues, typeof(LeagueListDTO), ApiParam.ByQueue)
+                        .GetApi(ApiMiddleName.Leagues, typeof(List<LeagueListDTO>), ApiParam.BySummoner)
+                        .GetApi(ApiMiddleName.MasterLeagues, typeof(LeagueListDTO), ApiParam.ByQueue)
+                        .GetApi(ApiMiddleName.Positions, typeof(List<LeaguePositionDTO>), ApiParam.BySummoner);
 
                     //version testing
-                    //api.AddApi(ApiName.League, 3.1)
+                    //apis.AddApi(ApiName.League, 3.1)
                     //    .SubApi(ApiMiddleName.ChallengerLeagues, typeof(LeagueListDTO), ApiParam.ByQueue);
 
-                    api.AddApi(ApiName.Match, 3.0)
-                        .SubApi(ApiMiddleName.Matches, typeof(MatchDto), ApiParam.OnlyMatchId)
-                        .SubApi(ApiMiddleName.MatchLists, typeof(MatchlistDto), ApiParam.ByAccount)
-                        .SubApi(ApiMiddleName.MatchLists, typeof(MatchlistDto), ApiParam.ByAccountRecent)
-                        .SubApi(ApiMiddleName.Timelines, typeof(MatchTimelineDto), ApiParam.ByMatch)
-                        .SubApi(ApiMiddleName.Matches, typeof(List<long>), ApiParam.ByTournamentCodeIds)
-                        .SubApi(ApiMiddleName.Matches, typeof(MatchDto), ApiParam.OnlyMatchId, ApiParam.ByTournamentCode);
+                    apis.AddApi(ApiName.Match, 3.0)
+                        .GetApi(ApiMiddleName.Matches, typeof(MatchDto), ApiParam.OnlyMatchId)
+                        .GetApi(ApiMiddleName.MatchLists, typeof(MatchlistDto), ApiParam.ByAccount)
+                        .GetApi(ApiMiddleName.MatchLists, typeof(MatchlistDto), ApiParam.ByAccountRecent)
+                        .GetApi(ApiMiddleName.Timelines, typeof(MatchTimelineDto), ApiParam.ByMatch)
+                        .GetApi(ApiMiddleName.Matches, typeof(List<long>), ApiParam.ByTournamentCodeIds)
+                        .GetApi(ApiMiddleName.Matches, typeof(MatchDto), ApiParam.OnlyMatchId, ApiParam.ByTournamentCode);
 
-                    api.AddApi(ApiName.Spectator, 3.0)
-                        .SubApi(ApiMiddleName.ActiveGames, typeof(CurrentGameInfo), ApiParam.BySummoner)
-                        .SubApi(ApiMiddleName.FeaturedGames, typeof(FeaturedGames));
+                    apis.AddApi(ApiName.Spectator, 3.0)
+                        .GetApi(ApiMiddleName.ActiveGames, typeof(CurrentGameInfo), ApiParam.BySummoner)
+                        .GetApi(ApiMiddleName.FeaturedGames, typeof(FeaturedGames));
 
-                    //api.AddApi(ApiName.TournamentStub, 3.0)
-                    //    .SubApi(ApiMiddleName.Codes, typeof(List<string>))
-                    //    .SubApi(ApiMiddleName.LobbyEvents, typeof(LobbyEventDTOWrapper), ApiParam.ByCode)
-                    //    .SubApi(ApiMiddleName.Providers, typeof(int))
-                    //    .SubApi(ApiMiddleName.Tournaments, typeof(int));
+                    return apis;
+                })
+                .UseTournamentApi((apis) =>
+                {
+                    apis.AddApi(ApiName.TournamentStub, 3.0)
+                        .PostApi(ApiMiddleName.Codes, typeof(List<string>), typeof(TournamentCodeParameters), false)
+                        .GetApi(ApiMiddleName.LobbyEvents, typeof(LobbyEventDTOWrapper), ApiParam.ByCode)
+                        .PostApi(ApiMiddleName.Providers, typeof(int), typeof(ProviderRegistrationParameters), true)
+                        .PostApi(ApiMiddleName.Tournaments, typeof(int), typeof(TournamentRegistrationParameters), true);
 
-                    //api.AddApi(ApiName.Tournament, 3.0)
-                    //    .SubApi(ApiMiddleName.Codes, typeof(List<string>))
-                    //    .SubApi(ApiMiddleName.Codes, typeof(List<string>), ApiParam.OnlyTournamentCode)
-                    ;
+                    apis.AddApi(ApiName.Tournament, 3.0)
+                        .PostApi(ApiMiddleName.Codes, typeof(List<string>), typeof(TournamentCodeParameters), true)
+                        .HasQueryParameters(new Dictionary<string, Type>()
+                        {
+                            {"count", typeof(int)},
+                            {"tournamentId", typeof(int)}
+                        })
+                        .PutApi(ApiMiddleName.Codes, typeof(TournamentCodeUpdateParameters), false, ApiParam.OnlyTournamentCode)
+                        .GetApi(ApiMiddleName.Codes, typeof(TournamentCodeDTO), ApiParam.OnlyTournamentCode)
+                        .GetApi(ApiMiddleName.LobbyEvents, typeof(LobbyEventDTOWrapper), ApiParam.ByCode)
+                        .PostApi(ApiMiddleName.Providers, typeof(int), typeof(ProviderRegistrationParameters), true)
+                        .PostApi(ApiMiddleName.Tournaments, typeof(int), typeof(TournamentRegistrationParameters), true);
 
-                    return api;
+                    apis.AddApi(ApiName.Tournament, 3.0);
+                    return apis;
                 });
 
             var riotGamesApiOption = riotGamesApiBuilder.Build();
