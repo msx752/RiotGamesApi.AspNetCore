@@ -274,7 +274,6 @@ namespace RiotGamesApi.AspNetCore.Extensions
                         .PostApi(ApiMiddleName.Providers, typeof(int), typeof(ProviderRegistrationParameters), true)
                         .PostApi(ApiMiddleName.Tournaments, typeof(int), typeof(TournamentRegistrationParameters), true);
 
-                    apis.AddApi(ApiName.Tournament, 3.0);
                     return apis;
                 });
 
