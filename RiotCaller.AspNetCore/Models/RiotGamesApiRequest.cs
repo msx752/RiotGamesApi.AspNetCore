@@ -42,7 +42,7 @@ namespace RiotGamesApi.AspNetCore.Models
         }
 
         public int SelectedApiIndex { get; private set; } = -1;
-        public List<SubUrl> SelectedSubUrlCache { get; internal set; }
+        public List<Method> SelectedSubUrlCache { get; internal set; }
         public UrlType UrlType { get; internal set; }
         //moved to another class
         //public IFor<T> SelectApi(ApiName apiType, double version = 3.0)
@@ -64,16 +64,16 @@ namespace RiotGamesApi.AspNetCore.Models
                 try
                 {
                     ParametersWithValue = parameters.ToList();
-                    SubUrl selected = null;
+                    Method selected = null;
                     foreach (var u in SelectedSubUrlCache)
                     {
-                        if (u.RiotGamesApiSubApiTypes.Length != parameters.Length)
+                        if (u.RiotGamesApiPaths.Length != parameters.Length)
                             continue;
 
-                        for (var i = 0; i < u.RiotGamesApiSubApiTypes.Length; i++)
+                        for (var i = 0; i < u.RiotGamesApiPaths.Length; i++)
                         {
                             var u1 = u;
-                            if (ParametersWithValue.FirstOrDefault(p => p.Type == u1.RiotGamesApiSubApiTypes[i]) != null)
+                            if (ParametersWithValue.FirstOrDefault(p => p.Type == u1.RiotGamesApiPaths[i]) != null)
                                 selected = u;
                             else
                             {
@@ -87,7 +87,7 @@ namespace RiotGamesApi.AspNetCore.Models
                     SelectedSubUrlCache.Clear();
                     if (selected == null)
                         throw new Exception("SelectedSubUrl is not found with this parameters");
-                    SelectedApiIndex = ApiList.SubUrls.FindIndex(p => p == selected);
+                    SelectedApiIndex = ApiList.ApiMethods.FindIndex(p => p == selected);
                 }
                 catch (Exception e)
                 {
@@ -97,7 +97,7 @@ namespace RiotGamesApi.AspNetCore.Models
             }
             else
             {
-                SelectedSubUrlCache = SelectedSubUrlCache.Where(p => p.RiotGamesApiSubApiTypes.Count() == 0).ToList();
+                SelectedSubUrlCache = SelectedSubUrlCache.Where(p => p.RiotGamesApiPaths.Count() == 0).ToList();
             }
             return this;
         }
@@ -106,10 +106,10 @@ namespace RiotGamesApi.AspNetCore.Models
         {
             try
             {
-                SubUrl selected = null;
+                Method selected = null;
                 if (SelectedApiIndex != -1)
                 {
-                    selected = ApiList.SubUrls[SelectedApiIndex];
+                    selected = ApiList.ApiMethods[SelectedApiIndex];
                 }
                 else
                 {
@@ -118,15 +118,15 @@ namespace RiotGamesApi.AspNetCore.Models
                     else
                         throw new Exception("there will be a conflict, i am not sure");
                 }
-                var newUrl = $"{BaseUrl}/{ApiList.SubUrl.GetStringValue()}/{ApiList.Version}/{selected.MiddleType.GetStringValue()}";
+                var newUrl = $"{BaseUrl}/{ApiList.ApiName.GetStringValue()}/{ApiList.Version}/{selected.ApiMethodName.GetStringValue()}";
                 newUrl = newUrl.Replace("{platformId}", platform.ToString());
                 List<ApiParameterType> array =
                     ((ApiParameterType[])Enum.GetValues(typeof(ApiParameterType)))
                     .ToList();
 
-                for (var index = 0; index < selected.RiotGamesApiSubApiTypes.Length; index++)
+                for (var index = 0; index < selected.RiotGamesApiPaths.Length; index++)
                 {
-                    var parameter = selected.RiotGamesApiSubApiTypes[index];
+                    var parameter = selected.RiotGamesApiPaths[index];
                     newUrl = $"{newUrl}/{parameter.GetStringValue()}";
                     //if (index != selected.RiotGamesApiSubApiTypes.Length - 1)
                     //    newUrl += "/";
@@ -146,7 +146,7 @@ namespace RiotGamesApi.AspNetCore.Models
                         else
                             throw new Exception($"types of parameter value doesn't match: expected:{parameterType.GetParameterType()}, actual:{para.Value.GetType()}");
                     }
-                    if (index == array.Count - 1 || selected.RiotGamesApiSubApiTypes.Length == 0)
+                    if (index == array.Count - 1 || selected.RiotGamesApiPaths.Length == 0)
                     {
                         RequestUrl = newUrl;
                         break;
@@ -161,9 +161,9 @@ namespace RiotGamesApi.AspNetCore.Models
             return this;
         }
 
-        public IAddParameter<T> For(ApiMiddleName middleType)
+        public IAddParameter<T> For(ApiMethodName middleType)
         {
-            SelectedSubUrlCache = ApiList.SubUrls.Where(p => p.MiddleType == middleType).ToList();
+            SelectedSubUrlCache = ApiList.ApiMethods.Where(p => p.ApiMethodName == middleType).ToList();
             return this;
         }
 

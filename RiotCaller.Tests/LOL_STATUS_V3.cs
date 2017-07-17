@@ -24,7 +24,7 @@ namespace RiotGamesApi.Tests
         {
             var rit = new ApiCall()
                 .SelectApi<ShardStatus>(ApiName.Status)
-                .For(ApiMiddleName.ShardData)
+                .For(ApiMethodName.ShardData)
                 .AddParameter()
                 .Build(PlatformType)
                 .Get();

@@ -5,7 +5,7 @@ namespace RiotGamesApi.AspNetCore.Enums
     /// <summary>
     /// attribute StringValue is a type of 'ParameterType' enum (it should be defined) 
     /// </summary>
-    public enum ApiParam
+    public enum ApiPath
     {
         [StringValue("{matchId}")]
         OnlyMatchId,

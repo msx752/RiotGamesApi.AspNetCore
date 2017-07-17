@@ -10,15 +10,15 @@ namespace RiotGamesApi.AspNetCore.Models
     {
         public RiotGamesApiUrl(ApiName _newApiUrl, double _version)
         {
-            SubUrls = new List<SubUrl>();
+            ApiMethods = new List<Method>();
             SetVersion(_version);
-            SubUrl = _newApiUrl;
+            ApiName = _newApiUrl;
         }
 
-        public ApiName SubUrl { get; set; }
-        public List<SubUrl> SubUrls { get; set; }
+        public ApiName ApiName { get; set; }
+        public List<Method> ApiMethods { get; set; }
         public string Version { get; set; }
-        public int LastSubUrlIndex { get; set; }
+        public int LastApiMethodIndex { get; set; }
 
         public bool CompareVersion(double _destinationVersion)
         {
@@ -35,41 +35,41 @@ namespace RiotGamesApi.AspNetCore.Models
         }
     }
 
-    public class SubUrl
+    public class Method
     {
-        public SubUrl(ApiMiddleName md, ApiParam[] array, Type returnValueType, ApiRequestType requestType, Type _bodyValueType, bool _isBodyRequired)
+        public Method(ApiMethodName md, ApiPath[] array, Type returnValueType, ApiMethodType requestType, Type _bodyValueType, bool _isBodyRequired)
             : this(md, array, returnValueType, requestType)
         {
             BodyValueType = _bodyValueType;
             IsBodyRequired = _isBodyRequired;
         }
 
-        public SubUrl(ApiMiddleName md, ApiParam[] array, Type returnValueType, ApiRequestType requestType)
+        public Method(ApiMethodName md, ApiPath[] array, Type returnValueType, ApiMethodType requestType)
         {
-            this.MiddleType = md;
-            this.RiotGamesApiSubApiTypes = array ?? new ApiParam[0];
+            this.ApiMethodName = md;
+            this.RiotGamesApiPaths = array ?? new ApiPath[0];
             ReturnValueType = returnValueType;
-            QueryParameterTypes = new Dictionary<string, Type>();
+            TypesOfQueryParameter = new Dictionary<string, Type>();
             RequestType = requestType;
         }
 
         public bool IsBodyRequired { get; set; }
         public Type BodyValueType { get; set; }
-        public ApiRequestType RequestType { get; set; }
-        public ApiMiddleName MiddleType { get; set; }
+        public ApiMethodType RequestType { get; set; }
+        public ApiMethodName ApiMethodName { get; set; }
 
-        public ApiParam[] RiotGamesApiSubApiTypes { get; set; }
+        public ApiPath[] RiotGamesApiPaths { get; set; }
 
         public Type ReturnValueType { get; }
-        public Dictionary<string, Type> QueryParameterTypes { get; set; }
+        public Dictionary<string, Type> TypesOfQueryParameter { get; set; }
 
         public override string ToString()
         {
-            string newSubUrl = $"{MiddleType.GetStringValue()}/";
-            for (int i = 0; i < RiotGamesApiSubApiTypes.Length; i++)
+            string newSubUrl = $"{ApiMethodName.GetStringValue()}/";
+            for (int i = 0; i < RiotGamesApiPaths.Length; i++)
             {
-                newSubUrl += $"{RiotGamesApiSubApiTypes[i].GetStringValue()}";
-                if (i != RiotGamesApiSubApiTypes.Length - 1)
+                newSubUrl += $"{RiotGamesApiPaths[i].GetStringValue()}";
+                if (i != RiotGamesApiPaths.Length - 1)
                 {
                     newSubUrl += "/";
                 }

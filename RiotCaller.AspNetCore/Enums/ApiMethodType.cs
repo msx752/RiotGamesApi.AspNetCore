@@ -6,7 +6,7 @@ using System.Text;
 
 namespace RiotGamesApi.AspNetCore.Enums
 {
-    public enum ApiRequestType
+    public enum ApiMethodType
     {
         GET,
         POST,

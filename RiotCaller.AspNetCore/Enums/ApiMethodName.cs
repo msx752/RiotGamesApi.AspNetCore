@@ -2,7 +2,7 @@
 
 namespace RiotGamesApi.AspNetCore.Enums
 {
-    public enum ApiMiddleName
+    public enum ApiMethodName
     {
         [StringValue("champion-masteries")]
         ChampionMasteries,

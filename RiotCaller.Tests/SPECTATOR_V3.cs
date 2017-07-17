@@ -24,8 +24,8 @@ namespace RiotGamesApi.Tests
         {
             var rit = new ApiCall()
                 .SelectApi<CurrentGameInfo>(ApiName.Spectator)
-                .For(ApiMiddleName.ActiveGames)
-                .AddParameter(new ApiParameter(ApiParam.BySummoner, SummonerId))
+                .For(ApiMethodName.ActiveGames)
+                .AddParameter(new ApiParameter(ApiPath.BySummoner, SummonerId))
                 .Build(PlatformType)
                 .Get();
             if (rit.HasError)
@@ -39,7 +39,7 @@ namespace RiotGamesApi.Tests
         {
             var rit = new ApiCall()
                 .SelectApi<FeaturedGames>(ApiName.Spectator)
-                .For(ApiMiddleName.FeaturedGames)
+                .For(ApiMethodName.FeaturedGames)
                 .AddParameter()
                 .Build(PlatformType)
                 .Get();

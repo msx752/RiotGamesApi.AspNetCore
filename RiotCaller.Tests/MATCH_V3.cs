@@ -24,8 +24,8 @@ namespace RiotGamesApi.Tests
         {
             var rit = new ApiCall()
                 .SelectApi<MatchDto>(ApiName.Match)
-                .For(ApiMiddleName.Matches)
-                .AddParameter(new ApiParameter(ApiParam.OnlyMatchId, MatchId))//not tested
+                .For(ApiMethodName.Matches)
+                .AddParameter(new ApiParameter(ApiPath.OnlyMatchId, MatchId))//not tested
                 .Build(PlatformType)
                 .Get();
             if (rit.HasError)
@@ -39,8 +39,8 @@ namespace RiotGamesApi.Tests
         {
             var rit = new ApiCall()
                 .SelectApi<MatchlistDto>(ApiName.Match)
-                .For(ApiMiddleName.MatchLists)
-                .AddParameter(new ApiParameter(ApiParam.ByAccount, AccountId))
+                .For(ApiMethodName.MatchLists)
+                .AddParameter(new ApiParameter(ApiPath.ByAccount, AccountId))
                 .Build(PlatformType)
                 .Get(/*
                 it has optional parameters
@@ -54,8 +54,8 @@ namespace RiotGamesApi.Tests
         {
             var rit = new ApiCall()
                 .SelectApi<MatchlistDto>(ApiName.Match)
-                .For(ApiMiddleName.MatchLists)
-                .AddParameter(new ApiParameter(ApiParam.ByAccountRecent, AccountId))//not tested
+                .For(ApiMethodName.MatchLists)
+                .AddParameter(new ApiParameter(ApiPath.ByAccountRecent, AccountId))//not tested
                 .Build(PlatformType)
                 .Get();
             Assert.False(rit.HasError);
@@ -66,8 +66,8 @@ namespace RiotGamesApi.Tests
         {
             var rit = new ApiCall()
                 .SelectApi<MatchTimelineDto>(ApiName.Match)
-                .For(ApiMiddleName.Timelines)
-                .AddParameter(new ApiParameter(ApiParam.ByMatch, MatchId))//not tested
+                .For(ApiMethodName.Timelines)
+                .AddParameter(new ApiParameter(ApiPath.ByMatch, MatchId))//not tested
                 .Build(PlatformType)
                 .Get();
             if (rit.HasError)
@@ -81,8 +81,8 @@ namespace RiotGamesApi.Tests
         {
             var rit = new ApiCall()
                 .SelectApi<List<long>>(ApiName.Match)
-                .For(ApiMiddleName.Matches)
-                .AddParameter(new ApiParameter(ApiParam.ByTournamentCodeIds, TournamentCode))//not tested
+                .For(ApiMethodName.Matches)
+                .AddParameter(new ApiParameter(ApiPath.ByTournamentCodeIds, TournamentCode))//not tested
                 .Build(PlatformType)
                 .Get();
             Assert.False(rit.HasError);
@@ -93,10 +93,10 @@ namespace RiotGamesApi.Tests
         {
             var rit = new ApiCall()
                 .SelectApi<MatchDto>(ApiName.Match)
-                .For(ApiMiddleName.Matches)
+                .For(ApiMethodName.Matches)
                 .AddParameter(
-                    new ApiParameter(ApiParam.OnlyMatchId, MatchId),
-                    new ApiParameter(ApiParam.ByTournamentCode, TournamentCode))//not tested
+                    new ApiParameter(ApiPath.OnlyMatchId, MatchId),
+                    new ApiParameter(ApiPath.ByTournamentCode, TournamentCode))//not tested
                 .Build(PlatformType)
                 .Get();
             Assert.False(rit.HasError);

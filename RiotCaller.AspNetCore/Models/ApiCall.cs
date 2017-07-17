@@ -14,7 +14,7 @@ namespace RiotGamesApi.AspNetCore.Models
             rit.UrlType = apiType.GetUrlType();
             rit.BaseUrl = ApiSettings.ApiOptions.RiotGamesApis[rit.UrlType].ApiUrl;
             rit.ApiList = ApiSettings.ApiOptions.RiotGamesApis[rit.UrlType].RiotGamesApiUrls
-                .FirstOrDefault(p => p.SubUrl == apiType && p.CompareVersion(version));
+                .FirstOrDefault(p => p.ApiName == apiType && p.CompareVersion(version));
             if (rit.ApiList == null)
                 throw new Exception($"{rit.UrlType} is not defined in RiotGamesApiBuilder or selected version:{version} is not defined");
 

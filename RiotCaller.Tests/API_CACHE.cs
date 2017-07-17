@@ -18,7 +18,7 @@ namespace RiotGamesApi.Tests
         {
             var rit = new ApiCall()
                 .SelectApi<ChampionListDto>(ApiName.StaticData)
-                .For(ApiMiddleName.Champions)
+                .For(ApiMethodName.Champions)
                 .AddParameter()
                 .Build(PlatformType)
                 .UseCache(true)
@@ -28,7 +28,7 @@ namespace RiotGamesApi.Tests
 
             rit = new ApiCall()
                 .SelectApi<ChampionListDto>(ApiName.StaticData)
-                .For(ApiMiddleName.Champions)
+                .For(ApiMethodName.Champions)
                 .AddParameter()
                 .Build(PlatformType)
                 .UseCache(true)

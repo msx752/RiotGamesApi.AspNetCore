@@ -24,8 +24,8 @@ namespace RiotGamesApi.Tests
         {
             var rit = new ApiCall()
                 .SelectApi<LeagueListDTO>(ApiName.League)
-                .For(ApiMiddleName.ChallengerLeagues)
-                .AddParameter(new ApiParameter(ApiParam.ByQueue, Queue.RANKED_SOLO_5x5))
+                .For(ApiMethodName.ChallengerLeagues)
+                .AddParameter(new ApiParameter(ApiPath.ByQueue, Queue.RANKED_SOLO_5x5))
                 .Build(PlatformType)
                 .Get();
             Assert.False(rit.HasError);
@@ -36,8 +36,8 @@ namespace RiotGamesApi.Tests
         {
             var rit = new ApiCall()
                 .SelectApi<List<LeagueListDTO>>(ApiName.League)
-                .For(ApiMiddleName.Leagues)
-                .AddParameter(new ApiParameter(ApiParam.BySummoner, SummonerId))
+                .For(ApiMethodName.Leagues)
+                .AddParameter(new ApiParameter(ApiPath.BySummoner, SummonerId))
                 .Build(PlatformType)
                 .Get();
             Assert.False(rit.HasError);
@@ -48,8 +48,8 @@ namespace RiotGamesApi.Tests
         {
             var rit = new ApiCall()
                 .SelectApi<LeagueListDTO>(ApiName.League)
-                .For(ApiMiddleName.MasterLeagues)
-                .AddParameter(new ApiParameter(ApiParam.ByQueue, Queue.RANKED_SOLO_5x5))
+                .For(ApiMethodName.MasterLeagues)
+                .AddParameter(new ApiParameter(ApiPath.ByQueue, Queue.RANKED_SOLO_5x5))
                 .Build(PlatformType)
                 .Get();
             Assert.False(rit.HasError);
@@ -60,8 +60,8 @@ namespace RiotGamesApi.Tests
         {
             var rit = new ApiCall()
                 .SelectApi<List<LeaguePositionDTO>>(ApiName.League)
-                .For(ApiMiddleName.Positions)
-                .AddParameter(new ApiParameter(ApiParam.BySummoner, SummonerId))
+                .For(ApiMethodName.Positions)
+                .AddParameter(new ApiParameter(ApiPath.BySummoner, SummonerId))
                 .Build(PlatformType)
                 .Get();
             Assert.False(rit.HasError);

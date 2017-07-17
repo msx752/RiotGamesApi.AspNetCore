@@ -31,7 +31,7 @@ namespace RiotGamesApi.AspNetCore.Extensions
             return attr.ParameterType;
         }
 
-        public static Type FindParameterType(this ApiParam enumVal)
+        public static Type FindParameterType(this ApiPath enumVal)
         {
             var selectedParamX = enumVal.GetStringValue().Split('{')[1].Split('}')[0];
             List<ApiParameterType> array = ((ApiParameterType[])Enum.GetValues(typeof(ApiParameterType))).ToList();

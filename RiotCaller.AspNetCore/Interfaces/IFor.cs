@@ -2,5 +2,5 @@ using RiotGamesApi.AspNetCore.Enums;
 
 namespace RiotGamesApi.AspNetCore.Interfaces
 {
-    public interface IFor<T> where T : new() { IAddParameter<T> For(ApiMiddleName middleType); }
+    public interface IFor<T> where T : new() { IAddParameter<T> For(ApiMethodName middleType); }
 }

@@ -24,8 +24,8 @@ namespace RiotGamesApi.Tests
         {
             var rit = new ApiCall()
                 .SelectApi<RunePagesDto>(ApiName.Platform)
-                .For(ApiMiddleName.Runes)
-                .AddParameter(new ApiParameter(ApiParam.BySummoner, SummonerId))
+                .For(ApiMethodName.Runes)
+                .AddParameter(new ApiParameter(ApiPath.BySummoner, SummonerId))
                 .Build(PlatformType)
                 .Get();
             Assert.False(rit.HasError);

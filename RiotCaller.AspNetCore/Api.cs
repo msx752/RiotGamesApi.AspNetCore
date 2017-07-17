@@ -43,7 +43,7 @@ namespace RiotGamesApi.AspNetCore
                 {
                     IResult<ShardStatus> rit = new ApiCall()
                         .SelectApi<ShardStatus>(ApiName.Status)
-                        .For(ApiMiddleName.ShardData)
+                        .For(ApiMethodName.ShardData)
                         .AddParameter()
                         .Build(platform)
                         .Get();
@@ -63,7 +63,7 @@ namespace RiotGamesApi.AspNetCore
                 {
                     IResult<ChampionListDto> rit = new ApiCall()
                         .SelectApi<ChampionListDto>(ApiName.StaticData)
-                        .For(ApiMiddleName.Champions)
+                        .For(ApiMethodName.Champions)
                         .AddParameter()
                         .Build(platform)
                         .UseCache(_useCache)
@@ -82,8 +82,8 @@ namespace RiotGamesApi.AspNetCore
                 {
                     IResult<ChampionDto> rit = new ApiCall()
                         .SelectApi<ChampionDto>(ApiName.StaticData)
-                        .For(ApiMiddleName.Champions)
-                        .AddParameter(new ApiParameter(ApiParam.OnlyId, _OnlyId))
+                        .For(ApiMethodName.Champions)
+                        .AddParameter(new ApiParameter(ApiPath.OnlyId, _OnlyId))
                         .Build(platform)
                         .UseCache(_useCache)
                         .Get(new Dictionary<string, string>()
@@ -101,7 +101,7 @@ namespace RiotGamesApi.AspNetCore
                 {
                     IResult<ItemListDto> rit = new ApiCall()
                         .SelectApi<ItemListDto>(ApiName.StaticData)
-                        .For(ApiMiddleName.Items)
+                        .For(ApiMethodName.Items)
                         .AddParameter()
                         .Build(platform)
                         .UseCache(_useCache)
@@ -119,8 +119,8 @@ namespace RiotGamesApi.AspNetCore
                 {
                     IResult<ItemDto> rit = new ApiCall()
                         .SelectApi<ItemDto>(ApiName.StaticData)
-                        .For(ApiMiddleName.Items)
-                        .AddParameter(new ApiParameter(ApiParam.OnlyId, _OnlyId))
+                        .For(ApiMethodName.Items)
+                        .AddParameter(new ApiParameter(ApiPath.OnlyId, _OnlyId))
                         .Build(platform)
                         .UseCache(_useCache)
                         .Get(new Dictionary<string, string>()
@@ -137,7 +137,7 @@ namespace RiotGamesApi.AspNetCore
                 {
                     IResult<LanguageStringsDto> rit = new ApiCall()
                         .SelectApi<LanguageStringsDto>(ApiName.StaticData)
-                        .For(ApiMiddleName.LanguageStrings)
+                        .For(ApiMethodName.LanguageStrings)
                         .AddParameter()
                         .Build(platform)
                         .UseCache(_useCache)
@@ -154,7 +154,7 @@ namespace RiotGamesApi.AspNetCore
                 {
                     IResult<List<System.String>> rit = new ApiCall()
                         .SelectApi<List<System.String>>(ApiName.StaticData)
-                        .For(ApiMiddleName.Languages)
+                        .For(ApiMethodName.Languages)
                         .AddParameter()
                         .Build(platform)
                         .UseCache(_useCache)
@@ -166,7 +166,7 @@ namespace RiotGamesApi.AspNetCore
                 {
                     IResult<MapDataDto> rit = new ApiCall()
                         .SelectApi<MapDataDto>(ApiName.StaticData)
-                        .For(ApiMiddleName.Maps)
+                        .For(ApiMethodName.Maps)
                         .AddParameter()
                         .Build(platform)
                         .UseCache(_useCache)
@@ -183,7 +183,7 @@ namespace RiotGamesApi.AspNetCore
                 {
                     IResult<MasteryListDto> rit = new ApiCall()
                         .SelectApi<MasteryListDto>(ApiName.StaticData)
-                        .For(ApiMiddleName.Masteries)
+                        .For(ApiMethodName.Masteries)
                         .AddParameter()
                         .Build(platform)
                         .UseCache(_useCache)
@@ -201,8 +201,8 @@ namespace RiotGamesApi.AspNetCore
                 {
                     IResult<MasteryDto> rit = new ApiCall()
                         .SelectApi<MasteryDto>(ApiName.StaticData)
-                        .For(ApiMiddleName.Masteries)
-                        .AddParameter(new ApiParameter(ApiParam.OnlyId, _OnlyId))
+                        .For(ApiMethodName.Masteries)
+                        .AddParameter(new ApiParameter(ApiPath.OnlyId, _OnlyId))
                         .Build(platform)
                         .UseCache(_useCache)
                         .Get(new Dictionary<string, string>()
@@ -219,7 +219,7 @@ namespace RiotGamesApi.AspNetCore
                 {
                     IResult<ProfileIconDataDto> rit = new ApiCall()
                         .SelectApi<ProfileIconDataDto>(ApiName.StaticData)
-                        .For(ApiMiddleName.ProfileIcons)
+                        .For(ApiMethodName.ProfileIcons)
                         .AddParameter()
                         .Build(platform)
                         .UseCache(_useCache)
@@ -236,7 +236,7 @@ namespace RiotGamesApi.AspNetCore
                 {
                     IResult<RealmDto> rit = new ApiCall()
                         .SelectApi<RealmDto>(ApiName.StaticData)
-                        .For(ApiMiddleName.Realms)
+                        .For(ApiMethodName.Realms)
                         .AddParameter()
                         .Build(platform)
                         .UseCache(_useCache)
@@ -248,7 +248,7 @@ namespace RiotGamesApi.AspNetCore
                 {
                     IResult<RuneListDto> rit = new ApiCall()
                         .SelectApi<RuneListDto>(ApiName.StaticData)
-                        .For(ApiMiddleName.Runes)
+                        .For(ApiMethodName.Runes)
                         .AddParameter()
                         .Build(platform)
                         .UseCache(_useCache)
@@ -266,8 +266,8 @@ namespace RiotGamesApi.AspNetCore
                 {
                     IResult<RuneDto> rit = new ApiCall()
                         .SelectApi<RuneDto>(ApiName.StaticData)
-                        .For(ApiMiddleName.Runes)
-                        .AddParameter(new ApiParameter(ApiParam.OnlyId, _OnlyId))
+                        .For(ApiMethodName.Runes)
+                        .AddParameter(new ApiParameter(ApiPath.OnlyId, _OnlyId))
                         .Build(platform)
                         .UseCache(_useCache)
                         .Get(new Dictionary<string, string>()
@@ -284,7 +284,7 @@ namespace RiotGamesApi.AspNetCore
                 {
                     IResult<SummonerSpellListDto> rit = new ApiCall()
                         .SelectApi<SummonerSpellListDto>(ApiName.StaticData)
-                        .For(ApiMiddleName.SummonerSpells)
+                        .For(ApiMethodName.SummonerSpells)
                         .AddParameter()
                         .Build(platform)
                         .UseCache(_useCache)
@@ -303,8 +303,8 @@ namespace RiotGamesApi.AspNetCore
                 {
                     IResult<SummonerSpellDto> rit = new ApiCall()
                         .SelectApi<SummonerSpellDto>(ApiName.StaticData)
-                        .For(ApiMiddleName.SummonerSpells)
-                        .AddParameter(new ApiParameter(ApiParam.OnlyId, _OnlyId))
+                        .For(ApiMethodName.SummonerSpells)
+                        .AddParameter(new ApiParameter(ApiPath.OnlyId, _OnlyId))
                         .Build(platform)
                         .UseCache(_useCache)
                         .Get(new Dictionary<string, string>()
@@ -322,7 +322,7 @@ namespace RiotGamesApi.AspNetCore
                 {
                     IResult<List<System.String>> rit = new ApiCall()
                         .SelectApi<List<System.String>>(ApiName.StaticData)
-                        .For(ApiMiddleName.Versions)
+                        .For(ApiMethodName.Versions)
                         .AddParameter()
                         .Build(platform)
                         .UseCache(_useCache)
@@ -343,8 +343,8 @@ namespace RiotGamesApi.AspNetCore
                 {
                     IResult<List<RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.ChampionMastery.ChampionMasteryDto>> rit = new ApiCall()
                         .SelectApi<List<RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.ChampionMastery.ChampionMasteryDto>>(ApiName.ChampionMastery)
-                        .For(ApiMiddleName.ChampionMasteries)
-                        .AddParameter(new ApiParameter(ApiParam.BySummoner, _BySummoner))
+                        .For(ApiMethodName.ChampionMasteries)
+                        .AddParameter(new ApiParameter(ApiPath.BySummoner, _BySummoner))
                         .Build(platform)
                         .Get();
                     return rit;
@@ -354,9 +354,9 @@ namespace RiotGamesApi.AspNetCore
                 {
                     IResult<ChampionMasteryDto> rit = new ApiCall()
                         .SelectApi<ChampionMasteryDto>(ApiName.ChampionMastery)
-                        .For(ApiMiddleName.ChampionMasteries)
-                        .AddParameter(new ApiParameter(ApiParam.BySummoner, _BySummoner),
-                            new ApiParameter(ApiParam.ByChampion, _ByChampion))
+                        .For(ApiMethodName.ChampionMasteries)
+                        .AddParameter(new ApiParameter(ApiPath.BySummoner, _BySummoner),
+                            new ApiParameter(ApiPath.ByChampion, _ByChampion))
                         .Build(platform)
                         .Get();
                     return rit;
@@ -366,8 +366,8 @@ namespace RiotGamesApi.AspNetCore
                 {
                     IResult<Int32> rit = new ApiCall()
                         .SelectApi<Int32>(ApiName.ChampionMastery)
-                        .For(ApiMiddleName.Scores)
-                        .AddParameter(new ApiParameter(ApiParam.BySummoner, _BySummoner))
+                        .For(ApiMethodName.Scores)
+                        .AddParameter(new ApiParameter(ApiPath.BySummoner, _BySummoner))
                         .Build(platform)
                         .Get();
                     return rit;
@@ -381,8 +381,8 @@ namespace RiotGamesApi.AspNetCore
                 {
                     IResult<SummonerDto> rit = new ApiCall()
                         .SelectApi<SummonerDto>(ApiName.Summoner)
-                        .For(ApiMiddleName.Summoners)
-                        .AddParameter(new ApiParameter(ApiParam.ByAccount, _ByAccount))
+                        .For(ApiMethodName.Summoners)
+                        .AddParameter(new ApiParameter(ApiPath.ByAccount, _ByAccount))
                         .Build(platform)
                         .Get();
                     return rit;
@@ -392,8 +392,8 @@ namespace RiotGamesApi.AspNetCore
                 {
                     IResult<SummonerDto> rit = new ApiCall()
                         .SelectApi<SummonerDto>(ApiName.Summoner)
-                        .For(ApiMiddleName.Summoners)
-                        .AddParameter(new ApiParameter(ApiParam.ByName, _ByName))
+                        .For(ApiMethodName.Summoners)
+                        .AddParameter(new ApiParameter(ApiPath.ByName, _ByName))
                         .Build(platform)
                         .Get();
                     return rit;
@@ -403,8 +403,8 @@ namespace RiotGamesApi.AspNetCore
                 {
                     IResult<SummonerDto> rit = new ApiCall()
                         .SelectApi<SummonerDto>(ApiName.Summoner)
-                        .For(ApiMiddleName.Summoners)
-                        .AddParameter(new ApiParameter(ApiParam.OnlySummonerId, _OnlySummonerId))
+                        .For(ApiMethodName.Summoners)
+                        .AddParameter(new ApiParameter(ApiPath.OnlySummonerId, _OnlySummonerId))
                         .Build(platform)
                         .Get();
                     return rit;
@@ -418,7 +418,7 @@ namespace RiotGamesApi.AspNetCore
                 {
                     IResult<ChampionListDto> rit = new ApiCall()
                         .SelectApi<ChampionListDto>(ApiName.Platform)
-                        .For(ApiMiddleName.Champions)
+                        .For(ApiMethodName.Champions)
                         .AddParameter()
                         .Build(platform)
                         .Get();
@@ -429,8 +429,8 @@ namespace RiotGamesApi.AspNetCore
                 {
                     IResult<ChampionDto> rit = new ApiCall()
                         .SelectApi<ChampionDto>(ApiName.Platform)
-                        .For(ApiMiddleName.Champions)
-                        .AddParameter(new ApiParameter(ApiParam.OnlyId, _OnlyId))
+                        .For(ApiMethodName.Champions)
+                        .AddParameter(new ApiParameter(ApiPath.OnlyId, _OnlyId))
                         .Build(platform)
                         .Get();
                     return rit;
@@ -440,8 +440,8 @@ namespace RiotGamesApi.AspNetCore
                 {
                     IResult<MasteryPagesDto> rit = new ApiCall()
                         .SelectApi<MasteryPagesDto>(ApiName.Platform)
-                        .For(ApiMiddleName.Masteries)
-                        .AddParameter(new ApiParameter(ApiParam.BySummoner, _BySummoner))
+                        .For(ApiMethodName.Masteries)
+                        .AddParameter(new ApiParameter(ApiPath.BySummoner, _BySummoner))
                         .Build(platform)
                         .Get();
                     return rit;
@@ -451,8 +451,8 @@ namespace RiotGamesApi.AspNetCore
                 {
                     IResult<RunePagesDto> rit = new ApiCall()
                         .SelectApi<RunePagesDto>(ApiName.Platform)
-                        .For(ApiMiddleName.Runes)
-                        .AddParameter(new ApiParameter(ApiParam.BySummoner, _BySummoner))
+                        .For(ApiMethodName.Runes)
+                        .AddParameter(new ApiParameter(ApiPath.BySummoner, _BySummoner))
                         .Build(platform)
                         .Get();
                     return rit;
@@ -466,8 +466,8 @@ namespace RiotGamesApi.AspNetCore
                 {
                     IResult<LeagueListDTO> rit = new ApiCall()
                         .SelectApi<LeagueListDTO>(ApiName.League)
-                        .For(ApiMiddleName.ChallengerLeagues)
-                        .AddParameter(new ApiParameter(ApiParam.ByQueue, _ByQueue))
+                        .For(ApiMethodName.ChallengerLeagues)
+                        .AddParameter(new ApiParameter(ApiPath.ByQueue, _ByQueue))
                         .Build(platform)
                         .Get();
                     return rit;
@@ -477,8 +477,8 @@ namespace RiotGamesApi.AspNetCore
                 {
                     IResult<List<RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.League.LeagueListDTO>> rit = new ApiCall()
                         .SelectApi<List<RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.League.LeagueListDTO>>(ApiName.League)
-                        .For(ApiMiddleName.Leagues)
-                        .AddParameter(new ApiParameter(ApiParam.BySummoner, _BySummoner))
+                        .For(ApiMethodName.Leagues)
+                        .AddParameter(new ApiParameter(ApiPath.BySummoner, _BySummoner))
                         .Build(platform)
                         .Get();
                     return rit;
@@ -488,8 +488,8 @@ namespace RiotGamesApi.AspNetCore
                 {
                     IResult<LeagueListDTO> rit = new ApiCall()
                         .SelectApi<LeagueListDTO>(ApiName.League)
-                        .For(ApiMiddleName.MasterLeagues)
-                        .AddParameter(new ApiParameter(ApiParam.ByQueue, _ByQueue))
+                        .For(ApiMethodName.MasterLeagues)
+                        .AddParameter(new ApiParameter(ApiPath.ByQueue, _ByQueue))
                         .Build(platform)
                         .Get();
                     return rit;
@@ -499,8 +499,8 @@ namespace RiotGamesApi.AspNetCore
                 {
                     IResult<List<RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.League.LeaguePositionDTO>> rit = new ApiCall()
                         .SelectApi<List<RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.League.LeaguePositionDTO>>(ApiName.League)
-                        .For(ApiMiddleName.Positions)
-                        .AddParameter(new ApiParameter(ApiParam.BySummoner, _BySummoner))
+                        .For(ApiMethodName.Positions)
+                        .AddParameter(new ApiParameter(ApiPath.BySummoner, _BySummoner))
                         .Build(platform)
                         .Get();
                     return rit;
@@ -514,8 +514,8 @@ namespace RiotGamesApi.AspNetCore
                 {
                     IResult<MatchDto> rit = new ApiCall()
                         .SelectApi<MatchDto>(ApiName.Match)
-                        .For(ApiMiddleName.Matches)
-                        .AddParameter(new ApiParameter(ApiParam.OnlyMatchId, _OnlyMatchId))
+                        .For(ApiMethodName.Matches)
+                        .AddParameter(new ApiParameter(ApiPath.OnlyMatchId, _OnlyMatchId))
                         .Build(platform)
                         .Get();
                     return rit;
@@ -525,8 +525,8 @@ namespace RiotGamesApi.AspNetCore
                 {
                     IResult<MatchlistDto> rit = new ApiCall()
                         .SelectApi<MatchlistDto>(ApiName.Match)
-                        .For(ApiMiddleName.MatchLists)
-                        .AddParameter(new ApiParameter(ApiParam.ByAccount, _ByAccount))
+                        .For(ApiMethodName.MatchLists)
+                        .AddParameter(new ApiParameter(ApiPath.ByAccount, _ByAccount))
                         .Build(platform)
                         .Get();
                     return rit;
@@ -536,8 +536,8 @@ namespace RiotGamesApi.AspNetCore
                 {
                     IResult<MatchlistDto> rit = new ApiCall()
                         .SelectApi<MatchlistDto>(ApiName.Match)
-                        .For(ApiMiddleName.MatchLists)
-                        .AddParameter(new ApiParameter(ApiParam.ByAccountRecent, _ByAccountRecent))
+                        .For(ApiMethodName.MatchLists)
+                        .AddParameter(new ApiParameter(ApiPath.ByAccountRecent, _ByAccountRecent))
                         .Build(platform)
                         .Get();
                     return rit;
@@ -547,8 +547,8 @@ namespace RiotGamesApi.AspNetCore
                 {
                     IResult<MatchTimelineDto> rit = new ApiCall()
                         .SelectApi<MatchTimelineDto>(ApiName.Match)
-                        .For(ApiMiddleName.Timelines)
-                        .AddParameter(new ApiParameter(ApiParam.ByMatch, _ByMatch))
+                        .For(ApiMethodName.Timelines)
+                        .AddParameter(new ApiParameter(ApiPath.ByMatch, _ByMatch))
                         .Build(platform)
                         .Get();
                     return rit;
@@ -558,8 +558,8 @@ namespace RiotGamesApi.AspNetCore
                 {
                     IResult<List<System.Int64>> rit = new ApiCall()
                         .SelectApi<List<System.Int64>>(ApiName.Match)
-                        .For(ApiMiddleName.Matches)
-                        .AddParameter(new ApiParameter(ApiParam.ByTournamentCodeIds, _ByTournamentCodeIds))
+                        .For(ApiMethodName.Matches)
+                        .AddParameter(new ApiParameter(ApiPath.ByTournamentCodeIds, _ByTournamentCodeIds))
                         .Build(platform)
                         .Get();
                     return rit;
@@ -569,9 +569,9 @@ namespace RiotGamesApi.AspNetCore
                 {
                     IResult<MatchDto> rit = new ApiCall()
                         .SelectApi<MatchDto>(ApiName.Match)
-                        .For(ApiMiddleName.Matches)
-                        .AddParameter(new ApiParameter(ApiParam.OnlyMatchId, _OnlyMatchId),
-                            new ApiParameter(ApiParam.ByTournamentCode, _ByTournamentCode))
+                        .For(ApiMethodName.Matches)
+                        .AddParameter(new ApiParameter(ApiPath.OnlyMatchId, _OnlyMatchId),
+                            new ApiParameter(ApiPath.ByTournamentCode, _ByTournamentCode))
                         .Build(platform)
                         .Get();
                     return rit;
@@ -585,8 +585,8 @@ namespace RiotGamesApi.AspNetCore
                 {
                     IResult<CurrentGameInfo> rit = new ApiCall()
                         .SelectApi<CurrentGameInfo>(ApiName.Spectator)
-                        .For(ApiMiddleName.ActiveGames)
-                        .AddParameter(new ApiParameter(ApiParam.BySummoner, _BySummoner))
+                        .For(ApiMethodName.ActiveGames)
+                        .AddParameter(new ApiParameter(ApiPath.BySummoner, _BySummoner))
                         .Build(platform)
                         .Get();
                     return rit;
@@ -596,7 +596,7 @@ namespace RiotGamesApi.AspNetCore
                 {
                     IResult<FeaturedGames> rit = new ApiCall()
                         .SelectApi<FeaturedGames>(ApiName.Spectator)
-                        .For(ApiMiddleName.FeaturedGames)
+                        .For(ApiMethodName.FeaturedGames)
                         .AddParameter()
                         .Build(platform)
                         .Get();
