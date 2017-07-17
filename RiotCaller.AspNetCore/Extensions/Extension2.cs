@@ -252,6 +252,11 @@ namespace RiotGamesApi.AspNetCore.Extensions
                 {
                     apis.AddApi(ApiName.TournamentStub, 3.0)
                         .PostApi(ApiMiddleName.Codes, typeof(List<string>), typeof(TournamentCodeParameters), false)
+                        .HasQueryParameters(new Dictionary<string, Type>()
+                        {
+                            {"count", typeof(int)},
+                            {"tournamentId", typeof(int)}
+                        })
                         .GetApi(ApiMiddleName.LobbyEvents, typeof(LobbyEventDTOWrapper), ApiParam.ByCode)
                         .PostApi(ApiMiddleName.Providers, typeof(int), typeof(ProviderRegistrationParameters), true)
                         .PostApi(ApiMiddleName.Tournaments, typeof(int), typeof(TournamentRegistrationParameters), true);
