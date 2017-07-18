@@ -12,7 +12,8 @@ namespace RiotGamesApi.Tests
         [Fact]
         public void Using()
         {
-            var champions = Api.Static.StaticData_v3.GetChampions(AspNetCore.RiotApi.Enums.ServicePlatform.TR1, false, null, null,
+            Api p = new Api();
+            var champions = p.StaticApi.StaticDatav3.GetChampions(AspNetCore.RiotApi.Enums.ServicePlatform.TR1, false, null, null,
                   new List<ChampionTag>() { ChampionTag.all }, true);
             Assert.False(champions.HasError);
         }

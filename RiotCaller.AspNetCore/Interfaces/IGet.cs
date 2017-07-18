@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using RiotGamesApi.AspNetCore.Models;
 
 namespace RiotGamesApi.AspNetCore.Interfaces
@@ -15,6 +16,8 @@ namespace RiotGamesApi.AspNetCore.Interfaces
         /// <returns>
         /// </returns>
         IRequestMethod<T> UseCache(bool useCache = false);
+
+        Task<IResult<T>> GetAsync(Dictionary<string, object> optionalParameters = null);
 
         IResult<T> Get(Dictionary<string, object> optionalParameters = null);
 

@@ -112,7 +112,7 @@ namespace RiotGamesApi.AspNetCore.Extensions
                 .UseApiUrl("api.riotgames.com")
                 .UseStatusApi((apis) =>
                 {
-                    apis.AddApi(LolApiName.Status, 3.0)
+                    apis.AddApi(LolApiName.Status, 3)
                         .GetMethod(LolApiMethodName.ShardData, typeof(ShardStatus));
                     return apis;
                 })
@@ -299,6 +299,7 @@ namespace RiotGamesApi.AspNetCore.Extensions
             services.AddSingleton<IApiOption>(riotGamesApiOption);
             services.AddMemoryCache();
             services.AddSingleton<IApiCache>(new ApiCache());
+            services.AddSingleton<Api>(new Api());
         }
     }
 }

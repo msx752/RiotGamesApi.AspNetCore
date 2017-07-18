@@ -33,6 +33,17 @@ namespace RiotGamesApi.AspNetCore.Models
             version = version.Replace(".0", "");
             Version = $"v{version}";
         }
+
+        public double GetVersion()
+        {
+            return double.Parse(Version.Substring(1), CultureInfo.InvariantCulture);
+        }
+
+        public string VersionToString()
+        {
+            return double.Parse(Version.Substring(1), CultureInfo.InvariantCulture)
+                .ToString(CultureInfo.InvariantCulture);
+        }
     }
 
     public class Method

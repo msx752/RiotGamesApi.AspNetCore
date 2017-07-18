@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Threading.Tasks;
 using RiotGamesApi.AspNetCore.RiotApi.Enums;
 using RiotGamesApi.AspNetCore.RiotApi.TournamentStubEndPoints;
 
@@ -186,6 +187,47 @@ namespace RiotGamesApi.AspNetCore.Models
             return this;
         }
 
+        public async Task<IResult<T>> GetAsync(Dictionary<string, object> optionalParameters = null)
+        {
+            return await Task.Run(async () =>
+             {
+                 try
+                 {
+                     RegisterApiKey();
+                     RegisterQueryParameter(optionalParameters);
+                     if (CacheControl())
+                         return RiotResult;
+
+                     HttpRequestMessage request = CreateHttpRequest(HttpMethod.Get);
+                     HttpClient httpClient = new HttpClient();
+                     using (HttpResponseMessage response = await httpClient.GetAsync(request.RequestUri))
+                     {
+                         if (!response.IsSuccessStatusCode)
+                         {
+                             ExceptionControl(response);
+                         }
+                         else
+                         {
+                             using (HttpContent content = response.Content)
+                             {
+                                 string json = content.ReadAsStringAsync().Result;
+                                 RiotResult.Result = JsonConvert.DeserializeObject<T>(json);
+                             }
+                         }
+                     }
+                     if (Caching)
+                     {
+                         ApiSettings.ApiCache.Add<T>(this);
+                     }
+                 }
+                 catch (Exception e)
+                 {
+                     RiotResult.Exception = e;
+                 }
+                 return RiotResult;
+             });
+        }
+
         private void RegisterQueryParameter(Dictionary<string, object> optionalParameters)
         {
             if (optionalParameters != null)
@@ -209,39 +251,7 @@ namespace RiotGamesApi.AspNetCore.Models
 
         public IResult<T> Get(Dictionary<string, object> optionalParameters = null)
         {
-            try
-            {
-                RegisterApiKey();
-                RegisterQueryParameter(optionalParameters);
-                if (CacheControl())
-                    return RiotResult;
-
-                HttpRequestMessage request = CreateHttpRequest(HttpMethod.Get);
-                HttpClient httpClient = new HttpClient();
-                using (HttpResponseMessage response = httpClient.GetAsync(request.RequestUri).Result)
-                {
-                    if (!response.IsSuccessStatusCode)
-                    {
-                        ExceptionControl(response);
-                    }
-                    else
-                    {
-                        using (HttpContent content = response.Content)
-                        {
-                            string json = content.ReadAsStringAsync().Result;
-                            RiotResult.Result = JsonConvert.DeserializeObject<T>(json);
-                        }
-                    }
-                }
-                if (Caching)
-                {
-                    ApiSettings.ApiCache.Add<T>(this);
-                }
-            }
-            catch (Exception e)
-            {
-                RiotResult.Exception = e;
-            }
+            GetAsync(optionalParameters).Wait();
             return RiotResult;
         }
 

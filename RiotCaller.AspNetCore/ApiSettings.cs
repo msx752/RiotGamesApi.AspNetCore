@@ -71,7 +71,7 @@ namespace RiotGamesApi.AspNetCore
         {
             string nameOfNs = typeof(ApiSettings).Namespace;
             Dictionary<LolUrlType, string> Classes = new Dictionary<LolUrlType, string>();
-            Dictionary<LolUrlType, Models.RiotGamesApi> TournamenApis = new Dictionary<LolUrlType, Models.RiotGamesApi>();
+            string @apiClassProperties = $"";
             foreach (var selected in ApiOptions.RiotGamesApis)
             {
                 var urlType = selected.Key;
@@ -81,11 +81,18 @@ namespace RiotGamesApi.AspNetCore
                 //    continue;
                 //}
                 string @class = $"\r\n//\"{selected.Value.ApiUrl}\r\n" +
-                                $"public static class {urlType.ToString()}\r\n{{";
+                                $"public class {urlType.ToString()}\r\n{{";
+                @apiClassProperties += $"private {urlType.ToString()} _{urlType.ToString().ToLower()}Api;\r\n" +
+                                       $"public {urlType.ToString()} {urlType.ToString()}Api {{ get {{ return _{urlType.ToString().ToLower()}Api ?? (_{urlType.ToString().ToLower()}Api = new {urlType.ToString()}()); }} }}\r\n";
                 foreach (var url in selected.Value.RiotGamesApiUrls)
                 {
+                    string ClassName = $"{url.ApiName}_{url.Version.Replace(".", "_")}";
                     string @class2 = $"\r\n//\"{url.ApiName}/{url.Version}\r\n" +
-                                     $"public static class {url.ApiName}_{url.Version.Replace(".", "_")}\r\n{{";
+                                     $"public class {ClassName}\r\n{{";
+
+                    string @property = $"\r\nprivate {ClassName} _{ClassName.Replace("_", "")};\r\n" +
+                                       $"public {ClassName} {ClassName.Replace("_", "")} {{ get {{ return _{ClassName.Replace("_", "")} ?? (_{ClassName.Replace("_", "")} = new {ClassName}()); }} }}\r\n";
+                    @class += @property;
                     foreach (var urlSub in url.ApiMethods)
                     {
                         TypeInfo tinf = urlSub.ReturnValueType.GetTypeInfo();
@@ -208,10 +215,10 @@ namespace RiotGamesApi.AspNetCore
                         {
                             platformName = nameof(ServicePlatform);
                         }
-                        string @method = $"\r\npublic static {nameOfNs}.Interfaces.IResult<{t1}> {urlSub.RequestType}{urlSub.ApiMethodName}{uniqueParam}({platformName} platform{@parameters})\r\n{{";
+                        string @method = $"\r\npublic {nameOfNs}.Interfaces.IResult<{t1}> {urlSub.RequestType}{urlSub.ApiMethodName}{uniqueParam}({platformName} platform{@parameters})\r\n{{";
 
                         string @apiCall = $"\r\n{nameOfNs}.Interfaces.IResult<{t1}> rit = new {nameof(ApiCall)}()\r\n" +
-                                          $".SelectApi<{t1}>({nameof(LolApiName)}.{url.ApiName})\r\n" +
+                                          $".SelectApi<{t1}>({nameof(LolApiName)}.{url.ApiName},{url.VersionToString()})\r\n" +
                                           $".For({nameof(LolApiMethodName)}.{urlSub.ApiMethodName})\r\n" +
                                           $".AddParameter({@RiotGamesApiParameters})\r\n" +
                                           ".Build(platform)\r\n" +
@@ -230,17 +237,21 @@ namespace RiotGamesApi.AspNetCore
             }
             string @references = Reference(nameOfNs);
             string @namespaces = @references + $"\r\nnamespace {nameOfNs}\r\n{{";
-            string @apiClass = $"\r\n// ReSharper disable InconsistentNaming\r\n" +
-                               $"//AUTO GENERATED CLASS DO NOT MODIFY\r\n " +
-                               $"public static class Api\r\n{{\r\n";
+            string @MainClass = $"\r\n// ReSharper disable InconsistentNaming\r\n" +
+                               $"//AUTO GENERATED CLASS DO NOT MODIFY\r\n ";
+            //$"public class Api\r\n{{\r\n";
 
+            string @apiClass = $"public class Api\r\n{{\r\n" +
+                               $"{@apiClassProperties}" +
+                               $"\r\n}}\r\n";
+            MainClass += @apiClass;
             foreach (var clss in Classes)
             {
-                @apiClass += $"//{clss.Key} API" + clss.Value;
+                @MainClass += $"//{clss.Key} API" + clss.Value;
             }
-            @apiClass += "//\r\n}\r\n";
-            @namespaces += apiClass;
-            @namespaces += "//\r\n}\r\n";
+            @MainClass += "//\r\n}\r\n";
+            @namespaces += @MainClass;
+            //@namespaces += "//\r\n}\r\n";
             Classes.Clear();
             return @namespaces;
         }
