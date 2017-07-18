@@ -57,7 +57,7 @@ namespace RiotGamesApi.Tests
             var rit = new ApiCall()
                 .SelectApi<LobbyEventDTOWrapper>(LolApiName.Tournament)
                 .For(LolApiMethodName.LobbyEvents)
-                .AddParameter(new ApiParameter(LolApiPath.OnlyTournamentCode, TournamentCode))
+                .AddParameter(new ApiParameter(LolApiPath.ByCode, TournamentCode))
                 .Build(PhysicalRegion.americas)
                 .Get();
             Assert.False(rit.HasError);
