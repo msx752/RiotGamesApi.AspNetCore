@@ -3,7 +3,7 @@
     <metadata>
          <id>RiotGamesApi.AspNetCore</id>
         <version>1.0.0.0</version>
-         <title>LeagueOfLegends v3 API wrapper AspNetCore</title>
+         <title>LeagueOfLegends v3 API wrapper</title>
         <authors>Mustafa Salih ASLIM</authors>
         <owners>Mustafa Salih ASLIM</owners>
         <licenseUrl>https://github.com/msx752/RiotGamesApi.AspNetCore/blob/master/LICENSE</licenseUrl>
