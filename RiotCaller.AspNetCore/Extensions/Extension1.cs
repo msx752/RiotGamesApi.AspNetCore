@@ -15,25 +15,25 @@ namespace RiotGamesApi.AspNetCore.Extensions
     {
         public static IApiBuilder UseTournamentApi(this IApiBuilder option, Func<Models.RiotGamesApi, Models.RiotGamesApi> action)
         {
-            option.RiotGamesApiOptions.RiotGamesApis[UrlType.Tournament] = action(new Models.RiotGamesApi(option.RiotGamesApiOptions.TournamentUrl));
+            option.RiotGamesApiOptions.RiotGamesApis[LolUrlType.Tournament] = action(new Models.RiotGamesApi(option.RiotGamesApiOptions.TournamentUrl));
             return option;
         }
 
         public static IApiBuilder UseNonStaticApi(this IApiBuilder option, Func<Models.RiotGamesApi, Models.RiotGamesApi> action)
         {
-            option.RiotGamesApiOptions.RiotGamesApis[UrlType.NonStatic] = action(new Models.RiotGamesApi(option.RiotGamesApiOptions.NonStaticUrl));
+            option.RiotGamesApiOptions.RiotGamesApis[LolUrlType.NonStatic] = action(new Models.RiotGamesApi(option.RiotGamesApiOptions.NonStaticUrl));
             return option;
         }
 
         public static IApiBuilder UseStaticApi(this IApiBuilder option, Func<Models.RiotGamesApi, Models.RiotGamesApi> action)
         {
-            option.RiotGamesApiOptions.RiotGamesApis[UrlType.Static] = action(new Models.RiotGamesApi(option.RiotGamesApiOptions.StaticUrl));
+            option.RiotGamesApiOptions.RiotGamesApis[LolUrlType.Static] = action(new Models.RiotGamesApi(option.RiotGamesApiOptions.StaticUrl));
             return option;
         }
 
         public static IApiBuilder UseStatusApi(this IApiBuilder option, Func<Models.RiotGamesApi, Models.RiotGamesApi> action)
         {
-            option.RiotGamesApiOptions.RiotGamesApis[UrlType.Status] = action(new Models.RiotGamesApi(option.RiotGamesApiOptions.StatusUrl));
+            option.RiotGamesApiOptions.RiotGamesApis[LolUrlType.Status] = action(new Models.RiotGamesApi(option.RiotGamesApiOptions.StatusUrl));
             return option;
         }
     }

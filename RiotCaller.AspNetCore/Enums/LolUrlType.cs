@@ -1,6 +1,6 @@
 ﻿namespace RiotGamesApi.AspNetCore.Enums
 {
-    public enum UrlType
+    public enum LolUrlType
     {
         Static,
         NonStatic,

@@ -24,8 +24,8 @@ namespace RiotGamesApi.Tests
         public void GetChampions()
         {
             var rit = new ApiCall()
-                .SelectApi<ChampionListDto>(ApiName.StaticData)
-                .For(ApiMethodName.Champions)
+                .SelectApi<ChampionListDto>(LolApiName.StaticData)
+                .For(LolApiMethodName.Champions)
                 .AddParameter()
                 .Build(PlatformType)
                 .UseCache(false)
@@ -37,9 +37,9 @@ namespace RiotGamesApi.Tests
         public void GetChampionsOnlyId()
         {
             var rit = new ApiCall()
-                .SelectApi<ChampionDto>(ApiName.StaticData)
-                .For(ApiMethodName.Champions)
-                .AddParameter(new ApiParameter(ApiPath.OnlyId, ChampionId))
+                .SelectApi<ChampionDto>(LolApiName.StaticData)
+                .For(LolApiMethodName.Champions)
+                .AddParameter(new ApiParameter(LolApiPath.OnlyId, ChampionId))
                 .Build(PlatformType)
                 .UseCache(false)
                 .Get();
@@ -50,8 +50,8 @@ namespace RiotGamesApi.Tests
         public void GetItems()
         {
             var rit = new ApiCall()
-                .SelectApi<ItemListDto>(ApiName.StaticData)
-                .For(ApiMethodName.Champions)
+                .SelectApi<ItemListDto>(LolApiName.StaticData)
+                .For(LolApiMethodName.Champions)
                 .AddParameter()
                 .Build(PlatformType)
                 .UseCache(false)
@@ -63,9 +63,9 @@ namespace RiotGamesApi.Tests
         public void GetItemsOnlyId()
         {
             var rit = new ApiCall()
-                .SelectApi<ItemDto>(ApiName.StaticData)
-                .For(ApiMethodName.Items)
-                .AddParameter(new ApiParameter(ApiPath.OnlyId, ItemId))
+                .SelectApi<ItemDto>(LolApiName.StaticData)
+                .For(LolApiMethodName.Items)
+                .AddParameter(new ApiParameter(LolApiPath.OnlyId, ItemId))
                 .Build(PlatformType)
                 .UseCache(false)
                 .Get();
@@ -76,8 +76,8 @@ namespace RiotGamesApi.Tests
         public void GetLanguageStrings()
         {
             var rit = new ApiCall()
-                .SelectApi<LanguageStringsDto>(ApiName.StaticData)
-                .For(ApiMethodName.LanguageStrings)
+                .SelectApi<LanguageStringsDto>(LolApiName.StaticData)
+                .For(LolApiMethodName.LanguageStrings)
                 .AddParameter()
                 .Build(PlatformType)
                 .UseCache(false)
@@ -89,8 +89,8 @@ namespace RiotGamesApi.Tests
         public void GetLanguages()
         {
             var rit = new ApiCall()
-                .SelectApi<List<string>>(ApiName.StaticData)
-                .For(ApiMethodName.Languages)
+                .SelectApi<List<string>>(LolApiName.StaticData)
+                .For(LolApiMethodName.Languages)
                 .AddParameter()
                 .Build(PlatformType)
                 .UseCache(false)
@@ -102,8 +102,8 @@ namespace RiotGamesApi.Tests
         public void GetMaps()
         {
             var rit = new ApiCall()
-                .SelectApi<MapDataDto>(ApiName.StaticData)
-                .For(ApiMethodName.Maps)
+                .SelectApi<MapDataDto>(LolApiName.StaticData)
+                .For(LolApiMethodName.Maps)
                 .AddParameter()
                 .Build(PlatformType)
                 .UseCache(false)
@@ -115,8 +115,8 @@ namespace RiotGamesApi.Tests
         public void GetMasteries()
         {
             var rit = new ApiCall()
-                .SelectApi<MasteryListDto>(ApiName.StaticData)
-                .For(ApiMethodName.Masteries)
+                .SelectApi<MasteryListDto>(LolApiName.StaticData)
+                .For(LolApiMethodName.Masteries)
                 .AddParameter()
                 .Build(PlatformType)
                 .UseCache(false)
@@ -128,9 +128,9 @@ namespace RiotGamesApi.Tests
         public void GetMasteriesOnlyId()
         {
             var rit = new ApiCall()
-                .SelectApi<MasteryDto>(ApiName.StaticData)
-                .For(ApiMethodName.Masteries)
-                .AddParameter(new ApiParameter(ApiPath.OnlyId, MasteryId))
+                .SelectApi<MasteryDto>(LolApiName.StaticData)
+                .For(LolApiMethodName.Masteries)
+                .AddParameter(new ApiParameter(LolApiPath.OnlyId, MasteryId))
                 .Build(PlatformType)
                 .UseCache(false)
                 .Get();
@@ -141,8 +141,8 @@ namespace RiotGamesApi.Tests
         public void GetRealms()
         {
             var rit = new ApiCall()
-                .SelectApi<RealmDto>(ApiName.StaticData)
-                .For(ApiMethodName.Realms)
+                .SelectApi<RealmDto>(LolApiName.StaticData)
+                .For(LolApiMethodName.Realms)
                 .AddParameter()
                 .Build(PlatformType)
                 .UseCache(false)
@@ -154,8 +154,8 @@ namespace RiotGamesApi.Tests
         public void GetRunes()
         {
             var rit = new ApiCall()
-                .SelectApi<RuneListDto>(ApiName.StaticData)
-                .For(ApiMethodName.Runes)
+                .SelectApi<RuneListDto>(LolApiName.StaticData)
+                .For(LolApiMethodName.Runes)
                 .AddParameter()
                 .Build(PlatformType)
                 .UseCache(false)
@@ -167,9 +167,9 @@ namespace RiotGamesApi.Tests
         public void GetRunesOnlyId()
         {
             var rit = new ApiCall()
-                .SelectApi<RuneDto>(ApiName.StaticData)
-                .For(ApiMethodName.Runes)
-                .AddParameter(new ApiParameter(ApiPath.OnlyId, (long)1))
+                .SelectApi<RuneDto>(LolApiName.StaticData)
+                .For(LolApiMethodName.Runes)
+                .AddParameter(new ApiParameter(LolApiPath.OnlyId, (long)1))
                 .Build(PlatformType)
                 .UseCache(false)
                 .Get();
@@ -180,8 +180,8 @@ namespace RiotGamesApi.Tests
         public void GetSummonerSpells()
         {
             var rit = new ApiCall()
-                .SelectApi<SummonerSpellListDto>(ApiName.StaticData)
-                .For(ApiMethodName.SummonerSpells)
+                .SelectApi<SummonerSpellListDto>(LolApiName.StaticData)
+                .For(LolApiMethodName.SummonerSpells)
                 .AddParameter()
                 .Build(PlatformType)
                 .UseCache(false)
@@ -193,9 +193,9 @@ namespace RiotGamesApi.Tests
         public void GetSummonerSpellsOnlyId()
         {
             var rit = new ApiCall()
-                .SelectApi<SummonerSpellDto>(ApiName.StaticData)
-                .For(ApiMethodName.SummonerSpells)
-                .AddParameter(new ApiParameter(ApiPath.OnlyId, (long)1))
+                .SelectApi<SummonerSpellDto>(LolApiName.StaticData)
+                .For(LolApiMethodName.SummonerSpells)
+                .AddParameter(new ApiParameter(LolApiPath.OnlyId, (long)1))
                 .Build(PlatformType)
                 .UseCache(false)
                 .Get();
@@ -206,8 +206,8 @@ namespace RiotGamesApi.Tests
         public void GetVersions()
         {
             var rit = new ApiCall()
-                .SelectApi<List<string>>(ApiName.StaticData)
-                .For(ApiMethodName.Versions)
+                .SelectApi<List<string>>(LolApiName.StaticData)
+                .For(LolApiMethodName.Versions)
                 .AddParameter()
                 .Build(PlatformType)
                 .UseCache(false)

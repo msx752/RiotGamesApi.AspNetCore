@@ -7,7 +7,7 @@ namespace RiotGamesApi.AspNetCore.Builder
     {
         public RiotGamesApiBuilder()
         {
-            RiotGamesApiOptions = new RiotGamesApiOptions();
+            RiotGamesApiOptions = new LolApiOptions();
         }
 
         public IApiOption RiotGamesApiOptions { get; }

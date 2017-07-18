@@ -23,9 +23,9 @@ namespace RiotGamesApi.Tests
         public void GetMatchesByOnlyMatchId()
         {
             var rit = new ApiCall()
-                .SelectApi<MatchDto>(ApiName.Match)
-                .For(ApiMethodName.Matches)
-                .AddParameter(new ApiParameter(ApiPath.OnlyMatchId, MatchId))//not tested
+                .SelectApi<MatchDto>(LolApiName.Match)
+                .For(LolApiMethodName.Matches)
+                .AddParameter(new ApiParameter(LolApiPath.OnlyMatchId, MatchId))//not tested
                 .Build(PlatformType)
                 .Get();
             if (rit.HasError)
@@ -38,9 +38,9 @@ namespace RiotGamesApi.Tests
         public void GetMatchesByAccount()
         {
             var rit = new ApiCall()
-                .SelectApi<MatchlistDto>(ApiName.Match)
-                .For(ApiMethodName.MatchLists)
-                .AddParameter(new ApiParameter(ApiPath.ByAccount, AccountId))
+                .SelectApi<MatchlistDto>(LolApiName.Match)
+                .For(LolApiMethodName.MatchLists)
+                .AddParameter(new ApiParameter(LolApiPath.ByAccount, AccountId))
                 .Build(PlatformType)
                 .Get(/*
                 it has optional parameters
@@ -53,9 +53,9 @@ namespace RiotGamesApi.Tests
         public void GetMatchesByAccountRecent()
         {
             var rit = new ApiCall()
-                .SelectApi<MatchlistDto>(ApiName.Match)
-                .For(ApiMethodName.MatchLists)
-                .AddParameter(new ApiParameter(ApiPath.ByAccountRecent, AccountId))//not tested
+                .SelectApi<MatchlistDto>(LolApiName.Match)
+                .For(LolApiMethodName.MatchLists)
+                .AddParameter(new ApiParameter(LolApiPath.ByAccountRecent, AccountId))//not tested
                 .Build(PlatformType)
                 .Get();
             Assert.False(rit.HasError);
@@ -65,9 +65,9 @@ namespace RiotGamesApi.Tests
         public void GetMatchesByMatch()
         {
             var rit = new ApiCall()
-                .SelectApi<MatchTimelineDto>(ApiName.Match)
-                .For(ApiMethodName.Timelines)
-                .AddParameter(new ApiParameter(ApiPath.ByMatch, MatchId))//not tested
+                .SelectApi<MatchTimelineDto>(LolApiName.Match)
+                .For(LolApiMethodName.Timelines)
+                .AddParameter(new ApiParameter(LolApiPath.ByMatch, MatchId))//not tested
                 .Build(PlatformType)
                 .Get();
             if (rit.HasError)
@@ -80,9 +80,9 @@ namespace RiotGamesApi.Tests
         public void GetMatchesByTornamentCodeIds()
         {
             var rit = new ApiCall()
-                .SelectApi<List<long>>(ApiName.Match)
-                .For(ApiMethodName.Matches)
-                .AddParameter(new ApiParameter(ApiPath.ByTournamentCodeIds, TournamentCode))//not tested
+                .SelectApi<List<long>>(LolApiName.Match)
+                .For(LolApiMethodName.Matches)
+                .AddParameter(new ApiParameter(LolApiPath.ByTournamentCodeIds, TournamentCode))//not tested
                 .Build(PlatformType)
                 .Get();
             Assert.False(rit.HasError);
@@ -92,11 +92,11 @@ namespace RiotGamesApi.Tests
         public void GetMatchesByTornamentCode()
         {
             var rit = new ApiCall()
-                .SelectApi<MatchDto>(ApiName.Match)
-                .For(ApiMethodName.Matches)
+                .SelectApi<MatchDto>(LolApiName.Match)
+                .For(LolApiMethodName.Matches)
                 .AddParameter(
-                    new ApiParameter(ApiPath.OnlyMatchId, MatchId),
-                    new ApiParameter(ApiPath.ByTournamentCode, TournamentCode))//not tested
+                    new ApiParameter(LolApiPath.OnlyMatchId, MatchId),
+                    new ApiParameter(LolApiPath.ByTournamentCode, TournamentCode))//not tested
                 .Build(PlatformType)
                 .Get();
             Assert.False(rit.HasError);

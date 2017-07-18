@@ -23,9 +23,9 @@ namespace RiotGamesApi.Tests
         public void GetMasteriesBySumId()
         {
             var rit = new ApiCall()
-                .SelectApi<MasteryPagesDto>(ApiName.Platform)
-                .For(ApiMethodName.Masteries)
-                .AddParameter(new ApiParameter(ApiPath.BySummoner, SummonerId))
+                .SelectApi<MasteryPagesDto>(LolApiName.Platform)
+                .For(LolApiMethodName.Masteries)
+                .AddParameter(new ApiParameter(LolApiPath.BySummoner, SummonerId))
                 .Build(PlatformType)
                 .Get();
             Assert.False(rit.HasError);

@@ -36,7 +36,7 @@ namespace RiotGamesApi.AspNetCore.Cache
         {
             Remove<T>(data);
             var cacheEntryOptions = new MemoryCacheEntryOptions();
-            if (data.UrlType == UrlType.Static)
+            if (data.UrlType == LolUrlType.Static)
             {
                 cacheEntryOptions.SlidingExpiration = CacheOption.StaticApiCacheExpiry;
             }

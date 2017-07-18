@@ -11,7 +11,7 @@
         <iconUrl>https://github.com/msx752/RiotGamesApi.AspNetCore/blob/master/wfc.png?raw=true</iconUrl>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <description>C# AspNetCore LeagueOfLegends RiotGames API.</description>
-        <summary>C# AspNetCore wrapper for LeagueOfLegends API v3</summary>
+        <summary>RiotGames LeagueOfLegends API wrapper v3 AspNetCore</summary>
         <releaseNotes></releaseNotes>
         <copyright>Copyright 2017</copyright>
         <language />
@@ -23,7 +23,7 @@
                 <dependency id="Microsoft.AspNetCore.Http.Abstractions" version="1.1.2" exclude="Build,Analyzers" />
                 <dependency id="Microsoft.Extensions.Caching.Memory" version="1.1.2" exclude="Build,Analyzers" />
                 <dependency id="Newtonsoft.Json" version="9.0.1" exclude="Build,Analyzers" />
-				<dependency id="RiotGamesApi.AspNetCore.RiotApi" version="1.7.15.146"/>
+				<dependency id="RiotGamesApi.AspNetCore.RiotApi" version="1.7.18.120"/>
             </group>
         </dependencies>
     </metadata>

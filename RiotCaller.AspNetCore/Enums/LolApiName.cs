@@ -2,44 +2,44 @@ using RiotGamesApi.AspNetCore.Attributes;
 
 namespace RiotGamesApi.AspNetCore.Enums
 {
-    public enum ApiName
+    public enum LolApiName
     {
-        [UrlType(UrlType.NonStatic)]
+        [UrlType(LolUrlType.NonStatic)]
         [StringValue("summoner")]
         Summoner,
 
-        [UrlType(UrlType.NonStatic)]
+        [UrlType(LolUrlType.NonStatic)]
         [StringValue("champion-mastery")]
         ChampionMastery,
 
-        [UrlType(UrlType.NonStatic)]
+        [UrlType(LolUrlType.NonStatic)]
         //[StringValue("platform")]
         Platform,
 
-        [UrlType(UrlType.NonStatic)]
+        [UrlType(LolUrlType.NonStatic)]
         //[StringValue("league")]
         League,
 
-        [UrlType(UrlType.NonStatic)]
+        [UrlType(LolUrlType.NonStatic)]
         //[StringValue("match")]
         Match,
 
-        [UrlType(UrlType.NonStatic)]
+        [UrlType(LolUrlType.NonStatic)]
         //[StringValue("spectator")]
         Spectator,
 
-        [UrlType(UrlType.Static)]
+        [UrlType(LolUrlType.Static)]
         [StringValue("static-data")]
         StaticData,
 
-        [UrlType(UrlType.Status)]
+        [UrlType(LolUrlType.Status)]
         Status,
 
-        [UrlType(UrlType.Static)]
+        [UrlType(LolUrlType.Tournament)]
         [StringValue("tournament-stub")]
         TournamentStub,
 
-        [UrlType(UrlType.Static)]
+        [UrlType(LolUrlType.Tournament)]
         [StringValue("tournament")]
         Tournament,
     }

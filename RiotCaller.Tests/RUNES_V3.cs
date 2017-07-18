@@ -23,9 +23,9 @@ namespace RiotGamesApi.Tests
         public void GetRunesBySummoner()
         {
             var rit = new ApiCall()
-                .SelectApi<RunePagesDto>(ApiName.Platform)
-                .For(ApiMethodName.Runes)
-                .AddParameter(new ApiParameter(ApiPath.BySummoner, SummonerId))
+                .SelectApi<RunePagesDto>(LolApiName.Platform)
+                .For(LolApiMethodName.Runes)
+                .AddParameter(new ApiParameter(LolApiPath.BySummoner, SummonerId))
                 .Build(PlatformType)
                 .Get();
             Assert.False(rit.HasError);

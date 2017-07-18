@@ -22,8 +22,8 @@ namespace RiotGamesApi.Tests
         public long MatchId { get; }
         public long ItemId { get; }
 
-        public Region RegionType { get; }
-        public Platform PlatformType { get; }
+        public ServiceRegion RegionType { get; }
+        public ServicePlatform PlatformType { get; }
 
         public long SummonerId { get; }
 
@@ -46,7 +46,7 @@ namespace RiotGamesApi.Tests
 
             ItemId = long.Parse(Configuration["itemId"]);
 
-            RegionType = (Region)Enum.Parse(typeof(Region), Configuration["region"]);
+            RegionType = (ServiceRegion)Enum.Parse(typeof(ServiceRegion), Configuration["region"]);
 
             PlatformType = RegionType.ToPlatform();
 

@@ -3,7 +3,6 @@ using RiotGamesApi.AspNetCore;
 using RiotGamesApi.AspNetCore.Enums;
 using RiotGamesApi.AspNetCore.Models;
 using RiotGamesApi.AspNetCore.RiotApi.Enums;
-using RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.ChampionMastery;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,12 +18,12 @@ namespace RiotGamesApi.Web.Controllers
             //    .SelectApi<List<ChampionMasteryDto>>(ApiName.ChampionMastery)
             //    .For(ApiMiddleName.ChampionMasteries)
             //    .AddParameter(new ApiParameter(ApiParam.BySummoner, (long)466244))
-            //    .Build(Platform.TR1)
+            //    .Build(ServicePlatform.TR1)
             //    .Get();
 
-            var rit = Api.NonStatic.ChampionMastery_v3.GetChampionMasteriesBySummoner(Platform.TR1, 466244);
+            var rit = Api.NonStatic.ChampionMastery_v3.GetChampionMasteriesBySummoner(ServicePlatform.TR1, 466244);
 
-            var rit2 = Api.Static.StaticData_v3.GetChampions(Platform.TR1);
+            var rit2 = Api.Static.StaticData_v3.GetChampions(ServicePlatform.TR1);
             return View(rit);
         }
 

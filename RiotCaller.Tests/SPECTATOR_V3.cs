@@ -23,9 +23,9 @@ namespace RiotGamesApi.Tests
         public void GetActiveGamesBySummoner()
         {
             var rit = new ApiCall()
-                .SelectApi<CurrentGameInfo>(ApiName.Spectator)
-                .For(ApiMethodName.ActiveGames)
-                .AddParameter(new ApiParameter(ApiPath.BySummoner, SummonerId))
+                .SelectApi<CurrentGameInfo>(LolApiName.Spectator)
+                .For(LolApiMethodName.ActiveGames)
+                .AddParameter(new ApiParameter(LolApiPath.BySummoner, SummonerId))
                 .Build(PlatformType)
                 .Get();
             if (rit.HasError)
@@ -38,8 +38,8 @@ namespace RiotGamesApi.Tests
         public void GetFeaturedGames()
         {
             var rit = new ApiCall()
-                .SelectApi<FeaturedGames>(ApiName.Spectator)
-                .For(ApiMethodName.FeaturedGames)
+                .SelectApi<FeaturedGames>(LolApiName.Spectator)
+                .For(LolApiMethodName.FeaturedGames)
                 .AddParameter()
                 .Build(PlatformType)
                 .Get();

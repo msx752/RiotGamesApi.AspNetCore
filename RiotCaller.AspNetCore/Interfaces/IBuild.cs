@@ -4,8 +4,8 @@ namespace RiotGamesApi.AspNetCore.Interfaces
 {
     public interface IBuild<T> where T : new()
     {
-        IGet<T> Build(Platform platform);
+        IRequestMethod<T> Build(ServicePlatform platform);
 
-        //IGet<T> Build(PhysicalRegion platform);
+        IRequestMethod<T> Build(PhysicalRegion platform);
     }
 }

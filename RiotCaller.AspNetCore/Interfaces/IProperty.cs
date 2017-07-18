@@ -7,11 +7,11 @@ namespace RiotGamesApi.AspNetCore.Interfaces
 {
     public interface IProperty<T> where T : new()
     {
-        RiotGamesApiUrl ApiList { get; }
+        LolApiUrl ApiList { get; }
         string BaseUrl { get; }
         List<ApiParameter> ParametersWithValue { get; }
         int SelectedApiIndex { get; }
-        UrlType UrlType { get; }
+        LolUrlType UrlType { get; }
         string RequestUrl { get; }
         IResult<T> RiotResult { get; }
         String CacheKey { get; }

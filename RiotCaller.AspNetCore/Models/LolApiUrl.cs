@@ -6,16 +6,16 @@ using System.Globalization;
 
 namespace RiotGamesApi.AspNetCore.Models
 {
-    public class RiotGamesApiUrl
+    public class LolApiUrl
     {
-        public RiotGamesApiUrl(ApiName _newApiUrl, double _version)
+        public LolApiUrl(LolApiName _newApiUrl, double _version)
         {
             ApiMethods = new List<Method>();
             SetVersion(_version);
             ApiName = _newApiUrl;
         }
 
-        public ApiName ApiName { get; set; }
+        public LolApiName ApiName { get; set; }
         public List<Method> ApiMethods { get; set; }
         public string Version { get; set; }
         public int LastApiMethodIndex { get; set; }
@@ -37,17 +37,17 @@ namespace RiotGamesApi.AspNetCore.Models
 
     public class Method
     {
-        public Method(ApiMethodName md, ApiPath[] array, Type returnValueType, ApiMethodType requestType, Type _bodyValueType, bool _isBodyRequired)
+        public Method(LolApiMethodName md, LolApiPath[] array, Type returnValueType, ApiMethodType requestType, Type _bodyValueType, bool _isBodyRequired)
             : this(md, array, returnValueType, requestType)
         {
             BodyValueType = _bodyValueType;
             IsBodyRequired = _isBodyRequired;
         }
 
-        public Method(ApiMethodName md, ApiPath[] array, Type returnValueType, ApiMethodType requestType)
+        public Method(LolApiMethodName md, LolApiPath[] array, Type returnValueType, ApiMethodType requestType)
         {
             this.ApiMethodName = md;
-            this.RiotGamesApiPaths = array ?? new ApiPath[0];
+            this.RiotGamesApiPaths = array ?? new LolApiPath[0];
             ReturnValueType = returnValueType;
             TypesOfQueryParameter = new Dictionary<string, Type>();
             RequestType = requestType;
@@ -56,9 +56,9 @@ namespace RiotGamesApi.AspNetCore.Models
         public bool IsBodyRequired { get; set; }
         public Type BodyValueType { get; set; }
         public ApiMethodType RequestType { get; set; }
-        public ApiMethodName ApiMethodName { get; set; }
+        public LolApiMethodName ApiMethodName { get; set; }
 
-        public ApiPath[] RiotGamesApiPaths { get; set; }
+        public LolApiPath[] RiotGamesApiPaths { get; set; }
 
         public Type ReturnValueType { get; }
         public Dictionary<string, Type> TypesOfQueryParameter { get; set; }

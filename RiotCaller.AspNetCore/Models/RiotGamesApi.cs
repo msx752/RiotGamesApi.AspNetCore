@@ -7,10 +7,10 @@ namespace RiotGamesApi.AspNetCore.Models
         public RiotGamesApi(string baseUrl)
         {
             ApiUrl = baseUrl;
-            RiotGamesApiUrls = new List<RiotGamesApiUrl>();
+            RiotGamesApiUrls = new List<LolApiUrl>();
         }
 
         public string ApiUrl { get; set; }
-        public List<RiotGamesApiUrl> RiotGamesApiUrls { get; }
+        public List<LolApiUrl> RiotGamesApiUrls { get; }
     }
 }

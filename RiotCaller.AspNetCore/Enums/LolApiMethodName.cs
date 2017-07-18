@@ -2,7 +2,7 @@
 
 namespace RiotGamesApi.AspNetCore.Enums
 {
-    public enum ApiMethodName
+    public enum LolApiMethodName
     {
         [StringValue("champion-masteries")]
         ChampionMasteries,
@@ -76,6 +76,10 @@ namespace RiotGamesApi.AspNetCore.Enums
         [StringValue("shard-data")]
         ShardData,
 
+        /// <summary>
+        /// Providers will need to call this endpoint first to register their callback URL and their
+        /// API key with the tournament system before any other tournament provider endpoints will work.
+        /// </summary>
         Providers,
 
         Tournaments,

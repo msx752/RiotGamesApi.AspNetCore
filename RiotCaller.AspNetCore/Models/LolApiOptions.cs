@@ -5,19 +5,19 @@ using System.Collections.Generic;
 
 namespace RiotGamesApi.AspNetCore.Models
 {
-    public class RiotGamesApiOptions : IApiOption
+    public class LolApiOptions : IApiOption
     {
         private string _url = "";
 
-        public RiotGamesApiOptions()
+        public LolApiOptions()
         {
-            RiotGamesApis = new Dictionary<UrlType, Models.RiotGamesApi>();
+            RiotGamesApis = new Dictionary<LolUrlType, Models.RiotGamesApi>();
         }
 
         public CacheOption CacheOptions { get; set; }
         public string NonStaticUrl { get { return $"{Url}/lol"; }/* set { _nonStaticUrl = value; }*/ }
         public string RiotApiKey { get; set; }
-        public Dictionary<UrlType, Models.RiotGamesApi> RiotGamesApis { get; set; }
+        public Dictionary<LolUrlType, Models.RiotGamesApi> RiotGamesApis { get; set; }
         public string StaticUrl { get { return $"{NonStaticUrl}"; }/* set { _staticUrl = value; } */}
 
         public string TournamentUrl { get { return $"{Url}/lol"; } }

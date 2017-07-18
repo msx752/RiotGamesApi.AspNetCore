@@ -23,9 +23,9 @@ namespace RiotGamesApi.Tests
         public void GetChallengerLeagues()
         {
             var rit = new ApiCall()
-                .SelectApi<LeagueListDTO>(ApiName.League)
-                .For(ApiMethodName.ChallengerLeagues)
-                .AddParameter(new ApiParameter(ApiPath.ByQueue, Queue.RANKED_SOLO_5x5))
+                .SelectApi<LeagueListDTO>(LolApiName.League)
+                .For(LolApiMethodName.ChallengerLeagues)
+                .AddParameter(new ApiParameter(LolApiPath.ByQueue, Queue.RANKED_SOLO_5x5))
                 .Build(PlatformType)
                 .Get();
             Assert.False(rit.HasError);
@@ -35,9 +35,9 @@ namespace RiotGamesApi.Tests
         public void GetLeagues()
         {
             var rit = new ApiCall()
-                .SelectApi<List<LeagueListDTO>>(ApiName.League)
-                .For(ApiMethodName.Leagues)
-                .AddParameter(new ApiParameter(ApiPath.BySummoner, SummonerId))
+                .SelectApi<List<LeagueListDTO>>(LolApiName.League)
+                .For(LolApiMethodName.Leagues)
+                .AddParameter(new ApiParameter(LolApiPath.BySummoner, SummonerId))
                 .Build(PlatformType)
                 .Get();
             Assert.False(rit.HasError);
@@ -47,9 +47,9 @@ namespace RiotGamesApi.Tests
         public void GetMasterLeagues()
         {
             var rit = new ApiCall()
-                .SelectApi<LeagueListDTO>(ApiName.League)
-                .For(ApiMethodName.MasterLeagues)
-                .AddParameter(new ApiParameter(ApiPath.ByQueue, Queue.RANKED_SOLO_5x5))
+                .SelectApi<LeagueListDTO>(LolApiName.League)
+                .For(LolApiMethodName.MasterLeagues)
+                .AddParameter(new ApiParameter(LolApiPath.ByQueue, Queue.RANKED_SOLO_5x5))
                 .Build(PlatformType)
                 .Get();
             Assert.False(rit.HasError);
@@ -59,9 +59,9 @@ namespace RiotGamesApi.Tests
         public void GetPositions()
         {
             var rit = new ApiCall()
-                .SelectApi<List<LeaguePositionDTO>>(ApiName.League)
-                .For(ApiMethodName.Positions)
-                .AddParameter(new ApiParameter(ApiPath.BySummoner, SummonerId))
+                .SelectApi<List<LeaguePositionDTO>>(LolApiName.League)
+                .For(LolApiMethodName.Positions)
+                .AddParameter(new ApiParameter(LolApiPath.BySummoner, SummonerId))
                 .Build(PlatformType)
                 .Get();
             Assert.False(rit.HasError);

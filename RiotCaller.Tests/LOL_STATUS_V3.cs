@@ -23,8 +23,8 @@ namespace RiotGamesApi.Tests
         public void GetStatus()
         {
             var rit = new ApiCall()
-                .SelectApi<ShardStatus>(ApiName.Status)
-                .For(ApiMethodName.ShardData)
+                .SelectApi<ShardStatus>(LolApiName.Status)
+                .For(LolApiMethodName.ShardData)
                 .AddParameter()
                 .Build(PlatformType)
                 .Get();

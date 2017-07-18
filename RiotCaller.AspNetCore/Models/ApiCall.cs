@@ -8,9 +8,9 @@ namespace RiotGamesApi.AspNetCore.Models
 {
     public class ApiCall
     {
-        public IFor<T> SelectApi<T>(ApiName apiType, double version = 3.0) where T : new()
+        public IFor<T> SelectApi<T>(LolApiName apiType, double version = 3.0) where T : new()
         {
-            RiotGamesApiRequest<T> rit = new RiotGamesApiRequest<T>();
+            LolApiRequest<T> rit = new LolApiRequest<T>();
             rit.UrlType = apiType.GetUrlType();
             rit.BaseUrl = ApiSettings.ApiOptions.RiotGamesApis[rit.UrlType].ApiUrl;
             rit.ApiList = ApiSettings.ApiOptions.RiotGamesApis[rit.UrlType].RiotGamesApiUrls

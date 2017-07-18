@@ -1,8 +1,9 @@
 using System.Collections.Generic;
+using RiotGamesApi.AspNetCore.Models;
 
 namespace RiotGamesApi.AspNetCore.Interfaces
 {
-    public interface IGet<T> where T : new()
+    public interface IRequestMethod<T> where T : new()
     {
         string RequestUrl { get; }
 
@@ -13,8 +14,14 @@ namespace RiotGamesApi.AspNetCore.Interfaces
         /// </param>
         /// <returns>
         /// </returns>
-        IGet<T> UseCache(bool useCache = false);
+        IRequestMethod<T> UseCache(bool useCache = false);
 
         IResult<T> Get(Dictionary<string, string> optionalParameters = null);
+
+        IResult<T> Put(object bodyParameter = null);
+
+        IResult<T> Post(object bodyParameter = null);
+
+        IResult<T> Post(Dictionary<string, string> optionalParameters = null, object bodyParameter = null);
     }
 }

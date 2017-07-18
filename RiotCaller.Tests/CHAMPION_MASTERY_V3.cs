@@ -14,9 +14,9 @@ namespace RiotGamesApi.Tests
         public void GetChampionMasteries()
         {
             var rit = new ApiCall()
-                .SelectApi<List<ChampionMasteryDto>>(ApiName.ChampionMastery)
-                .For(ApiMethodName.ChampionMasteries)
-                .AddParameter(new ApiParameter(ApiPath.BySummoner, SummonerId))
+                .SelectApi<List<ChampionMasteryDto>>(LolApiName.ChampionMastery)
+                .For(LolApiMethodName.ChampionMasteries)
+                .AddParameter(new ApiParameter(LolApiPath.BySummoner, SummonerId))
                 .Build(PlatformType)
                 .Get();
             Assert.False(rit.HasError);
@@ -26,10 +26,10 @@ namespace RiotGamesApi.Tests
         public void GetChampionMastery()
         {
             var rit = new ApiCall()
-                .SelectApi<ChampionMasteryDto>(ApiName.ChampionMastery)
-                .For(ApiMethodName.ChampionMasteries)
-                .AddParameter(new ApiParameter(ApiPath.BySummoner, SummonerId),
-                               new ApiParameter(ApiPath.ByChampion, ChampionId))
+                .SelectApi<ChampionMasteryDto>(LolApiName.ChampionMastery)
+                .For(LolApiMethodName.ChampionMasteries)
+                .AddParameter(new ApiParameter(LolApiPath.BySummoner, SummonerId),
+                               new ApiParameter(LolApiPath.ByChampion, ChampionId))
                 .Build(PlatformType)
                 .Get();
             Assert.False(rit.HasError);
@@ -39,9 +39,9 @@ namespace RiotGamesApi.Tests
         public void GetChampionScore()
         {
             var rit = new ApiCall()
-                .SelectApi<int>(ApiName.ChampionMastery)
-                .For(ApiMethodName.Scores)
-                .AddParameter(new ApiParameter(ApiPath.BySummoner, SummonerId))
+                .SelectApi<int>(LolApiName.ChampionMastery)
+                .For(LolApiMethodName.Scores)
+                .AddParameter(new ApiParameter(LolApiPath.BySummoner, SummonerId))
                 .Build(PlatformType)
                 .Get();
             Assert.False(rit.HasError);

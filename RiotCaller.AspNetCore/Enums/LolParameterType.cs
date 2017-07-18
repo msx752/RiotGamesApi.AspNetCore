@@ -5,9 +5,9 @@ using RiotGamesApi.AspNetCore.RiotApi.Enums;
 
 namespace RiotGamesApi.AspNetCore.Enums
 {
-    public enum ApiParameterType
+    public enum LolParameterType
     {
-        [ParameterType(typeof(Platform))]
+        [ParameterType(typeof(ServicePlatform))]
         platformId,
 
         [ParameterType(typeof(long))]

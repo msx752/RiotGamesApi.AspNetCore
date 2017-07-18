@@ -17,8 +17,8 @@ namespace RiotGamesApi.Tests
         public void Caching1()
         {
             var rit = new ApiCall()
-                .SelectApi<ChampionListDto>(ApiName.StaticData)
-                .For(ApiMethodName.Champions)
+                .SelectApi<ChampionListDto>(LolApiName.StaticData)
+                .For(LolApiMethodName.Champions)
                 .AddParameter()
                 .Build(PlatformType)
                 .UseCache(true)
@@ -27,8 +27,8 @@ namespace RiotGamesApi.Tests
             Assert.False(rit.IsCache);
 
             rit = new ApiCall()
-                .SelectApi<ChampionListDto>(ApiName.StaticData)
-                .For(ApiMethodName.Champions)
+                .SelectApi<ChampionListDto>(LolApiName.StaticData)
+                .For(LolApiMethodName.Champions)
                 .AddParameter()
                 .Build(PlatformType)
                 .UseCache(true)

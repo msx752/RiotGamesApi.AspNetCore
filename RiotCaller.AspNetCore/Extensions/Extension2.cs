@@ -35,32 +35,32 @@ namespace RiotGamesApi.AspNetCore.Extensions
 {
     public static class Extension2
     {
-        public static RiotGamesApiUrl AddApi(this Models.RiotGamesApi option, ApiName suffix1, double _version)
+        public static LolApiUrl AddApi(this Models.RiotGamesApi option, LolApiName suffix1, double _version)
         {
-            RiotGamesApiUrl sff1 = new RiotGamesApiUrl(suffix1, _version);
+            LolApiUrl sff1 = new LolApiUrl(suffix1, _version);
             option.RiotGamesApiUrls.Add(sff1);
             return sff1;
         }
 
-        public static RiotGamesApiUrl GetMethod(this RiotGamesApiUrl option, ApiMethodName middleType, Type returnType, params ApiPath[] subApis)
+        public static LolApiUrl GetMethod(this LolApiUrl option, LolApiMethodName middleType, Type returnType, params LolApiPath[] subApis)
         {
             option.ApiMethods.Add(new Method(middleType, subApis, returnType, ApiMethodType.GET));
             option.LastApiMethodIndex = option.ApiMethods.Count - 1;
             return option;
         }
 
-        public static RiotGamesApiUrl PostMethod(this RiotGamesApiUrl option, ApiMethodName middleType, Type returnType, Type bodyValueType, bool IsBodyRequired,
-            params ApiPath[] subApis)
+        public static LolApiUrl PostMethod(this LolApiUrl option, LolApiMethodName middleType, Type returnType, Type bodyValueType, bool IsBodyRequired,
+            params LolApiPath[] subApis)
         {
             option.ApiMethods.Add(new Method(middleType, subApis, returnType, ApiMethodType.POST, bodyValueType, IsBodyRequired));
             option.LastApiMethodIndex = option.ApiMethods.Count - 1;
             return option;
         }
 
-        public static RiotGamesApiUrl PutMethod(this RiotGamesApiUrl option, ApiMethodName methodName, Type bodyValueType, bool IsBodyRequired,
-            params ApiPath[] subApis)
+        public static LolApiUrl PutMethod(this LolApiUrl option, LolApiMethodName methodName, Type bodyValueType, bool IsBodyRequired,
+            params LolApiPath[] subApis)
         {
-            option.ApiMethods.Add(new Method(methodName, subApis, null, ApiMethodType.PUT, bodyValueType, IsBodyRequired));
+            option.ApiMethods.Add(new Method(methodName, subApis, typeof(int), ApiMethodType.PUT, bodyValueType, IsBodyRequired));
             option.LastApiMethodIndex = option.ApiMethods.Count - 1;
             return option;
         }
@@ -74,13 +74,13 @@ namespace RiotGamesApi.AspNetCore.Extensions
         /// </param>
         /// <returns>
         /// </returns>
-        public static RiotGamesApiUrl AddQueryParameter(this RiotGamesApiUrl option, Dictionary<string, Type> queryParameterTypes)
+        public static LolApiUrl AddQueryParameter(this LolApiUrl option, Dictionary<string, Type> queryParameterTypes)
         {
             try
             {
-                if (option.ApiName == ApiName.StaticData ||
-                    option.ApiName == ApiName.Tournament ||
-                    option.ApiName == ApiName.TournamentStub)
+                if (option.ApiName == LolApiName.StaticData ||
+                    option.ApiName == LolApiName.Tournament ||
+                    option.ApiName == LolApiName.TournamentStub)
                 {
                     option.ApiMethods[option.LastApiMethodIndex].TypesOfQueryParameter = queryParameterTypes;
                 }
@@ -104,7 +104,7 @@ namespace RiotGamesApi.AspNetCore.Extensions
             return app;
         }
 
-        public static void AddRiotGamesApi(this IServiceCollection services, string riotApiKey, Func<CacheOption, CacheOption> cacheOption = null)
+        public static void AddLeagueOfLegendsApi(this IServiceCollection services, string riotApiKey, Func<CacheOption, CacheOption> cacheOption = null)
         {
             //can convertable to json
             var riotGamesApiBuilder = new RiotGamesApiBuilder()
@@ -112,14 +112,14 @@ namespace RiotGamesApi.AspNetCore.Extensions
                 .UseApiUrl("api.riotgames.com")
                 .UseStatusApi((apis) =>
                 {
-                    apis.AddApi(ApiName.Status, 3.0)
-                        .GetMethod(ApiMethodName.ShardData, typeof(ShardStatus));
+                    apis.AddApi(LolApiName.Status, 3.0)
+                        .GetMethod(LolApiMethodName.ShardData, typeof(ShardStatus));
                     return apis;
                 })
                 .UseStaticApi((apis) =>
                 {
-                    apis.AddApi(ApiName.StaticData, 3.0)
-                        .GetMethod(ApiMethodName.Champions, typeof(ChampionListDto))
+                    apis.AddApi(LolApiName.StaticData, 3.0)
+                        .GetMethod(LolApiMethodName.Champions, typeof(ChampionListDto))
                         .AddQueryParameter(new Dictionary<string, Type>()
                         {
                             {"locale",typeof(string)},
@@ -127,7 +127,7 @@ namespace RiotGamesApi.AspNetCore.Extensions
                             {"tags",typeof(List<ChampionTag>)},
                             {"dataById",typeof(bool)},
                         })
-                        .GetMethod(ApiMethodName.Champions, typeof(ChampionDto), ApiPath.OnlyId)
+                        .GetMethod(LolApiMethodName.Champions, typeof(ChampionDto), LolApiPath.OnlyId)
                         .AddQueryParameter(new Dictionary<string, Type>()
                         {
                             {"locale",typeof(string)},
@@ -135,67 +135,67 @@ namespace RiotGamesApi.AspNetCore.Extensions
                             {"tags",typeof(List<ChampionTag>)},
                             {"dataById",typeof(bool)},
                         })
-                        .GetMethod(ApiMethodName.Items, typeof(ItemListDto))
+                        .GetMethod(LolApiMethodName.Items, typeof(ItemListDto))
                         .AddQueryParameter(new Dictionary<string, Type>()
                         {
                             {"locale",typeof(string)},
                             {"version",typeof(string)},
                             {"tags",typeof(List<ItemTag>)},
                         })
-                        .GetMethod(ApiMethodName.Items, typeof(ItemDto), ApiPath.OnlyId)
+                        .GetMethod(LolApiMethodName.Items, typeof(ItemDto), LolApiPath.OnlyId)
                         .AddQueryParameter(new Dictionary<string, Type>()
                         {
                             {"locale",typeof(string)},
                             {"version",typeof(string)},
                             {"tags",typeof(List<ItemTag>)},
                         })
-                        .GetMethod(ApiMethodName.LanguageStrings, typeof(LanguageStringsDto))
+                        .GetMethod(LolApiMethodName.LanguageStrings, typeof(LanguageStringsDto))
                         .AddQueryParameter(new Dictionary<string, Type>()
                         {
                             {"locale",typeof(string)},
                             {"version",typeof(string)},
                         })
-                        .GetMethod(ApiMethodName.Languages, typeof(List<string>))
-                        .GetMethod(ApiMethodName.Maps, typeof(MapDataDto))
+                        .GetMethod(LolApiMethodName.Languages, typeof(List<string>))
+                        .GetMethod(LolApiMethodName.Maps, typeof(MapDataDto))
                         .AddQueryParameter(new Dictionary<string, Type>()
                         {
                             {"locale",typeof(string)},
                             {"version",typeof(string)},
                         })
-                        .GetMethod(ApiMethodName.Masteries, typeof(MasteryListDto)).AddQueryParameter(new Dictionary<string, Type>()
+                        .GetMethod(LolApiMethodName.Masteries, typeof(MasteryListDto)).AddQueryParameter(new Dictionary<string, Type>()
                         {
                             {"locale",typeof(string)},
                             {"version",typeof(string)},
                             {"tags",typeof(List<MasteryTag>)},
                         })
-                        .GetMethod(ApiMethodName.Masteries, typeof(MasteryDto), ApiPath.OnlyId).AddQueryParameter(new Dictionary<string, Type>()
+                        .GetMethod(LolApiMethodName.Masteries, typeof(MasteryDto), LolApiPath.OnlyId).AddQueryParameter(new Dictionary<string, Type>()
                         {
                             {"locale",typeof(string)},
                             {"version",typeof(string)},
                             {"tags",typeof(List<MasteryTag>)},
                         })
-                        .GetMethod(ApiMethodName.ProfileIcons, typeof(ProfileIconDataDto))
+                        .GetMethod(LolApiMethodName.ProfileIcons, typeof(ProfileIconDataDto))
                         .AddQueryParameter(new Dictionary<string, Type>()
                         {
                             {"locale",typeof(string)},
                             {"version",typeof(string)},
                         })
-                        .GetMethod(ApiMethodName.Realms, typeof(RealmDto))
-                        .GetMethod(ApiMethodName.Runes, typeof(RuneListDto))
+                        .GetMethod(LolApiMethodName.Realms, typeof(RealmDto))
+                        .GetMethod(LolApiMethodName.Runes, typeof(RuneListDto))
                         .AddQueryParameter(new Dictionary<string, Type>()
                         {
                             {"locale",typeof(string)},
                             {"version",typeof(string)},
                             {"tags",typeof(List<RuneTag>)},
                         })
-                        .GetMethod(ApiMethodName.Runes, typeof(RuneDto), ApiPath.OnlyId)
+                        .GetMethod(LolApiMethodName.Runes, typeof(RuneDto), LolApiPath.OnlyId)
                         .AddQueryParameter(new Dictionary<string, Type>()
                         {
                             {"locale",typeof(string)},
                             {"version",typeof(string)},
                             {"tags",typeof(List<RuneTag>)},
                         })
-                        .GetMethod(ApiMethodName.SummonerSpells, typeof(SummonerSpellListDto))
+                        .GetMethod(LolApiMethodName.SummonerSpells, typeof(SummonerSpellListDto))
                         .AddQueryParameter(new Dictionary<string, Type>()
                         {
                             {"locale",typeof(string)},
@@ -203,7 +203,7 @@ namespace RiotGamesApi.AspNetCore.Extensions
                             {"dataById",typeof(bool) },
                             {"tags",typeof(List<SummonerSpellTag>) }
                         })
-                        .GetMethod(ApiMethodName.SummonerSpells, typeof(SummonerSpellDto), ApiPath.OnlyId)
+                        .GetMethod(LolApiMethodName.SummonerSpells, typeof(SummonerSpellDto), LolApiPath.OnlyId)
                         .AddQueryParameter(new Dictionary<string, Type>()
                         {
                             {"locale",typeof(string)},
@@ -211,76 +211,76 @@ namespace RiotGamesApi.AspNetCore.Extensions
                             {"dataById",typeof(bool) },
                             {"tags",typeof(List<SummonerSpellTag>) }
                         })
-                        .GetMethod(ApiMethodName.Versions, typeof(List<string>));
+                        .GetMethod(LolApiMethodName.Versions, typeof(List<string>));
                     return apis;
                 })
                 .UseNonStaticApi(apis =>
                 {
-                    apis.AddApi(ApiName.ChampionMastery, 3.0)
-                        .GetMethod(ApiMethodName.ChampionMasteries, typeof(List<ChampionMasteryDto>), ApiPath.BySummoner)
-                        .GetMethod(ApiMethodName.ChampionMasteries, typeof(ChampionMasteryDto), ApiPath.BySummoner, ApiPath.ByChampion)
-                        .GetMethod(ApiMethodName.Scores, typeof(int), ApiPath.BySummoner);
+                    apis.AddApi(LolApiName.ChampionMastery, 3.0)
+                        .GetMethod(LolApiMethodName.ChampionMasteries, typeof(List<ChampionMasteryDto>), LolApiPath.BySummoner)
+                        .GetMethod(LolApiMethodName.ChampionMasteries, typeof(ChampionMasteryDto), LolApiPath.BySummoner, LolApiPath.ByChampion)
+                        .GetMethod(LolApiMethodName.Scores, typeof(int), LolApiPath.BySummoner);
 
-                    apis.AddApi(ApiName.Summoner, 3.0)
-                        .GetMethod(ApiMethodName.Summoners, typeof(SummonerDto), ApiPath.ByAccount)
-                        .GetMethod(ApiMethodName.Summoners, typeof(SummonerDto), ApiPath.ByName)
-                        .GetMethod(ApiMethodName.Summoners, typeof(SummonerDto), ApiPath.OnlySummonerId);
+                    apis.AddApi(LolApiName.Summoner, 3.0)
+                        .GetMethod(LolApiMethodName.Summoners, typeof(SummonerDto), LolApiPath.ByAccount)
+                        .GetMethod(LolApiMethodName.Summoners, typeof(SummonerDto), LolApiPath.ByName)
+                        .GetMethod(LolApiMethodName.Summoners, typeof(SummonerDto), LolApiPath.OnlySummonerId);
 
-                    apis.AddApi(ApiName.Platform, 3.0)
-                        .GetMethod(ApiMethodName.Champions, typeof(RiotApi.NonStaticEndPoints.Champion.ChampionListDto))
-                        .GetMethod(ApiMethodName.Champions, typeof(RiotApi.NonStaticEndPoints.Champion.ChampionDto), ApiPath.OnlyId)
-                        .GetMethod(ApiMethodName.Masteries, typeof(MasteryPagesDto), ApiPath.BySummoner)
-                        .GetMethod(ApiMethodName.Runes, typeof(RunePagesDto), ApiPath.BySummoner);
+                    apis.AddApi(LolApiName.Platform, 3.0)
+                        .GetMethod(LolApiMethodName.Champions, typeof(RiotApi.NonStaticEndPoints.Champion.ChampionListDto))
+                        .GetMethod(LolApiMethodName.Champions, typeof(RiotApi.NonStaticEndPoints.Champion.ChampionDto), LolApiPath.OnlyId)
+                        .GetMethod(LolApiMethodName.Masteries, typeof(MasteryPagesDto), LolApiPath.BySummoner)
+                        .GetMethod(LolApiMethodName.Runes, typeof(RunePagesDto), LolApiPath.BySummoner);
 
-                    apis.AddApi(ApiName.League, 3.0)
-                        .GetMethod(ApiMethodName.ChallengerLeagues, typeof(LeagueListDTO), ApiPath.ByQueue)
-                        .GetMethod(ApiMethodName.Leagues, typeof(List<LeagueListDTO>), ApiPath.BySummoner)
-                        .GetMethod(ApiMethodName.MasterLeagues, typeof(LeagueListDTO), ApiPath.ByQueue)
-                        .GetMethod(ApiMethodName.Positions, typeof(List<LeaguePositionDTO>), ApiPath.BySummoner);
+                    apis.AddApi(LolApiName.League, 3.0)
+                        .GetMethod(LolApiMethodName.ChallengerLeagues, typeof(LeagueListDTO), LolApiPath.ByQueue)
+                        .GetMethod(LolApiMethodName.Leagues, typeof(List<LeagueListDTO>), LolApiPath.BySummoner)
+                        .GetMethod(LolApiMethodName.MasterLeagues, typeof(LeagueListDTO), LolApiPath.ByQueue)
+                        .GetMethod(LolApiMethodName.Positions, typeof(List<LeaguePositionDTO>), LolApiPath.BySummoner);
 
                     //version testing
                     //apis.AddApi(ApiName.League, 3.1)
                     //    .SubApi(ApiMiddleName.ChallengerLeagues, typeof(LeagueListDTO), ApiParam.ByQueue);
 
-                    apis.AddApi(ApiName.Match, 3.0)
-                        .GetMethod(ApiMethodName.Matches, typeof(MatchDto), ApiPath.OnlyMatchId)
-                        .GetMethod(ApiMethodName.MatchLists, typeof(MatchlistDto), ApiPath.ByAccount)
-                        .GetMethod(ApiMethodName.MatchLists, typeof(MatchlistDto), ApiPath.ByAccountRecent)
-                        .GetMethod(ApiMethodName.Timelines, typeof(MatchTimelineDto), ApiPath.ByMatch)
-                        .GetMethod(ApiMethodName.Matches, typeof(List<long>), ApiPath.ByTournamentCodeIds)
-                        .GetMethod(ApiMethodName.Matches, typeof(MatchDto), ApiPath.OnlyMatchId, ApiPath.ByTournamentCode);
+                    apis.AddApi(LolApiName.Match, 3.0)
+                        .GetMethod(LolApiMethodName.Matches, typeof(MatchDto), LolApiPath.OnlyMatchId)
+                        .GetMethod(LolApiMethodName.MatchLists, typeof(MatchlistDto), LolApiPath.ByAccount)
+                        .GetMethod(LolApiMethodName.MatchLists, typeof(MatchlistDto), LolApiPath.ByAccountRecent)
+                        .GetMethod(LolApiMethodName.Timelines, typeof(MatchTimelineDto), LolApiPath.ByMatch)
+                        .GetMethod(LolApiMethodName.Matches, typeof(List<long>), LolApiPath.ByTournamentCodeIds)
+                        .GetMethod(LolApiMethodName.Matches, typeof(MatchDto), LolApiPath.OnlyMatchId, LolApiPath.ByTournamentCode);
 
-                    apis.AddApi(ApiName.Spectator, 3.0)
-                        .GetMethod(ApiMethodName.ActiveGames, typeof(CurrentGameInfo), ApiPath.BySummoner)
-                        .GetMethod(ApiMethodName.FeaturedGames, typeof(FeaturedGames));
+                    apis.AddApi(LolApiName.Spectator, 3.0)
+                        .GetMethod(LolApiMethodName.ActiveGames, typeof(CurrentGameInfo), LolApiPath.BySummoner)
+                        .GetMethod(LolApiMethodName.FeaturedGames, typeof(FeaturedGames));
 
                     return apis;
                 })
                 .UseTournamentApi((apis) =>
                 {
-                    apis.AddApi(ApiName.TournamentStub, 3.0)
-                        .PostMethod(ApiMethodName.Codes, typeof(List<string>), typeof(TournamentCodeParameters), false)
+                    apis.AddApi(LolApiName.TournamentStub, 3.0)
+                        .PostMethod(LolApiMethodName.Codes, typeof(List<string>), typeof(TournamentCodeParameters), false)
                         .AddQueryParameter(new Dictionary<string, Type>()
                         {
                             {"count", typeof(int)},
                             {"tournamentId", typeof(int)}
                         })
-                        .GetMethod(ApiMethodName.LobbyEvents, typeof(LobbyEventDTOWrapper), ApiPath.ByCode)
-                        .PostMethod(ApiMethodName.Providers, typeof(int), typeof(ProviderRegistrationParameters), true)
-                        .PostMethod(ApiMethodName.Tournaments, typeof(int), typeof(TournamentRegistrationParameters), true);
+                        .GetMethod(LolApiMethodName.LobbyEvents, typeof(LobbyEventDTOWrapper), LolApiPath.ByCode)
+                        .PostMethod(LolApiMethodName.Providers, typeof(int), typeof(ProviderRegistrationParameters), true)
+                        .PostMethod(LolApiMethodName.Tournaments, typeof(int), typeof(TournamentRegistrationParameters), true);
 
-                    apis.AddApi(ApiName.Tournament, 3.0)
-                        .PostMethod(ApiMethodName.Codes, typeof(List<string>), typeof(TournamentCodeParameters), true)
+                    apis.AddApi(LolApiName.Tournament, 3.0)
+                        .PostMethod(LolApiMethodName.Codes, typeof(List<string>), typeof(RiotGamesApi.AspNetCore.RiotApi.TournamentEndPoints.TournamentCodeParameters), true)
                         .AddQueryParameter(new Dictionary<string, Type>()
                         {
                             {"count", typeof(int)},
                             {"tournamentId", typeof(int)}
                         })
-                        .PutMethod(ApiMethodName.Codes, typeof(TournamentCodeUpdateParameters), false, ApiPath.OnlyTournamentCode)
-                        .GetMethod(ApiMethodName.Codes, typeof(TournamentCodeDTO), ApiPath.OnlyTournamentCode)
-                        .GetMethod(ApiMethodName.LobbyEvents, typeof(LobbyEventDTOWrapper), ApiPath.ByCode)
-                        .PostMethod(ApiMethodName.Providers, typeof(int), typeof(ProviderRegistrationParameters), true)
-                        .PostMethod(ApiMethodName.Tournaments, typeof(int), typeof(TournamentRegistrationParameters), true);
+                        .PutMethod(LolApiMethodName.Codes, typeof(TournamentCodeUpdateParameters), false, LolApiPath.OnlyTournamentCode)
+                        .GetMethod(LolApiMethodName.Codes, typeof(TournamentCodeDTO), LolApiPath.OnlyTournamentCode)
+                        .GetMethod(LolApiMethodName.LobbyEvents, typeof(RiotGamesApi.AspNetCore.RiotApi.TournamentEndPoints.LobbyEventDTOWrapper), LolApiPath.ByCode)
+                        .PostMethod(LolApiMethodName.Providers, typeof(int), typeof(RiotGamesApi.AspNetCore.RiotApi.TournamentEndPoints.ProviderRegistrationParameters), true)
+                        .PostMethod(LolApiMethodName.Tournaments, typeof(int), typeof(RiotGamesApi.AspNetCore.RiotApi.TournamentEndPoints.TournamentRegistrationParameters), true);
 
                     return apis;
                 });

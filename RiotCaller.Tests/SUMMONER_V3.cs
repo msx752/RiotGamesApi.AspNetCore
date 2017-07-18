@@ -13,9 +13,9 @@ namespace RiotGamesApi.Tests
         public void GetSummonerByAccId()
         {
             var rit = new ApiCall()
-                .SelectApi<SummonerDto>(ApiName.Summoner)
-                .For(ApiMethodName.Summoners)
-                .AddParameter(new ApiParameter(ApiPath.ByAccount, AccountId))
+                .SelectApi<SummonerDto>(LolApiName.Summoner)
+                .For(LolApiMethodName.Summoners)
+                .AddParameter(new ApiParameter(LolApiPath.ByAccount, AccountId))
                 .Build(PlatformType)
                 .Get();
             Assert.False(rit.HasError);
@@ -25,9 +25,9 @@ namespace RiotGamesApi.Tests
         public void GetSummonerBySumName()
         {
             var rit = new ApiCall()
-                .SelectApi<SummonerDto>(ApiName.Summoner)
-                .For(ApiMethodName.Summoners)
-                .AddParameter(new ApiParameter(ApiPath.ByName, SummonerName))
+                .SelectApi<SummonerDto>(LolApiName.Summoner)
+                .For(LolApiMethodName.Summoners)
+                .AddParameter(new ApiParameter(LolApiPath.ByName, SummonerName))
                 .Build(PlatformType)
                 .Get();
             Assert.False(rit.HasError);
@@ -37,9 +37,9 @@ namespace RiotGamesApi.Tests
         public void GetSummonerByIdOnly()
         {
             var rit = new ApiCall()
-                .SelectApi<SummonerDto>(ApiName.Summoner)
-                .For(ApiMethodName.Summoners)
-                .AddParameter(new ApiParameter(ApiPath.OnlySummonerId, SummonerId))
+                .SelectApi<SummonerDto>(LolApiName.Summoner)
+                .For(LolApiMethodName.Summoners)
+                .AddParameter(new ApiParameter(LolApiPath.OnlySummonerId, SummonerId))
                 .Build(PlatformType)
                 .Get();
             Assert.False(rit.HasError);

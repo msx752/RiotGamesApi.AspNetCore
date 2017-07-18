@@ -53,12 +53,12 @@ namespace RiotGamesApi.AspNetCore
 
         public static string GenerateApiClass()
         {
-            Dictionary<UrlType, string> Classes = new Dictionary<UrlType, string>();
-            Dictionary<UrlType, Models.RiotGamesApi> TournamenApis = new Dictionary<UrlType, Models.RiotGamesApi>();
+            Dictionary<LolUrlType, string> Classes = new Dictionary<LolUrlType, string>();
+            Dictionary<LolUrlType, Models.RiotGamesApi> TournamenApis = new Dictionary<LolUrlType, Models.RiotGamesApi>();
             foreach (var selected in ApiOptions.RiotGamesApis)
             {
                 var urlType = selected.Key;
-                if (urlType == UrlType.Tournament)
+                if (urlType == LolUrlType.Tournament)
                 {
                     TournamenApis.Add(selected.Key, selected.Value);
                     continue;
@@ -81,7 +81,7 @@ namespace RiotGamesApi.AspNetCore
                         }
                         string @parameters = "";
                         string @RiotGamesApiParameters = "";
-                        ApiPath? uniqueParam = null;
+                        LolApiPath? uniqueParam = null;
                         for (int i = 0; i < urlSub.RiotGamesApiPaths.Length; i++)
                         {
                             var selectedParam = urlSub.RiotGamesApiPaths[i];
@@ -94,14 +94,14 @@ namespace RiotGamesApi.AspNetCore
                             string paramType = selectedParam.FindParameterType().Name;
                             @parameters += $", {paramType} _{paramName}";
 
-                            @RiotGamesApiParameters += $"new {nameof(ApiParameter)}({nameof(ApiPath)}.{paramName}, _{paramName})";
+                            @RiotGamesApiParameters += $"new {nameof(ApiParameter)}({nameof(LolApiPath)}.{paramName}, _{paramName})";
                             if (i != urlSub.RiotGamesApiPaths.Length - 1)
                             {
                                 @RiotGamesApiParameters += ",\r\n";
                             }
                         }
                         string @useCacheMethod = "";
-                        if (selected.Key == UrlType.Static)//useCache parameter
+                        if (selected.Key == LolUrlType.Static)//useCache parameter
                         {
                             @parameters += ", bool _useCache = false";
                             @useCacheMethod = $".UseCache(_useCache)\r\n";
@@ -147,11 +147,11 @@ namespace RiotGamesApi.AspNetCore
                         {
                             @optionalParameters = "";
                         }
-                        string @method = $"\r\npublic static IResult<{t1}> Get{urlSub.ApiMethodName}{uniqueParam}({nameof(Platform)} platform{@parameters})\r\n{{";
+                        string @method = $"\r\npublic static IResult<{t1}> Get{urlSub.ApiMethodName}{uniqueParam}({nameof(ServicePlatform)} platform{@parameters})\r\n{{";
 
                         string @apiCall = $"\r\nIResult<{t1}> rit = new {nameof(ApiCall)}()\r\n" +
-                                          $".SelectApi<{t1}>({nameof(ApiName)}.{url.ApiName})\r\n" +
-                                          $".For({nameof(ApiMethodName)}.{urlSub.ApiMethodName})\r\n" +
+                                          $".SelectApi<{t1}>({nameof(LolApiName)}.{url.ApiName})\r\n" +
+                                          $".For({nameof(LolApiMethodName)}.{urlSub.ApiMethodName})\r\n" +
                                           $".AddParameter({@RiotGamesApiParameters})\r\n" +
                                           ".Build(platform)\r\n" +
                                           @useCacheMethod +
