@@ -20,7 +20,7 @@ namespace RiotGamesApi.Tests
                 .SelectApi<LobbyEventDTOWrapper>(LolApiName.TournamentStub)
                 .For(LolApiMethodName.LobbyEvents)
                 .AddParameter(new ApiParameter(LolApiPath.ByCode, TournamentCode))
-                .Build(PlatformType)
+                .Build(PhysicalRegion.americas)
                 .Get();
             Assert.False(rit.HasError);
         }
