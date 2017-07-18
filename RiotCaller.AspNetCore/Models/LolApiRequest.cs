@@ -257,43 +257,98 @@ namespace RiotGamesApi.AspNetCore.Models
 
         public IResult<T> Put(object bodyParameter = null)
         {
-            try
-            {
-                RegisterApiKey();
-                HttpRequestMessage request = CreateHttpRequest(HttpMethod.Put);
-                HttpClient httpClient = new HttpClient();
-                StringContent data = null;
-                if (bodyParameter != null)
-                    data = new StringContent(JsonConvert.SerializeObject(bodyParameter));
-                else
-                    data = new StringContent("");
+            PutAsync(bodyParameter).Wait();
+            return RiotResult;
+        }
 
-                using (HttpResponseMessage response = httpClient.PutAsync(request.RequestUri, data).Result)
+        public async Task<IResult<T>> PutAsync(object bodyParameter = null)
+        {
+            return await Task.Run(async () =>
+            {
+                try
                 {
-                    if (!response.IsSuccessStatusCode)
-                    {
-                        ExceptionControl(response);
-                    }
+                    RegisterApiKey();
+                    HttpRequestMessage request = CreateHttpRequest(HttpMethod.Put);
+                    HttpClient httpClient = new HttpClient();
+                    StringContent data = null;
+                    if (bodyParameter != null)
+                        data = new StringContent(JsonConvert.SerializeObject(bodyParameter));
                     else
+                        data = new StringContent("");
+
+                    using (HttpResponseMessage response = await httpClient.PutAsync(request.RequestUri, data))
                     {
-                        using (HttpContent content = response.Content)
+                        if (!response.IsSuccessStatusCode)
                         {
-                            string json = "1";//???? what is the type of response class
-                            RiotResult.Result = JsonConvert.DeserializeObject<T>(json);
+                            ExceptionControl(response);
+                        }
+                        else
+                        {
+                            using (HttpContent content = response.Content)
+                            {
+                                string json = "1";//???? what is the type of response class
+                                RiotResult.Result = JsonConvert.DeserializeObject<T>(json);
+                            }
                         }
                     }
                 }
-            }
-            catch (Exception e)
-            {
-                RiotResult.Exception = e;
-            }
-            return RiotResult;
+                catch (Exception e)
+                {
+                    RiotResult.Exception = e;
+                }
+                return RiotResult;
+            });
         }
 
         public IResult<T> Post(object bodyParameter = null)
         {
             return Post(new Dictionary<string, object>(), bodyParameter);
+        }
+
+        public Task<IResult<T>> PostAsync(object bodyParameter = null)
+        {
+            return PostAsync(bodyParameter);
+        }
+
+        public async Task<IResult<T>> PostAsync(Dictionary<string, object> optionalParameters = null, object bodyParameter = null)
+        {
+            return await Task.Run(async () =>
+            {
+                try
+                {
+                    RegisterApiKey();
+                    RegisterQueryParameter(optionalParameters);
+
+                    HttpRequestMessage request = CreateHttpRequest(HttpMethod.Post);
+                    HttpClient httpClient = new HttpClient();
+                    StringContent data = null;
+                    if (bodyParameter != null)
+                        data = new StringContent(JsonConvert.SerializeObject(bodyParameter));
+                    else
+                        data = new StringContent("");
+
+                    using (HttpResponseMessage response = await httpClient.PostAsync(request.RequestUri, data))
+                    {
+                        if (!response.IsSuccessStatusCode)
+                        {
+                            ExceptionControl(response);
+                        }
+                        else
+                        {
+                            using (HttpContent content = response.Content)
+                            {
+                                string json = content.ReadAsStringAsync().Result;
+                                RiotResult.Result = JsonConvert.DeserializeObject<T>(json);
+                            }
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    RiotResult.Exception = e;
+                }
+                return RiotResult;
+            });
         }
 
         private void ExceptionControl(HttpResponseMessage response)
@@ -328,39 +383,7 @@ namespace RiotGamesApi.AspNetCore.Models
 
         public IResult<T> Post(Dictionary<string, object> optionalParameters = null, object bodyParameter = null)
         {
-            try
-            {
-                RegisterApiKey();
-                RegisterQueryParameter(optionalParameters);
-
-                HttpRequestMessage request = CreateHttpRequest(HttpMethod.Post);
-                HttpClient httpClient = new HttpClient();
-                StringContent data = null;
-                if (bodyParameter != null)
-                    data = new StringContent(JsonConvert.SerializeObject(bodyParameter));
-                else
-                    data = new StringContent("");
-
-                using (HttpResponseMessage response = httpClient.PostAsync(request.RequestUri, data).Result)
-                {
-                    if (!response.IsSuccessStatusCode)
-                    {
-                        ExceptionControl(response);
-                    }
-                    else
-                    {
-                        using (HttpContent content = response.Content)
-                        {
-                            string json = content.ReadAsStringAsync().Result;
-                            RiotResult.Result = JsonConvert.DeserializeObject<T>(json);
-                        }
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                RiotResult.Exception = e;
-            }
+            PostAsync(optionalParameters, bodyParameter).Wait();
             return RiotResult;
         }
 

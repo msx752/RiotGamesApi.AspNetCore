@@ -3,6 +3,7 @@ using RiotGamesApi.AspNetCore.Models;
 using RiotGamesApi.AspNetCore.RiotApi.Enums;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace RiotGamesApi.AspNetCore
 {
@@ -24,20 +25,28 @@ namespace RiotGamesApi.AspNetCore
     //"https://{platformId}.api.riotgames.com/lol
     public class Status
     {
-        private Status_v3_1 _Statusv31;
-        public Status_v3_1 Statusv31 { get { return _Statusv31 ?? (_Statusv31 = new Status_v3_1()); } }
+        private Status_v3 _Statusv3;
+        public Status_v3 Statusv3 { get { return _Statusv3 ?? (_Statusv3 = new Status_v3()); } }
 
-        //"Status/v3.1
-        public class Status_v3_1
+        //"Status/v3
+        public class Status_v3
         {
             public RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.StatusEndPoints.ShardStatus> GetShardData(ServicePlatform platform)
             {
-                RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.StatusEndPoints.ShardStatus> rit = new ApiCall()
-                    .SelectApi<RiotGamesApi.AspNetCore.RiotApi.StatusEndPoints.ShardStatus>(LolApiName.Status, 3.1)
+                var t = GetShardDataAsync(platform);
+                t.Wait();
+                RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.StatusEndPoints.ShardStatus> rit = t.Result;
+                return rit;
+            }
+
+            public async Task<RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.StatusEndPoints.ShardStatus>> GetShardDataAsync(ServicePlatform platform)
+            {
+                RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.StatusEndPoints.ShardStatus> rit = await new ApiCall()
+                    .SelectApi<RiotGamesApi.AspNetCore.RiotApi.StatusEndPoints.ShardStatus>(LolApiName.Status, 3)
                     .For(LolApiMethodName.ShardData)
                     .AddParameter()
                     .Build(platform)
-                    .Get();
+                    .GetAsync();
                 return rit;
             }
         }
@@ -55,13 +64,21 @@ namespace RiotGamesApi.AspNetCore
         {
             public RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.Champions.ChampionListDto> GetChampions(ServicePlatform platform, bool _useCache = false, String _locale = null, String _version = null, List<RiotGamesApi.AspNetCore.RiotApi.Enums.ChampionTag> _tags = null, Boolean _dataById = false)
             {
-                RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.Champions.ChampionListDto> rit = new ApiCall()
+                var t = GetChampionsAsync(platform, _useCache, _locale, _version, _tags, _dataById);
+                t.Wait();
+                RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.Champions.ChampionListDto> rit = t.Result;
+                return rit;
+            }
+
+            public async Task<RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.Champions.ChampionListDto>> GetChampionsAsync(ServicePlatform platform, bool _useCache = false, String _locale = null, String _version = null, List<RiotGamesApi.AspNetCore.RiotApi.Enums.ChampionTag> _tags = null, Boolean _dataById = false)
+            {
+                RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.Champions.ChampionListDto> rit = await new ApiCall()
                     .SelectApi<RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.Champions.ChampionListDto>(LolApiName.StaticData, 3)
                     .For(LolApiMethodName.Champions)
                     .AddParameter()
                     .Build(platform)
                     .UseCache(_useCache)
-                    .Get(new Dictionary<string, object>()
+                    .GetAsync(new Dictionary<string, object>()
                         {
                             {"locale",_locale },
                             {"version",_version },
@@ -74,13 +91,21 @@ namespace RiotGamesApi.AspNetCore
 
             public RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.Champions.ChampionDto> GetChampionsOnlyId(ServicePlatform platform, Int64 _OnlyId, bool _useCache = false, String _locale = null, String _version = null, List<RiotGamesApi.AspNetCore.RiotApi.Enums.ChampionTag> _tags = null, Boolean _dataById = false)
             {
-                RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.Champions.ChampionDto> rit = new ApiCall()
+                var t = GetChampionsOnlyIdAsync(platform, _OnlyId, _useCache, _locale, _version, _tags, _dataById);
+                t.Wait();
+                RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.Champions.ChampionDto> rit = t.Result;
+                return rit;
+            }
+
+            public async Task<RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.Champions.ChampionDto>> GetChampionsOnlyIdAsync(ServicePlatform platform, Int64 _OnlyId, bool _useCache = false, String _locale = null, String _version = null, List<RiotGamesApi.AspNetCore.RiotApi.Enums.ChampionTag> _tags = null, Boolean _dataById = false)
+            {
+                RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.Champions.ChampionDto> rit = await new ApiCall()
                     .SelectApi<RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.Champions.ChampionDto>(LolApiName.StaticData, 3)
                     .For(LolApiMethodName.Champions)
                     .AddParameter(new ApiParameter(LolApiPath.OnlyId, _OnlyId))
                     .Build(platform)
                     .UseCache(_useCache)
-                    .Get(new Dictionary<string, object>()
+                    .GetAsync(new Dictionary<string, object>()
                         {
                             {"locale",_locale },
                             {"version",_version },
@@ -93,13 +118,21 @@ namespace RiotGamesApi.AspNetCore
 
             public RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.Items.ItemListDto> GetItems(ServicePlatform platform, bool _useCache = false, String _locale = null, String _version = null, List<RiotGamesApi.AspNetCore.RiotApi.Enums.ItemTag> _tags = null)
             {
-                RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.Items.ItemListDto> rit = new ApiCall()
+                var t = GetItemsAsync(platform, _useCache, _locale, _version, _tags);
+                t.Wait();
+                RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.Items.ItemListDto> rit = t.Result;
+                return rit;
+            }
+
+            public async Task<RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.Items.ItemListDto>> GetItemsAsync(ServicePlatform platform, bool _useCache = false, String _locale = null, String _version = null, List<RiotGamesApi.AspNetCore.RiotApi.Enums.ItemTag> _tags = null)
+            {
+                RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.Items.ItemListDto> rit = await new ApiCall()
                     .SelectApi<RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.Items.ItemListDto>(LolApiName.StaticData, 3)
                     .For(LolApiMethodName.Items)
                     .AddParameter()
                     .Build(platform)
                     .UseCache(_useCache)
-                    .Get(new Dictionary<string, object>()
+                    .GetAsync(new Dictionary<string, object>()
                         {
                             {"locale",_locale },
                             {"version",_version },
@@ -111,13 +144,21 @@ namespace RiotGamesApi.AspNetCore
 
             public RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.Items.ItemDto> GetItemsOnlyId(ServicePlatform platform, Int64 _OnlyId, bool _useCache = false, String _locale = null, String _version = null, List<RiotGamesApi.AspNetCore.RiotApi.Enums.ItemTag> _tags = null)
             {
-                RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.Items.ItemDto> rit = new ApiCall()
+                var t = GetItemsOnlyIdAsync(platform, _OnlyId, _useCache, _locale, _version, _tags);
+                t.Wait();
+                RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.Items.ItemDto> rit = t.Result;
+                return rit;
+            }
+
+            public async Task<RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.Items.ItemDto>> GetItemsOnlyIdAsync(ServicePlatform platform, Int64 _OnlyId, bool _useCache = false, String _locale = null, String _version = null, List<RiotGamesApi.AspNetCore.RiotApi.Enums.ItemTag> _tags = null)
+            {
+                RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.Items.ItemDto> rit = await new ApiCall()
                     .SelectApi<RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.Items.ItemDto>(LolApiName.StaticData, 3)
                     .For(LolApiMethodName.Items)
                     .AddParameter(new ApiParameter(LolApiPath.OnlyId, _OnlyId))
                     .Build(platform)
                     .UseCache(_useCache)
-                    .Get(new Dictionary<string, object>()
+                    .GetAsync(new Dictionary<string, object>()
                         {
                             {"locale",_locale },
                             {"version",_version },
@@ -129,13 +170,21 @@ namespace RiotGamesApi.AspNetCore
 
             public RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.LanguageStrings.LanguageStringsDto> GetLanguageStrings(ServicePlatform platform, bool _useCache = false, String _locale = null, String _version = null)
             {
-                RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.LanguageStrings.LanguageStringsDto> rit = new ApiCall()
+                var t = GetLanguageStringsAsync(platform, _useCache, _locale, _version);
+                t.Wait();
+                RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.LanguageStrings.LanguageStringsDto> rit = t.Result;
+                return rit;
+            }
+
+            public async Task<RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.LanguageStrings.LanguageStringsDto>> GetLanguageStringsAsync(ServicePlatform platform, bool _useCache = false, String _locale = null, String _version = null)
+            {
+                RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.LanguageStrings.LanguageStringsDto> rit = await new ApiCall()
                     .SelectApi<RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.LanguageStrings.LanguageStringsDto>(LolApiName.StaticData, 3)
                     .For(LolApiMethodName.LanguageStrings)
                     .AddParameter()
                     .Build(platform)
                     .UseCache(_useCache)
-                    .Get(new Dictionary<string, object>()
+                    .GetAsync(new Dictionary<string, object>()
                         {
                             {"locale",_locale },
                             {"version",_version },
@@ -146,25 +195,41 @@ namespace RiotGamesApi.AspNetCore
 
             public RiotGamesApi.AspNetCore.Interfaces.IResult<List<System.String>> GetLanguages(ServicePlatform platform, bool _useCache = false)
             {
-                RiotGamesApi.AspNetCore.Interfaces.IResult<List<System.String>> rit = new ApiCall()
+                var t = GetLanguagesAsync(platform, _useCache);
+                t.Wait();
+                RiotGamesApi.AspNetCore.Interfaces.IResult<List<System.String>> rit = t.Result;
+                return rit;
+            }
+
+            public async Task<RiotGamesApi.AspNetCore.Interfaces.IResult<List<System.String>>> GetLanguagesAsync(ServicePlatform platform, bool _useCache = false)
+            {
+                RiotGamesApi.AspNetCore.Interfaces.IResult<List<System.String>> rit = await new ApiCall()
                     .SelectApi<List<System.String>>(LolApiName.StaticData, 3)
                     .For(LolApiMethodName.Languages)
                     .AddParameter()
                     .Build(platform)
                     .UseCache(_useCache)
-                    .Get();
+                    .GetAsync();
                 return rit;
             }
 
             public RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.Maps.MapDataDto> GetMaps(ServicePlatform platform, bool _useCache = false, String _locale = null, String _version = null)
             {
-                RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.Maps.MapDataDto> rit = new ApiCall()
+                var t = GetMapsAsync(platform, _useCache, _locale, _version);
+                t.Wait();
+                RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.Maps.MapDataDto> rit = t.Result;
+                return rit;
+            }
+
+            public async Task<RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.Maps.MapDataDto>> GetMapsAsync(ServicePlatform platform, bool _useCache = false, String _locale = null, String _version = null)
+            {
+                RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.Maps.MapDataDto> rit = await new ApiCall()
                     .SelectApi<RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.Maps.MapDataDto>(LolApiName.StaticData, 3)
                     .For(LolApiMethodName.Maps)
                     .AddParameter()
                     .Build(platform)
                     .UseCache(_useCache)
-                    .Get(new Dictionary<string, object>()
+                    .GetAsync(new Dictionary<string, object>()
                         {
                             {"locale",_locale },
                             {"version",_version },
@@ -175,13 +240,21 @@ namespace RiotGamesApi.AspNetCore
 
             public RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.Masteries.MasteryListDto> GetMasteries(ServicePlatform platform, bool _useCache = false, String _locale = null, String _version = null, List<RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.Masteries.MasteryTag> _tags = null)
             {
-                RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.Masteries.MasteryListDto> rit = new ApiCall()
+                var t = GetMasteriesAsync(platform, _useCache, _locale, _version, _tags);
+                t.Wait();
+                RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.Masteries.MasteryListDto> rit = t.Result;
+                return rit;
+            }
+
+            public async Task<RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.Masteries.MasteryListDto>> GetMasteriesAsync(ServicePlatform platform, bool _useCache = false, String _locale = null, String _version = null, List<RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.Masteries.MasteryTag> _tags = null)
+            {
+                RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.Masteries.MasteryListDto> rit = await new ApiCall()
                     .SelectApi<RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.Masteries.MasteryListDto>(LolApiName.StaticData, 3)
                     .For(LolApiMethodName.Masteries)
                     .AddParameter()
                     .Build(platform)
                     .UseCache(_useCache)
-                    .Get(new Dictionary<string, object>()
+                    .GetAsync(new Dictionary<string, object>()
                         {
                             {"locale",_locale },
                             {"version",_version },
@@ -193,13 +266,21 @@ namespace RiotGamesApi.AspNetCore
 
             public RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.Masteries.MasteryDto> GetMasteriesOnlyId(ServicePlatform platform, Int64 _OnlyId, bool _useCache = false, String _locale = null, String _version = null, List<RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.Masteries.MasteryTag> _tags = null)
             {
-                RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.Masteries.MasteryDto> rit = new ApiCall()
+                var t = GetMasteriesOnlyIdAsync(platform, _OnlyId, _useCache, _locale, _version, _tags);
+                t.Wait();
+                RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.Masteries.MasteryDto> rit = t.Result;
+                return rit;
+            }
+
+            public async Task<RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.Masteries.MasteryDto>> GetMasteriesOnlyIdAsync(ServicePlatform platform, Int64 _OnlyId, bool _useCache = false, String _locale = null, String _version = null, List<RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.Masteries.MasteryTag> _tags = null)
+            {
+                RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.Masteries.MasteryDto> rit = await new ApiCall()
                     .SelectApi<RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.Masteries.MasteryDto>(LolApiName.StaticData, 3)
                     .For(LolApiMethodName.Masteries)
                     .AddParameter(new ApiParameter(LolApiPath.OnlyId, _OnlyId))
                     .Build(platform)
                     .UseCache(_useCache)
-                    .Get(new Dictionary<string, object>()
+                    .GetAsync(new Dictionary<string, object>()
                         {
                             {"locale",_locale },
                             {"version",_version },
@@ -211,13 +292,21 @@ namespace RiotGamesApi.AspNetCore
 
             public RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.Profile.ProfileIconDataDto> GetProfileIcons(ServicePlatform platform, bool _useCache = false, String _locale = null, String _version = null)
             {
-                RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.Profile.ProfileIconDataDto> rit = new ApiCall()
+                var t = GetProfileIconsAsync(platform, _useCache, _locale, _version);
+                t.Wait();
+                RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.Profile.ProfileIconDataDto> rit = t.Result;
+                return rit;
+            }
+
+            public async Task<RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.Profile.ProfileIconDataDto>> GetProfileIconsAsync(ServicePlatform platform, bool _useCache = false, String _locale = null, String _version = null)
+            {
+                RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.Profile.ProfileIconDataDto> rit = await new ApiCall()
                     .SelectApi<RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.Profile.ProfileIconDataDto>(LolApiName.StaticData, 3)
                     .For(LolApiMethodName.ProfileIcons)
                     .AddParameter()
                     .Build(platform)
                     .UseCache(_useCache)
-                    .Get(new Dictionary<string, object>()
+                    .GetAsync(new Dictionary<string, object>()
                         {
                             {"locale",_locale },
                             {"version",_version },
@@ -228,25 +317,41 @@ namespace RiotGamesApi.AspNetCore
 
             public RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.Realms.RealmDto> GetRealms(ServicePlatform platform, bool _useCache = false)
             {
-                RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.Realms.RealmDto> rit = new ApiCall()
+                var t = GetRealmsAsync(platform, _useCache);
+                t.Wait();
+                RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.Realms.RealmDto> rit = t.Result;
+                return rit;
+            }
+
+            public async Task<RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.Realms.RealmDto>> GetRealmsAsync(ServicePlatform platform, bool _useCache = false)
+            {
+                RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.Realms.RealmDto> rit = await new ApiCall()
                     .SelectApi<RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.Realms.RealmDto>(LolApiName.StaticData, 3)
                     .For(LolApiMethodName.Realms)
                     .AddParameter()
                     .Build(platform)
                     .UseCache(_useCache)
-                    .Get();
+                    .GetAsync();
                 return rit;
             }
 
             public RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.Runes.RuneListDto> GetRunes(ServicePlatform platform, bool _useCache = false, String _locale = null, String _version = null, List<RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.Runes.RuneTag> _tags = null)
             {
-                RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.Runes.RuneListDto> rit = new ApiCall()
+                var t = GetRunesAsync(platform, _useCache, _locale, _version, _tags);
+                t.Wait();
+                RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.Runes.RuneListDto> rit = t.Result;
+                return rit;
+            }
+
+            public async Task<RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.Runes.RuneListDto>> GetRunesAsync(ServicePlatform platform, bool _useCache = false, String _locale = null, String _version = null, List<RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.Runes.RuneTag> _tags = null)
+            {
+                RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.Runes.RuneListDto> rit = await new ApiCall()
                     .SelectApi<RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.Runes.RuneListDto>(LolApiName.StaticData, 3)
                     .For(LolApiMethodName.Runes)
                     .AddParameter()
                     .Build(platform)
                     .UseCache(_useCache)
-                    .Get(new Dictionary<string, object>()
+                    .GetAsync(new Dictionary<string, object>()
                         {
                             {"locale",_locale },
                             {"version",_version },
@@ -258,13 +363,21 @@ namespace RiotGamesApi.AspNetCore
 
             public RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.Runes.RuneDto> GetRunesOnlyId(ServicePlatform platform, Int64 _OnlyId, bool _useCache = false, String _locale = null, String _version = null, List<RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.Runes.RuneTag> _tags = null)
             {
-                RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.Runes.RuneDto> rit = new ApiCall()
+                var t = GetRunesOnlyIdAsync(platform, _OnlyId, _useCache, _locale, _version, _tags);
+                t.Wait();
+                RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.Runes.RuneDto> rit = t.Result;
+                return rit;
+            }
+
+            public async Task<RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.Runes.RuneDto>> GetRunesOnlyIdAsync(ServicePlatform platform, Int64 _OnlyId, bool _useCache = false, String _locale = null, String _version = null, List<RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.Runes.RuneTag> _tags = null)
+            {
+                RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.Runes.RuneDto> rit = await new ApiCall()
                     .SelectApi<RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.Runes.RuneDto>(LolApiName.StaticData, 3)
                     .For(LolApiMethodName.Runes)
                     .AddParameter(new ApiParameter(LolApiPath.OnlyId, _OnlyId))
                     .Build(platform)
                     .UseCache(_useCache)
-                    .Get(new Dictionary<string, object>()
+                    .GetAsync(new Dictionary<string, object>()
                         {
                             {"locale",_locale },
                             {"version",_version },
@@ -276,13 +389,21 @@ namespace RiotGamesApi.AspNetCore
 
             public RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.SummonerSpell.SummonerSpellListDto> GetSummonerSpells(ServicePlatform platform, bool _useCache = false, String _locale = null, String _version = null, Boolean _dataById = false, List<RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.SummonerSpell.SummonerSpellTag> _tags = null)
             {
-                RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.SummonerSpell.SummonerSpellListDto> rit = new ApiCall()
+                var t = GetSummonerSpellsAsync(platform, _useCache, _locale, _version, _dataById, _tags);
+                t.Wait();
+                RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.SummonerSpell.SummonerSpellListDto> rit = t.Result;
+                return rit;
+            }
+
+            public async Task<RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.SummonerSpell.SummonerSpellListDto>> GetSummonerSpellsAsync(ServicePlatform platform, bool _useCache = false, String _locale = null, String _version = null, Boolean _dataById = false, List<RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.SummonerSpell.SummonerSpellTag> _tags = null)
+            {
+                RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.SummonerSpell.SummonerSpellListDto> rit = await new ApiCall()
                     .SelectApi<RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.SummonerSpell.SummonerSpellListDto>(LolApiName.StaticData, 3)
                     .For(LolApiMethodName.SummonerSpells)
                     .AddParameter()
                     .Build(platform)
                     .UseCache(_useCache)
-                    .Get(new Dictionary<string, object>()
+                    .GetAsync(new Dictionary<string, object>()
                         {
                             {"locale",_locale },
                             {"version",_version },
@@ -295,13 +416,21 @@ namespace RiotGamesApi.AspNetCore
 
             public RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.SummonerSpell.SummonerSpellDto> GetSummonerSpellsOnlyId(ServicePlatform platform, Int64 _OnlyId, bool _useCache = false, String _locale = null, String _version = null, Boolean _dataById = false, List<RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.SummonerSpell.SummonerSpellTag> _tags = null)
             {
-                RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.SummonerSpell.SummonerSpellDto> rit = new ApiCall()
+                var t = GetSummonerSpellsOnlyIdAsync(platform, _OnlyId, _useCache, _locale, _version, _dataById, _tags);
+                t.Wait();
+                RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.SummonerSpell.SummonerSpellDto> rit = t.Result;
+                return rit;
+            }
+
+            public async Task<RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.SummonerSpell.SummonerSpellDto>> GetSummonerSpellsOnlyIdAsync(ServicePlatform platform, Int64 _OnlyId, bool _useCache = false, String _locale = null, String _version = null, Boolean _dataById = false, List<RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.SummonerSpell.SummonerSpellTag> _tags = null)
+            {
+                RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.SummonerSpell.SummonerSpellDto> rit = await new ApiCall()
                     .SelectApi<RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.SummonerSpell.SummonerSpellDto>(LolApiName.StaticData, 3)
                     .For(LolApiMethodName.SummonerSpells)
                     .AddParameter(new ApiParameter(LolApiPath.OnlyId, _OnlyId))
                     .Build(platform)
                     .UseCache(_useCache)
-                    .Get(new Dictionary<string, object>()
+                    .GetAsync(new Dictionary<string, object>()
                         {
                             {"locale",_locale },
                             {"version",_version },
@@ -314,13 +443,21 @@ namespace RiotGamesApi.AspNetCore
 
             public RiotGamesApi.AspNetCore.Interfaces.IResult<List<System.String>> GetVersions(ServicePlatform platform, bool _useCache = false)
             {
-                RiotGamesApi.AspNetCore.Interfaces.IResult<List<System.String>> rit = new ApiCall()
+                var t = GetVersionsAsync(platform, _useCache);
+                t.Wait();
+                RiotGamesApi.AspNetCore.Interfaces.IResult<List<System.String>> rit = t.Result;
+                return rit;
+            }
+
+            public async Task<RiotGamesApi.AspNetCore.Interfaces.IResult<List<System.String>>> GetVersionsAsync(ServicePlatform platform, bool _useCache = false)
+            {
+                RiotGamesApi.AspNetCore.Interfaces.IResult<List<System.String>> rit = await new ApiCall()
                     .SelectApi<List<System.String>>(LolApiName.StaticData, 3)
                     .For(LolApiMethodName.Versions)
                     .AddParameter()
                     .Build(platform)
                     .UseCache(_useCache)
-                    .Get();
+                    .GetAsync();
                 return rit;
             }
         }
@@ -338,35 +475,59 @@ namespace RiotGamesApi.AspNetCore
         {
             public RiotGamesApi.AspNetCore.Interfaces.IResult<List<RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.ChampionMastery.ChampionMasteryDto>> GetChampionMasteriesBySummoner(ServicePlatform platform, Int64 _BySummoner)
             {
-                RiotGamesApi.AspNetCore.Interfaces.IResult<List<RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.ChampionMastery.ChampionMasteryDto>> rit = new ApiCall()
+                var t = GetChampionMasteriesBySummonerAsync(platform, _BySummoner);
+                t.Wait();
+                RiotGamesApi.AspNetCore.Interfaces.IResult<List<RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.ChampionMastery.ChampionMasteryDto>> rit = t.Result;
+                return rit;
+            }
+
+            public async Task<RiotGamesApi.AspNetCore.Interfaces.IResult<List<RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.ChampionMastery.ChampionMasteryDto>>> GetChampionMasteriesBySummonerAsync(ServicePlatform platform, Int64 _BySummoner)
+            {
+                RiotGamesApi.AspNetCore.Interfaces.IResult<List<RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.ChampionMastery.ChampionMasteryDto>> rit = await new ApiCall()
                     .SelectApi<List<RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.ChampionMastery.ChampionMasteryDto>>(LolApiName.ChampionMastery, 3)
                     .For(LolApiMethodName.ChampionMasteries)
                     .AddParameter(new ApiParameter(LolApiPath.BySummoner, _BySummoner))
                     .Build(platform)
-                    .Get();
+                    .GetAsync();
                 return rit;
             }
 
             public RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.ChampionMastery.ChampionMasteryDto> GetChampionMasteriesBySummoner(ServicePlatform platform, Int64 _BySummoner, Int64 _ByChampion)
             {
-                RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.ChampionMastery.ChampionMasteryDto> rit = new ApiCall()
+                var t = GetChampionMasteriesBySummonerAsync(platform, _BySummoner, _ByChampion);
+                t.Wait();
+                RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.ChampionMastery.ChampionMasteryDto> rit = t.Result;
+                return rit;
+            }
+
+            public async Task<RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.ChampionMastery.ChampionMasteryDto>> GetChampionMasteriesBySummonerAsync(ServicePlatform platform, Int64 _BySummoner, Int64 _ByChampion)
+            {
+                RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.ChampionMastery.ChampionMasteryDto> rit = await new ApiCall()
                     .SelectApi<RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.ChampionMastery.ChampionMasteryDto>(LolApiName.ChampionMastery, 3)
                     .For(LolApiMethodName.ChampionMasteries)
                     .AddParameter(new ApiParameter(LolApiPath.BySummoner, _BySummoner),
                         new ApiParameter(LolApiPath.ByChampion, _ByChampion))
                     .Build(platform)
-                    .Get();
+                    .GetAsync();
                 return rit;
             }
 
             public RiotGamesApi.AspNetCore.Interfaces.IResult<Int32> GetScoresBySummoner(ServicePlatform platform, Int64 _BySummoner)
             {
-                RiotGamesApi.AspNetCore.Interfaces.IResult<Int32> rit = new ApiCall()
+                var t = GetScoresBySummonerAsync(platform, _BySummoner);
+                t.Wait();
+                RiotGamesApi.AspNetCore.Interfaces.IResult<Int32> rit = t.Result;
+                return rit;
+            }
+
+            public async Task<RiotGamesApi.AspNetCore.Interfaces.IResult<Int32>> GetScoresBySummonerAsync(ServicePlatform platform, Int64 _BySummoner)
+            {
+                RiotGamesApi.AspNetCore.Interfaces.IResult<Int32> rit = await new ApiCall()
                     .SelectApi<Int32>(LolApiName.ChampionMastery, 3)
                     .For(LolApiMethodName.Scores)
                     .AddParameter(new ApiParameter(LolApiPath.BySummoner, _BySummoner))
                     .Build(platform)
-                    .Get();
+                    .GetAsync();
                 return rit;
             }
         }
@@ -379,34 +540,58 @@ namespace RiotGamesApi.AspNetCore
         {
             public RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.Summoner.SummonerDto> GetSummonersByAccount(ServicePlatform platform, Int64 _ByAccount)
             {
-                RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.Summoner.SummonerDto> rit = new ApiCall()
+                var t = GetSummonersByAccountAsync(platform, _ByAccount);
+                t.Wait();
+                RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.Summoner.SummonerDto> rit = t.Result;
+                return rit;
+            }
+
+            public async Task<RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.Summoner.SummonerDto>> GetSummonersByAccountAsync(ServicePlatform platform, Int64 _ByAccount)
+            {
+                RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.Summoner.SummonerDto> rit = await new ApiCall()
                     .SelectApi<RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.Summoner.SummonerDto>(LolApiName.Summoner, 3)
                     .For(LolApiMethodName.Summoners)
                     .AddParameter(new ApiParameter(LolApiPath.ByAccount, _ByAccount))
                     .Build(platform)
-                    .Get();
+                    .GetAsync();
                 return rit;
             }
 
             public RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.Summoner.SummonerDto> GetSummonersByName(ServicePlatform platform, String _ByName)
             {
-                RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.Summoner.SummonerDto> rit = new ApiCall()
+                var t = GetSummonersByNameAsync(platform, _ByName);
+                t.Wait();
+                RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.Summoner.SummonerDto> rit = t.Result;
+                return rit;
+            }
+
+            public async Task<RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.Summoner.SummonerDto>> GetSummonersByNameAsync(ServicePlatform platform, String _ByName)
+            {
+                RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.Summoner.SummonerDto> rit = await new ApiCall()
                     .SelectApi<RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.Summoner.SummonerDto>(LolApiName.Summoner, 3)
                     .For(LolApiMethodName.Summoners)
                     .AddParameter(new ApiParameter(LolApiPath.ByName, _ByName))
                     .Build(platform)
-                    .Get();
+                    .GetAsync();
                 return rit;
             }
 
             public RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.Summoner.SummonerDto> GetSummonersOnlySummonerId(ServicePlatform platform, Int64 _OnlySummonerId)
             {
-                RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.Summoner.SummonerDto> rit = new ApiCall()
+                var t = GetSummonersOnlySummonerIdAsync(platform, _OnlySummonerId);
+                t.Wait();
+                RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.Summoner.SummonerDto> rit = t.Result;
+                return rit;
+            }
+
+            public async Task<RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.Summoner.SummonerDto>> GetSummonersOnlySummonerIdAsync(ServicePlatform platform, Int64 _OnlySummonerId)
+            {
+                RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.Summoner.SummonerDto> rit = await new ApiCall()
                     .SelectApi<RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.Summoner.SummonerDto>(LolApiName.Summoner, 3)
                     .For(LolApiMethodName.Summoners)
                     .AddParameter(new ApiParameter(LolApiPath.OnlySummonerId, _OnlySummonerId))
                     .Build(platform)
-                    .Get();
+                    .GetAsync();
                 return rit;
             }
         }
@@ -419,45 +604,77 @@ namespace RiotGamesApi.AspNetCore
         {
             public RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.Champion.ChampionListDto> GetChampions(ServicePlatform platform)
             {
-                RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.Champion.ChampionListDto> rit = new ApiCall()
+                var t = GetChampionsAsync(platform);
+                t.Wait();
+                RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.Champion.ChampionListDto> rit = t.Result;
+                return rit;
+            }
+
+            public async Task<RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.Champion.ChampionListDto>> GetChampionsAsync(ServicePlatform platform)
+            {
+                RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.Champion.ChampionListDto> rit = await new ApiCall()
                     .SelectApi<RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.Champion.ChampionListDto>(LolApiName.Platform, 3)
                     .For(LolApiMethodName.Champions)
                     .AddParameter()
                     .Build(platform)
-                    .Get();
+                    .GetAsync();
                 return rit;
             }
 
             public RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.Champion.ChampionDto> GetChampionsOnlyId(ServicePlatform platform, Int64 _OnlyId)
             {
-                RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.Champion.ChampionDto> rit = new ApiCall()
+                var t = GetChampionsOnlyIdAsync(platform, _OnlyId);
+                t.Wait();
+                RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.Champion.ChampionDto> rit = t.Result;
+                return rit;
+            }
+
+            public async Task<RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.Champion.ChampionDto>> GetChampionsOnlyIdAsync(ServicePlatform platform, Int64 _OnlyId)
+            {
+                RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.Champion.ChampionDto> rit = await new ApiCall()
                     .SelectApi<RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.Champion.ChampionDto>(LolApiName.Platform, 3)
                     .For(LolApiMethodName.Champions)
                     .AddParameter(new ApiParameter(LolApiPath.OnlyId, _OnlyId))
                     .Build(platform)
-                    .Get();
+                    .GetAsync();
                 return rit;
             }
 
             public RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.Mastery.MasteryPagesDto> GetMasteriesBySummoner(ServicePlatform platform, Int64 _BySummoner)
             {
-                RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.Mastery.MasteryPagesDto> rit = new ApiCall()
+                var t = GetMasteriesBySummonerAsync(platform, _BySummoner);
+                t.Wait();
+                RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.Mastery.MasteryPagesDto> rit = t.Result;
+                return rit;
+            }
+
+            public async Task<RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.Mastery.MasteryPagesDto>> GetMasteriesBySummonerAsync(ServicePlatform platform, Int64 _BySummoner)
+            {
+                RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.Mastery.MasteryPagesDto> rit = await new ApiCall()
                     .SelectApi<RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.Mastery.MasteryPagesDto>(LolApiName.Platform, 3)
                     .For(LolApiMethodName.Masteries)
                     .AddParameter(new ApiParameter(LolApiPath.BySummoner, _BySummoner))
                     .Build(platform)
-                    .Get();
+                    .GetAsync();
                 return rit;
             }
 
             public RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.Rune.RunePagesDto> GetRunesBySummoner(ServicePlatform platform, Int64 _BySummoner)
             {
-                RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.Rune.RunePagesDto> rit = new ApiCall()
+                var t = GetRunesBySummonerAsync(platform, _BySummoner);
+                t.Wait();
+                RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.Rune.RunePagesDto> rit = t.Result;
+                return rit;
+            }
+
+            public async Task<RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.Rune.RunePagesDto>> GetRunesBySummonerAsync(ServicePlatform platform, Int64 _BySummoner)
+            {
+                RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.Rune.RunePagesDto> rit = await new ApiCall()
                     .SelectApi<RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.Rune.RunePagesDto>(LolApiName.Platform, 3)
                     .For(LolApiMethodName.Runes)
                     .AddParameter(new ApiParameter(LolApiPath.BySummoner, _BySummoner))
                     .Build(platform)
-                    .Get();
+                    .GetAsync();
                 return rit;
             }
         }
@@ -470,45 +687,77 @@ namespace RiotGamesApi.AspNetCore
         {
             public RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.League.LeagueListDTO> GetChallengerLeaguesByQueue(ServicePlatform platform, Queue _ByQueue)
             {
-                RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.League.LeagueListDTO> rit = new ApiCall()
+                var t = GetChallengerLeaguesByQueueAsync(platform, _ByQueue);
+                t.Wait();
+                RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.League.LeagueListDTO> rit = t.Result;
+                return rit;
+            }
+
+            public async Task<RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.League.LeagueListDTO>> GetChallengerLeaguesByQueueAsync(ServicePlatform platform, Queue _ByQueue)
+            {
+                RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.League.LeagueListDTO> rit = await new ApiCall()
                     .SelectApi<RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.League.LeagueListDTO>(LolApiName.League, 3)
                     .For(LolApiMethodName.ChallengerLeagues)
                     .AddParameter(new ApiParameter(LolApiPath.ByQueue, _ByQueue))
                     .Build(platform)
-                    .Get();
+                    .GetAsync();
                 return rit;
             }
 
             public RiotGamesApi.AspNetCore.Interfaces.IResult<List<RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.League.LeagueListDTO>> GetLeaguesBySummoner(ServicePlatform platform, Int64 _BySummoner)
             {
-                RiotGamesApi.AspNetCore.Interfaces.IResult<List<RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.League.LeagueListDTO>> rit = new ApiCall()
+                var t = GetLeaguesBySummonerAsync(platform, _BySummoner);
+                t.Wait();
+                RiotGamesApi.AspNetCore.Interfaces.IResult<List<RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.League.LeagueListDTO>> rit = t.Result;
+                return rit;
+            }
+
+            public async Task<RiotGamesApi.AspNetCore.Interfaces.IResult<List<RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.League.LeagueListDTO>>> GetLeaguesBySummonerAsync(ServicePlatform platform, Int64 _BySummoner)
+            {
+                RiotGamesApi.AspNetCore.Interfaces.IResult<List<RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.League.LeagueListDTO>> rit = await new ApiCall()
                     .SelectApi<List<RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.League.LeagueListDTO>>(LolApiName.League, 3)
                     .For(LolApiMethodName.Leagues)
                     .AddParameter(new ApiParameter(LolApiPath.BySummoner, _BySummoner))
                     .Build(platform)
-                    .Get();
+                    .GetAsync();
                 return rit;
             }
 
             public RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.League.LeagueListDTO> GetMasterLeaguesByQueue(ServicePlatform platform, Queue _ByQueue)
             {
-                RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.League.LeagueListDTO> rit = new ApiCall()
+                var t = GetMasterLeaguesByQueueAsync(platform, _ByQueue);
+                t.Wait();
+                RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.League.LeagueListDTO> rit = t.Result;
+                return rit;
+            }
+
+            public async Task<RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.League.LeagueListDTO>> GetMasterLeaguesByQueueAsync(ServicePlatform platform, Queue _ByQueue)
+            {
+                RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.League.LeagueListDTO> rit = await new ApiCall()
                     .SelectApi<RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.League.LeagueListDTO>(LolApiName.League, 3)
                     .For(LolApiMethodName.MasterLeagues)
                     .AddParameter(new ApiParameter(LolApiPath.ByQueue, _ByQueue))
                     .Build(platform)
-                    .Get();
+                    .GetAsync();
                 return rit;
             }
 
             public RiotGamesApi.AspNetCore.Interfaces.IResult<List<RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.League.LeaguePositionDTO>> GetPositionsBySummoner(ServicePlatform platform, Int64 _BySummoner)
             {
-                RiotGamesApi.AspNetCore.Interfaces.IResult<List<RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.League.LeaguePositionDTO>> rit = new ApiCall()
+                var t = GetPositionsBySummonerAsync(platform, _BySummoner);
+                t.Wait();
+                RiotGamesApi.AspNetCore.Interfaces.IResult<List<RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.League.LeaguePositionDTO>> rit = t.Result;
+                return rit;
+            }
+
+            public async Task<RiotGamesApi.AspNetCore.Interfaces.IResult<List<RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.League.LeaguePositionDTO>>> GetPositionsBySummonerAsync(ServicePlatform platform, Int64 _BySummoner)
+            {
+                RiotGamesApi.AspNetCore.Interfaces.IResult<List<RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.League.LeaguePositionDTO>> rit = await new ApiCall()
                     .SelectApi<List<RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.League.LeaguePositionDTO>>(LolApiName.League, 3)
                     .For(LolApiMethodName.Positions)
                     .AddParameter(new ApiParameter(LolApiPath.BySummoner, _BySummoner))
                     .Build(platform)
-                    .Get();
+                    .GetAsync();
                 return rit;
             }
         }
@@ -521,68 +770,116 @@ namespace RiotGamesApi.AspNetCore
         {
             public RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.Match.MatchDto> GetMatchesOnlyMatchId(ServicePlatform platform, Int64 _OnlyMatchId)
             {
-                RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.Match.MatchDto> rit = new ApiCall()
+                var t = GetMatchesOnlyMatchIdAsync(platform, _OnlyMatchId);
+                t.Wait();
+                RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.Match.MatchDto> rit = t.Result;
+                return rit;
+            }
+
+            public async Task<RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.Match.MatchDto>> GetMatchesOnlyMatchIdAsync(ServicePlatform platform, Int64 _OnlyMatchId)
+            {
+                RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.Match.MatchDto> rit = await new ApiCall()
                     .SelectApi<RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.Match.MatchDto>(LolApiName.Match, 3)
                     .For(LolApiMethodName.Matches)
                     .AddParameter(new ApiParameter(LolApiPath.OnlyMatchId, _OnlyMatchId))
                     .Build(platform)
-                    .Get();
+                    .GetAsync();
                 return rit;
             }
 
             public RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.Match.MatchlistDto> GetMatchListsByAccount(ServicePlatform platform, Int64 _ByAccount)
             {
-                RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.Match.MatchlistDto> rit = new ApiCall()
+                var t = GetMatchListsByAccountAsync(platform, _ByAccount);
+                t.Wait();
+                RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.Match.MatchlistDto> rit = t.Result;
+                return rit;
+            }
+
+            public async Task<RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.Match.MatchlistDto>> GetMatchListsByAccountAsync(ServicePlatform platform, Int64 _ByAccount)
+            {
+                RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.Match.MatchlistDto> rit = await new ApiCall()
                     .SelectApi<RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.Match.MatchlistDto>(LolApiName.Match, 3)
                     .For(LolApiMethodName.MatchLists)
                     .AddParameter(new ApiParameter(LolApiPath.ByAccount, _ByAccount))
                     .Build(platform)
-                    .Get();
+                    .GetAsync();
                 return rit;
             }
 
             public RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.Match.MatchlistDto> GetMatchListsByAccountRecent(ServicePlatform platform, Int64 _ByAccountRecent)
             {
-                RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.Match.MatchlistDto> rit = new ApiCall()
+                var t = GetMatchListsByAccountRecentAsync(platform, _ByAccountRecent);
+                t.Wait();
+                RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.Match.MatchlistDto> rit = t.Result;
+                return rit;
+            }
+
+            public async Task<RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.Match.MatchlistDto>> GetMatchListsByAccountRecentAsync(ServicePlatform platform, Int64 _ByAccountRecent)
+            {
+                RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.Match.MatchlistDto> rit = await new ApiCall()
                     .SelectApi<RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.Match.MatchlistDto>(LolApiName.Match, 3)
                     .For(LolApiMethodName.MatchLists)
                     .AddParameter(new ApiParameter(LolApiPath.ByAccountRecent, _ByAccountRecent))
                     .Build(platform)
-                    .Get();
+                    .GetAsync();
                 return rit;
             }
 
             public RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.Match.MatchTimelineDto> GetTimelinesByMatch(ServicePlatform platform, Int64 _ByMatch)
             {
-                RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.Match.MatchTimelineDto> rit = new ApiCall()
+                var t = GetTimelinesByMatchAsync(platform, _ByMatch);
+                t.Wait();
+                RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.Match.MatchTimelineDto> rit = t.Result;
+                return rit;
+            }
+
+            public async Task<RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.Match.MatchTimelineDto>> GetTimelinesByMatchAsync(ServicePlatform platform, Int64 _ByMatch)
+            {
+                RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.Match.MatchTimelineDto> rit = await new ApiCall()
                     .SelectApi<RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.Match.MatchTimelineDto>(LolApiName.Match, 3)
                     .For(LolApiMethodName.Timelines)
                     .AddParameter(new ApiParameter(LolApiPath.ByMatch, _ByMatch))
                     .Build(platform)
-                    .Get();
+                    .GetAsync();
                 return rit;
             }
 
             public RiotGamesApi.AspNetCore.Interfaces.IResult<List<System.Int64>> GetMatchesByTournamentCodeIds(ServicePlatform platform, String _ByTournamentCodeIds)
             {
-                RiotGamesApi.AspNetCore.Interfaces.IResult<List<System.Int64>> rit = new ApiCall()
+                var t = GetMatchesByTournamentCodeIdsAsync(platform, _ByTournamentCodeIds);
+                t.Wait();
+                RiotGamesApi.AspNetCore.Interfaces.IResult<List<System.Int64>> rit = t.Result;
+                return rit;
+            }
+
+            public async Task<RiotGamesApi.AspNetCore.Interfaces.IResult<List<System.Int64>>> GetMatchesByTournamentCodeIdsAsync(ServicePlatform platform, String _ByTournamentCodeIds)
+            {
+                RiotGamesApi.AspNetCore.Interfaces.IResult<List<System.Int64>> rit = await new ApiCall()
                     .SelectApi<List<System.Int64>>(LolApiName.Match, 3)
                     .For(LolApiMethodName.Matches)
                     .AddParameter(new ApiParameter(LolApiPath.ByTournamentCodeIds, _ByTournamentCodeIds))
                     .Build(platform)
-                    .Get();
+                    .GetAsync();
                 return rit;
             }
 
             public RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.Match.MatchDto> GetMatchesOnlyMatchId(ServicePlatform platform, Int64 _OnlyMatchId, String _ByTournamentCode)
             {
-                RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.Match.MatchDto> rit = new ApiCall()
+                var t = GetMatchesOnlyMatchIdAsync(platform, _OnlyMatchId, _ByTournamentCode);
+                t.Wait();
+                RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.Match.MatchDto> rit = t.Result;
+                return rit;
+            }
+
+            public async Task<RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.Match.MatchDto>> GetMatchesOnlyMatchIdAsync(ServicePlatform platform, Int64 _OnlyMatchId, String _ByTournamentCode)
+            {
+                RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.Match.MatchDto> rit = await new ApiCall()
                     .SelectApi<RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.Match.MatchDto>(LolApiName.Match, 3)
                     .For(LolApiMethodName.Matches)
                     .AddParameter(new ApiParameter(LolApiPath.OnlyMatchId, _OnlyMatchId),
                         new ApiParameter(LolApiPath.ByTournamentCode, _ByTournamentCode))
                     .Build(platform)
-                    .Get();
+                    .GetAsync();
                 return rit;
             }
         }
@@ -595,23 +892,39 @@ namespace RiotGamesApi.AspNetCore
         {
             public RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.Spectator.CurrentGameInfo> GetActiveGamesBySummoner(ServicePlatform platform, Int64 _BySummoner)
             {
-                RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.Spectator.CurrentGameInfo> rit = new ApiCall()
+                var t = GetActiveGamesBySummonerAsync(platform, _BySummoner);
+                t.Wait();
+                RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.Spectator.CurrentGameInfo> rit = t.Result;
+                return rit;
+            }
+
+            public async Task<RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.Spectator.CurrentGameInfo>> GetActiveGamesBySummonerAsync(ServicePlatform platform, Int64 _BySummoner)
+            {
+                RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.Spectator.CurrentGameInfo> rit = await new ApiCall()
                     .SelectApi<RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.Spectator.CurrentGameInfo>(LolApiName.Spectator, 3)
                     .For(LolApiMethodName.ActiveGames)
                     .AddParameter(new ApiParameter(LolApiPath.BySummoner, _BySummoner))
                     .Build(platform)
-                    .Get();
+                    .GetAsync();
                 return rit;
             }
 
             public RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.Spectator.FeaturedGames> GetFeaturedGames(ServicePlatform platform)
             {
-                RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.Spectator.FeaturedGames> rit = new ApiCall()
+                var t = GetFeaturedGamesAsync(platform);
+                t.Wait();
+                RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.Spectator.FeaturedGames> rit = t.Result;
+                return rit;
+            }
+
+            public async Task<RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.Spectator.FeaturedGames>> GetFeaturedGamesAsync(ServicePlatform platform)
+            {
+                RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.Spectator.FeaturedGames> rit = await new ApiCall()
                     .SelectApi<RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.Spectator.FeaturedGames>(LolApiName.Spectator, 3)
                     .For(LolApiMethodName.FeaturedGames)
                     .AddParameter()
                     .Build(platform)
-                    .Get();
+                    .GetAsync();
                 return rit;
             }
         }
@@ -629,12 +942,20 @@ namespace RiotGamesApi.AspNetCore
         {
             public RiotGamesApi.AspNetCore.Interfaces.IResult<List<System.String>> PostCodes(PhysicalRegion platform, Int32? _count = null, Int32? _tournamentId = null, RiotGamesApi.AspNetCore.RiotApi.TournamentStubEndPoints.TournamentCodeParameters _tournamentcodeparameters = null)
             {
-                RiotGamesApi.AspNetCore.Interfaces.IResult<List<System.String>> rit = new ApiCall()
+                var t = PostCodesAsync(platform, _count, _tournamentId, _tournamentcodeparameters);
+                t.Wait();
+                RiotGamesApi.AspNetCore.Interfaces.IResult<List<System.String>> rit = t.Result;
+                return rit;
+            }
+
+            public async Task<RiotGamesApi.AspNetCore.Interfaces.IResult<List<System.String>>> PostCodesAsync(PhysicalRegion platform, Int32? _count = null, Int32? _tournamentId = null, RiotGamesApi.AspNetCore.RiotApi.TournamentStubEndPoints.TournamentCodeParameters _tournamentcodeparameters = null)
+            {
+                RiotGamesApi.AspNetCore.Interfaces.IResult<List<System.String>> rit = await new ApiCall()
                     .SelectApi<List<System.String>>(LolApiName.TournamentStub, 3)
                     .For(LolApiMethodName.Codes)
                     .AddParameter()
                     .Build(platform)
-                    .Post(new Dictionary<string, object>()
+                    .PostAsync(new Dictionary<string, object>()
                         {
                             {"count",_count },
                             {"tournamentId",_tournamentId },
@@ -645,34 +966,58 @@ namespace RiotGamesApi.AspNetCore
 
             public RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.TournamentStubEndPoints.LobbyEventDTOWrapper> GetLobbyEventsByCode(PhysicalRegion platform, String _ByCode)
             {
-                RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.TournamentStubEndPoints.LobbyEventDTOWrapper> rit = new ApiCall()
+                var t = GetLobbyEventsByCodeAsync(platform, _ByCode);
+                t.Wait();
+                RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.TournamentStubEndPoints.LobbyEventDTOWrapper> rit = t.Result;
+                return rit;
+            }
+
+            public async Task<RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.TournamentStubEndPoints.LobbyEventDTOWrapper>> GetLobbyEventsByCodeAsync(PhysicalRegion platform, String _ByCode)
+            {
+                RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.TournamentStubEndPoints.LobbyEventDTOWrapper> rit = await new ApiCall()
                     .SelectApi<RiotGamesApi.AspNetCore.RiotApi.TournamentStubEndPoints.LobbyEventDTOWrapper>(LolApiName.TournamentStub, 3)
                     .For(LolApiMethodName.LobbyEvents)
                     .AddParameter(new ApiParameter(LolApiPath.ByCode, _ByCode))
                     .Build(platform)
-                    .Get();
+                    .GetAsync();
                 return rit;
             }
 
             public RiotGamesApi.AspNetCore.Interfaces.IResult<Int32> PostProviders(PhysicalRegion platform, RiotGamesApi.AspNetCore.RiotApi.TournamentEndPoints.ProviderRegistrationParameters _providerregistrationparameters)
             {
-                RiotGamesApi.AspNetCore.Interfaces.IResult<Int32> rit = new ApiCall()
+                var t = PostProvidersAsync(platform, _providerregistrationparameters);
+                t.Wait();
+                RiotGamesApi.AspNetCore.Interfaces.IResult<Int32> rit = t.Result;
+                return rit;
+            }
+
+            public async Task<RiotGamesApi.AspNetCore.Interfaces.IResult<Int32>> PostProvidersAsync(PhysicalRegion platform, RiotGamesApi.AspNetCore.RiotApi.TournamentEndPoints.ProviderRegistrationParameters _providerregistrationparameters)
+            {
+                RiotGamesApi.AspNetCore.Interfaces.IResult<Int32> rit = await new ApiCall()
                     .SelectApi<Int32>(LolApiName.TournamentStub, 3)
                     .For(LolApiMethodName.Providers)
                     .AddParameter()
                     .Build(platform)
-                    .Post(_providerregistrationparameters);
+                    .PostAsync(_providerregistrationparameters);
                 return rit;
             }
 
             public RiotGamesApi.AspNetCore.Interfaces.IResult<Int32> PostTournaments(PhysicalRegion platform, RiotGamesApi.AspNetCore.RiotApi.TournamentEndPoints.TournamentRegistrationParameters _tournamentregistrationparameters)
             {
-                RiotGamesApi.AspNetCore.Interfaces.IResult<Int32> rit = new ApiCall()
+                var t = PostTournamentsAsync(platform, _tournamentregistrationparameters);
+                t.Wait();
+                RiotGamesApi.AspNetCore.Interfaces.IResult<Int32> rit = t.Result;
+                return rit;
+            }
+
+            public async Task<RiotGamesApi.AspNetCore.Interfaces.IResult<Int32>> PostTournamentsAsync(PhysicalRegion platform, RiotGamesApi.AspNetCore.RiotApi.TournamentEndPoints.TournamentRegistrationParameters _tournamentregistrationparameters)
+            {
+                RiotGamesApi.AspNetCore.Interfaces.IResult<Int32> rit = await new ApiCall()
                     .SelectApi<Int32>(LolApiName.TournamentStub, 3)
                     .For(LolApiMethodName.Tournaments)
                     .AddParameter()
                     .Build(platform)
-                    .Post(_tournamentregistrationparameters);
+                    .PostAsync(_tournamentregistrationparameters);
                 return rit;
             }
         }
@@ -685,12 +1030,20 @@ namespace RiotGamesApi.AspNetCore
         {
             public RiotGamesApi.AspNetCore.Interfaces.IResult<List<System.String>> PostCodes(PhysicalRegion platform, RiotGamesApi.AspNetCore.RiotApi.TournamentEndPoints.TournamentCodeParameters _tournamentcodeparameters, Int32? _count = null, Int32? _tournamentId = null)
             {
-                RiotGamesApi.AspNetCore.Interfaces.IResult<List<System.String>> rit = new ApiCall()
+                var t = PostCodesAsync(platform, _tournamentcodeparameters, _count, _tournamentId);
+                t.Wait();
+                RiotGamesApi.AspNetCore.Interfaces.IResult<List<System.String>> rit = t.Result;
+                return rit;
+            }
+
+            public async Task<RiotGamesApi.AspNetCore.Interfaces.IResult<List<System.String>>> PostCodesAsync(PhysicalRegion platform, RiotGamesApi.AspNetCore.RiotApi.TournamentEndPoints.TournamentCodeParameters _tournamentcodeparameters, Int32? _count = null, Int32? _tournamentId = null)
+            {
+                RiotGamesApi.AspNetCore.Interfaces.IResult<List<System.String>> rit = await new ApiCall()
                     .SelectApi<List<System.String>>(LolApiName.Tournament, 3)
                     .For(LolApiMethodName.Codes)
                     .AddParameter()
                     .Build(platform)
-                    .Post(new Dictionary<string, object>()
+                    .PostAsync(new Dictionary<string, object>()
                         {
                             {"count",_count },
                             {"tournamentId",_tournamentId },
@@ -701,56 +1054,96 @@ namespace RiotGamesApi.AspNetCore
 
             public RiotGamesApi.AspNetCore.Interfaces.IResult<Int32> PutCodesOnlyTournamentCode(PhysicalRegion platform, String _OnlyTournamentCode, RiotGamesApi.AspNetCore.RiotApi.TournamentEndPoints.TournamentCodeUpdateParameters _tournamentcodeupdateparameters = null)
             {
-                RiotGamesApi.AspNetCore.Interfaces.IResult<Int32> rit = new ApiCall()
+                var t = PutCodesOnlyTournamentCodeAsync(platform, _OnlyTournamentCode, _tournamentcodeupdateparameters);
+                t.Wait();
+                RiotGamesApi.AspNetCore.Interfaces.IResult<Int32> rit = t.Result;
+                return rit;
+            }
+
+            public async Task<RiotGamesApi.AspNetCore.Interfaces.IResult<Int32>> PutCodesOnlyTournamentCodeAsync(PhysicalRegion platform, String _OnlyTournamentCode, RiotGamesApi.AspNetCore.RiotApi.TournamentEndPoints.TournamentCodeUpdateParameters _tournamentcodeupdateparameters = null)
+            {
+                RiotGamesApi.AspNetCore.Interfaces.IResult<Int32> rit = await new ApiCall()
                     .SelectApi<Int32>(LolApiName.Tournament, 3)
                     .For(LolApiMethodName.Codes)
                     .AddParameter(new ApiParameter(LolApiPath.OnlyTournamentCode, _OnlyTournamentCode))
                     .Build(platform)
-                    .Put(_tournamentcodeupdateparameters);
+                    .PutAsync(_tournamentcodeupdateparameters);
                 return rit;
             }
 
             public RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.TournamentEndPoints.TournamentCodeDTO> GetCodesOnlyTournamentCode(PhysicalRegion platform, String _OnlyTournamentCode)
             {
-                RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.TournamentEndPoints.TournamentCodeDTO> rit = new ApiCall()
+                var t = GetCodesOnlyTournamentCodeAsync(platform, _OnlyTournamentCode);
+                t.Wait();
+                RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.TournamentEndPoints.TournamentCodeDTO> rit = t.Result;
+                return rit;
+            }
+
+            public async Task<RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.TournamentEndPoints.TournamentCodeDTO>> GetCodesOnlyTournamentCodeAsync(PhysicalRegion platform, String _OnlyTournamentCode)
+            {
+                RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.TournamentEndPoints.TournamentCodeDTO> rit = await new ApiCall()
                     .SelectApi<RiotGamesApi.AspNetCore.RiotApi.TournamentEndPoints.TournamentCodeDTO>(LolApiName.Tournament, 3)
                     .For(LolApiMethodName.Codes)
                     .AddParameter(new ApiParameter(LolApiPath.OnlyTournamentCode, _OnlyTournamentCode))
                     .Build(platform)
-                    .Get();
+                    .GetAsync();
                 return rit;
             }
 
             public RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.TournamentEndPoints.LobbyEventDTOWrapper> GetLobbyEventsByCode(PhysicalRegion platform, String _ByCode)
             {
-                RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.TournamentEndPoints.LobbyEventDTOWrapper> rit = new ApiCall()
+                var t = GetLobbyEventsByCodeAsync(platform, _ByCode);
+                t.Wait();
+                RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.TournamentEndPoints.LobbyEventDTOWrapper> rit = t.Result;
+                return rit;
+            }
+
+            public async Task<RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.TournamentEndPoints.LobbyEventDTOWrapper>> GetLobbyEventsByCodeAsync(PhysicalRegion platform, String _ByCode)
+            {
+                RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.TournamentEndPoints.LobbyEventDTOWrapper> rit = await new ApiCall()
                     .SelectApi<RiotGamesApi.AspNetCore.RiotApi.TournamentEndPoints.LobbyEventDTOWrapper>(LolApiName.Tournament, 3)
                     .For(LolApiMethodName.LobbyEvents)
                     .AddParameter(new ApiParameter(LolApiPath.ByCode, _ByCode))
                     .Build(platform)
-                    .Get();
+                    .GetAsync();
                 return rit;
             }
 
             public RiotGamesApi.AspNetCore.Interfaces.IResult<Int32> PostProviders(PhysicalRegion platform, RiotGamesApi.AspNetCore.RiotApi.TournamentEndPoints.ProviderRegistrationParameters _providerregistrationparameters)
             {
-                RiotGamesApi.AspNetCore.Interfaces.IResult<Int32> rit = new ApiCall()
+                var t = PostProvidersAsync(platform, _providerregistrationparameters);
+                t.Wait();
+                RiotGamesApi.AspNetCore.Interfaces.IResult<Int32> rit = t.Result;
+                return rit;
+            }
+
+            public async Task<RiotGamesApi.AspNetCore.Interfaces.IResult<Int32>> PostProvidersAsync(PhysicalRegion platform, RiotGamesApi.AspNetCore.RiotApi.TournamentEndPoints.ProviderRegistrationParameters _providerregistrationparameters)
+            {
+                RiotGamesApi.AspNetCore.Interfaces.IResult<Int32> rit = await new ApiCall()
                     .SelectApi<Int32>(LolApiName.Tournament, 3)
                     .For(LolApiMethodName.Providers)
                     .AddParameter()
                     .Build(platform)
-                    .Post(_providerregistrationparameters);
+                    .PostAsync(_providerregistrationparameters);
                 return rit;
             }
 
             public RiotGamesApi.AspNetCore.Interfaces.IResult<Int32> PostTournaments(PhysicalRegion platform, RiotGamesApi.AspNetCore.RiotApi.TournamentEndPoints.TournamentRegistrationParameters _tournamentregistrationparameters)
             {
-                RiotGamesApi.AspNetCore.Interfaces.IResult<Int32> rit = new ApiCall()
+                var t = PostTournamentsAsync(platform, _tournamentregistrationparameters);
+                t.Wait();
+                RiotGamesApi.AspNetCore.Interfaces.IResult<Int32> rit = t.Result;
+                return rit;
+            }
+
+            public async Task<RiotGamesApi.AspNetCore.Interfaces.IResult<Int32>> PostTournamentsAsync(PhysicalRegion platform, RiotGamesApi.AspNetCore.RiotApi.TournamentEndPoints.TournamentRegistrationParameters _tournamentregistrationparameters)
+            {
+                RiotGamesApi.AspNetCore.Interfaces.IResult<Int32> rit = await new ApiCall()
                     .SelectApi<Int32>(LolApiName.Tournament, 3)
                     .For(LolApiMethodName.Tournaments)
                     .AddParameter()
                     .Build(platform)
-                    .Post(_tournamentregistrationparameters);
+                    .PostAsync(_tournamentregistrationparameters);
                 return rit;
             }
         }

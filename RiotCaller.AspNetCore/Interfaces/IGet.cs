@@ -23,7 +23,13 @@ namespace RiotGamesApi.AspNetCore.Interfaces
 
         IResult<T> Put(object bodyParameter = null);
 
+        Task<IResult<T>> PutAsync(object bodyParameter = null);
+
         IResult<T> Post(object bodyParameter = null);
+
+        Task<IResult<T>> PostAsync(object bodyParameter = null);
+
+        Task<IResult<T>> PostAsync(Dictionary<string, object> optionalParameters = null, object bodyParameter = null);
 
         IResult<T> Post(Dictionary<string, object> optionalParameters = null, object bodyParameter = null);
     }

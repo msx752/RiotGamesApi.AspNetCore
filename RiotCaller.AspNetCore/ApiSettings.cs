@@ -118,6 +118,7 @@ namespace RiotGamesApi.AspNetCore
                         }
                         string @parameters = "";
                         string @RiotGamesApiParameters = "";
+                        string @SecondaryMethodRefParameters = $"";
                         LolApiPath? uniqueParam = null;
                         for (int i = 0; i < urlSub.RiotGamesApiPaths.Length; i++)
                         {
@@ -130,7 +131,7 @@ namespace RiotGamesApi.AspNetCore
 
                             string paramType = selectedParam.FindParameterType().Name;
                             @parameters += $", {paramType} _{paramName}";
-
+                            @SecondaryMethodRefParameters += $",_{paramName}";
                             @RiotGamesApiParameters += $"new {nameof(ApiParameter)}({nameof(LolApiPath)}.{paramName}, _{paramName})";
                             if (i != urlSub.RiotGamesApiPaths.Length - 1)
                             {
@@ -142,6 +143,8 @@ namespace RiotGamesApi.AspNetCore
                         {
                             @parameters += ", bool _useCache = false";
                             @useCacheMethod = $".UseCache(_useCache)\r\n";
+
+                            @SecondaryMethodRefParameters += $",_useCache";
                         }
                         string @queryParameters = "";
                         string @optionalParameters = "new Dictionary<string, object>()\r\n{\r\n";
@@ -163,6 +166,7 @@ namespace RiotGamesApi.AspNetCore
                                 paramType += "?";
                             }
                             @queryParameters += $", {paramType} {paramName} = {@defaultParamValue}";
+                            @SecondaryMethodRefParameters += $",{paramName}";
                             if (paramType.StartsWith("List<"))
                             {
                                 @optionalParameters += $"{{\"{query.Key}\",string.Join(\"&tags=\", {paramName}  ?? new {paramType}()) }},\r\n";
@@ -201,10 +205,15 @@ namespace RiotGamesApi.AspNetCore
                                     var cacheParams = @parameters;
                                     mergedParameters += cacheParams;
                                     @parameters = mergedParameters;
+
+                                    var cacheSecondaryPrm = @SecondaryMethodRefParameters;
+                                    string mergedSecondaryParam = $",{bodyParam}{cacheSecondaryPrm}";
+                                    @SecondaryMethodRefParameters = mergedSecondaryParam;
                                 }
                                 else
                                 {
                                     @parameters += $"{mergedParameters} = null";
+                                    @SecondaryMethodRefParameters += $",{bodyParam}";
                                 }
                                 if (@optionalParameters.Length > 0)
                                     @optionalParameters += ",";
@@ -215,18 +224,26 @@ namespace RiotGamesApi.AspNetCore
                         {
                             platformName = nameof(ServicePlatform);
                         }
-                        string @method = $"\r\npublic {nameOfNs}.Interfaces.IResult<{t1}> {urlSub.RequestType}{urlSub.ApiMethodName}{uniqueParam}({platformName} platform{@parameters})\r\n{{";
+                        string methodName = $"{urlSub.RequestType}{urlSub.ApiMethodName}{uniqueParam}";
+                        string @methodSync = $"\r\npublic {nameOfNs}.Interfaces.IResult<{t1}> {methodName}({platformName} platform{@parameters})\r\n{{";
+                        methodSync += $"var t = {methodName}Async(platform{@SecondaryMethodRefParameters});\r\n" +
+                                      $"t.Wait();\r\n" +
+                                      $"{nameOfNs}.Interfaces.IResult<{t1}> rit = t.Result;\r\n" +
+                                      $"return rit;\r\n" +
+                                      $"}}\r\n";
 
-                        string @apiCall = $"\r\n{nameOfNs}.Interfaces.IResult<{t1}> rit = new {nameof(ApiCall)}()\r\n" +
+                        string @methodAsync = $"{@methodSync}\r\npublic async Task<{nameOfNs}.Interfaces.IResult<{t1}>> {methodName}Async({platformName} platform{@parameters})\r\n{{";
+
+                        string @apiCall = $"\r\n{nameOfNs}.Interfaces.IResult<{t1}> rit = await new {nameof(ApiCall)}()\r\n" +
                                           $".SelectApi<{t1}>({nameof(LolApiName)}.{url.ApiName},{url.VersionToString()})\r\n" +
                                           $".For({nameof(LolApiMethodName)}.{urlSub.ApiMethodName})\r\n" +
                                           $".AddParameter({@RiotGamesApiParameters})\r\n" +
                                           ".Build(platform)\r\n" +
                                           @useCacheMethod +
-                                          $".{urlSub.RequestType}({@optionalParameters});";
-                        @method += @apiCall;
-                        @method += "\r\nreturn rit;\r\n}";
-                        class2 += @method;
+                                          $".{urlSub.RequestType}Async({@optionalParameters});";
+                        @methodAsync += @apiCall;
+                        @methodAsync += "\r\nreturn rit;\r\n}";
+                        class2 += @methodAsync;
                     }
                     @class2 += "\r\n}";
                     @class += @class2;
@@ -241,7 +258,7 @@ namespace RiotGamesApi.AspNetCore
                                $"//AUTO GENERATED CLASS DO NOT MODIFY\r\n ";
             //$"public class Api\r\n{{\r\n";
 
-            string @apiClass = $"public class Api\r\n{{\r\n" +
+            string @apiClass = $"public class {nameof(Api)}\r\n{{\r\n" +
                                $"{@apiClassProperties}" +
                                $"\r\n}}\r\n";
             MainClass += @apiClass;
@@ -261,7 +278,9 @@ namespace RiotGamesApi.AspNetCore
             string @references = $"using {Namespace}.Enums;\r\n" +
                                  $"using {Namespace}.Models;\r\n" +
                                  $"using {Namespace}.RiotApi.Enums;\r\n" +
-                                 $"using System;\r\nusing System.Collections.Generic;";
+                                 $"using System;\r\n" +
+                                 $"using System.Collections.Generic;\r\n" +
+                                 $"using System.Threading.Tasks;";
 
             return @references;
         }

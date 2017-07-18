@@ -28,7 +28,7 @@ namespace RiotGamesApi.Web.Controllers
             //    .AddParameter(new ApiParameter(LolApiPath.BySummoner, (long)466244))
             //    .Build(ServicePlatform.TR1)
             //    .GetAsync();
-            var rit = LolApi.NonStaticApi.ChampionMasteryv3.GetChampionMasteriesBySummoner(ServicePlatform.TR1, 466244);
+            var rit = await LolApi.NonStaticApi.ChampionMasteryv3.GetChampionMasteriesBySummonerAsync(ServicePlatform.TR1, 466244);
 
             //var rit2 = LolApi.StaticApi.StaticDatav3.GetChampions(ServicePlatform.TR1);
             return View(rit);
