@@ -51,7 +51,7 @@ install:
 
     $day = $DateTime.ToString("d.").TrimEnd('.');
 
-    $hourMinute = $DateTime.ToString(".hmm").TrimStart('.');
+    $hourMinute = $DateTime.ToString(".HHmm").TrimStart('.');
 
     $buildYear = (($year - $FCyear) + 1);
 
