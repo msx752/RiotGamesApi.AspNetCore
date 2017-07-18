@@ -41,6 +41,8 @@ install:
 
     $timeZone = $timeZone0;
 
+    Write-Host "Current System Time:" $timeZone;
+
     [datetime]$DateTime = $timeZone;
 
     $year = $DateTime.ToString("y.").TrimEnd('.');
