@@ -8,8 +8,8 @@ namespace RiotGamesApi.AspNetCore.Enums
 {
     public enum ApiMethodType
     {
-        GET,
-        POST,
-        PUT
+        Get,
+        Post,
+        Put
     }
 }

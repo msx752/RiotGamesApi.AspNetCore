@@ -186,13 +186,13 @@ namespace RiotGamesApi.AspNetCore.Models
             return this;
         }
 
-        private void RegisterQueryParameter(Dictionary<string, string> optionalParameters)
+        private void RegisterQueryParameter(Dictionary<string, object> optionalParameters)
         {
             if (optionalParameters != null)
             {
                 foreach (var parameter in optionalParameters)
                 {
-                    if (!string.IsNullOrWhiteSpace(parameter.Value))
+                    if (parameter.Value != null)
                         this.RequestUrl += $"&{parameter.Key}={parameter.Value}";
                 }
             }
@@ -207,7 +207,7 @@ namespace RiotGamesApi.AspNetCore.Models
             return request;
         }
 
-        public IResult<T> Get(Dictionary<string, string> optionalParameters = null)
+        public IResult<T> Get(Dictionary<string, object> optionalParameters = null)
         {
             try
             {
@@ -283,7 +283,7 @@ namespace RiotGamesApi.AspNetCore.Models
 
         public IResult<T> Post(object bodyParameter = null)
         {
-            return Post(new Dictionary<string, string>(), bodyParameter);
+            return Post(new Dictionary<string, object>(), bodyParameter);
         }
 
         private void ExceptionControl(HttpResponseMessage response)
@@ -316,7 +316,7 @@ namespace RiotGamesApi.AspNetCore.Models
             throw exp;
         }
 
-        public IResult<T> Post(Dictionary<string, string> optionalParameters = null, object bodyParameter = null)
+        public IResult<T> Post(Dictionary<string, object> optionalParameters = null, object bodyParameter = null)
         {
             try
             {

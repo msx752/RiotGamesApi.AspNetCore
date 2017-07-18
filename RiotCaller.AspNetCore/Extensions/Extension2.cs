@@ -44,7 +44,7 @@ namespace RiotGamesApi.AspNetCore.Extensions
 
         public static LolApiUrl GetMethod(this LolApiUrl option, LolApiMethodName middleType, Type returnType, params LolApiPath[] subApis)
         {
-            option.ApiMethods.Add(new Method(middleType, subApis, returnType, ApiMethodType.GET));
+            option.ApiMethods.Add(new Method(middleType, subApis, returnType, ApiMethodType.Get));
             option.LastApiMethodIndex = option.ApiMethods.Count - 1;
             return option;
         }
@@ -52,7 +52,7 @@ namespace RiotGamesApi.AspNetCore.Extensions
         public static LolApiUrl PostMethod(this LolApiUrl option, LolApiMethodName middleType, Type returnType, Type bodyValueType, bool IsBodyRequired,
             params LolApiPath[] subApis)
         {
-            option.ApiMethods.Add(new Method(middleType, subApis, returnType, ApiMethodType.POST, bodyValueType, IsBodyRequired));
+            option.ApiMethods.Add(new Method(middleType, subApis, returnType, ApiMethodType.Post, bodyValueType, IsBodyRequired));
             option.LastApiMethodIndex = option.ApiMethods.Count - 1;
             return option;
         }
@@ -60,7 +60,7 @@ namespace RiotGamesApi.AspNetCore.Extensions
         public static LolApiUrl PutMethod(this LolApiUrl option, LolApiMethodName methodName, Type bodyValueType, bool IsBodyRequired,
             params LolApiPath[] subApis)
         {
-            option.ApiMethods.Add(new Method(methodName, subApis, typeof(int), ApiMethodType.PUT, bodyValueType, IsBodyRequired));
+            option.ApiMethods.Add(new Method(methodName, subApis, typeof(int), ApiMethodType.Put, bodyValueType, IsBodyRequired));
             option.LastApiMethodIndex = option.ApiMethods.Count - 1;
             return option;
         }

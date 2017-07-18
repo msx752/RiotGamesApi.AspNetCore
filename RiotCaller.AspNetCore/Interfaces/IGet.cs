@@ -16,12 +16,12 @@ namespace RiotGamesApi.AspNetCore.Interfaces
         /// </returns>
         IRequestMethod<T> UseCache(bool useCache = false);
 
-        IResult<T> Get(Dictionary<string, string> optionalParameters = null);
+        IResult<T> Get(Dictionary<string, object> optionalParameters = null);
 
         IResult<T> Put(object bodyParameter = null);
 
         IResult<T> Post(object bodyParameter = null);
 
-        IResult<T> Post(Dictionary<string, string> optionalParameters = null, object bodyParameter = null);
+        IResult<T> Post(Dictionary<string, object> optionalParameters = null, object bodyParameter = null);
     }
 }

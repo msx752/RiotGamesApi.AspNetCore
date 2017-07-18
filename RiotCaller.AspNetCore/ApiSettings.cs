@@ -4,6 +4,7 @@ using RiotGamesApi.AspNetCore.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using Microsoft.Extensions.Caching.Memory;
 using RiotGamesApi.AspNetCore.Cache;
 using RiotGamesApi.AspNetCore.Models;
@@ -51,18 +52,34 @@ namespace RiotGamesApi.AspNetCore
 
         #region api class generetor
 
+        private static bool IsDigitType(string value)
+        {
+            if (value.StartsWith("Int") ||
+                value.StartsWith("long") ||
+                value.StartsWith("byte") ||
+                value.Equals("int") ||
+                value.StartsWith("decimal") ||
+                value.StartsWith("double"))
+            {
+                return true;
+            }
+
+            return false;
+        }
+
         public static string GenerateApiClass()
         {
+            string nameOfNs = typeof(ApiSettings).Namespace;
             Dictionary<LolUrlType, string> Classes = new Dictionary<LolUrlType, string>();
             Dictionary<LolUrlType, Models.RiotGamesApi> TournamenApis = new Dictionary<LolUrlType, Models.RiotGamesApi>();
             foreach (var selected in ApiOptions.RiotGamesApis)
             {
                 var urlType = selected.Key;
-                if (urlType == LolUrlType.Tournament)
-                {
-                    TournamenApis.Add(selected.Key, selected.Value);
-                    continue;
-                }
+                //if (urlType == LolUrlType.Tournament)
+                //{
+                //    TournamenApis.Add(selected.Key, selected.Value);
+                //    continue;
+                //}
                 string @class = $"\r\n//\"{selected.Value.ApiUrl}\r\n" +
                                 $"public static class {urlType.ToString()}\r\n{{";
                 foreach (var url in selected.Value.RiotGamesApiUrls)
@@ -71,13 +88,26 @@ namespace RiotGamesApi.AspNetCore
                                      $"public static class {url.ApiName}_{url.Version.Replace(".", "_")}\r\n{{";
                     foreach (var urlSub in url.ApiMethods)
                     {
-                        var t1 = urlSub.ReturnValueType.Name;
-                        if (t1 == "List`1")
+                        TypeInfo tinf = urlSub.ReturnValueType.GetTypeInfo();
+                        string t1_ns = urlSub.ReturnValueType.Namespace;
+                        var t1 = "";
+                        if (urlSub.ReturnValueType.Name == "List`1")
                         {
                             string t2 =
                                 urlSub.ReturnValueType.FullName.Split(new string[] { "[[" }, StringSplitOptions.None)[1]
                                     .Split(new string[] { "," }, StringSplitOptions.None)[0];
                             t1 = $"List<{t2}>";
+                        }
+                        else
+                        {
+                            if (tinf.IsClass || tinf.IsInterface)
+                            {
+                                t1 = $"{t1_ns}.{urlSub.ReturnValueType.Name}";
+                            }
+                            else
+                            {
+                                t1 = $"{urlSub.ReturnValueType.Name}";
+                            }
                         }
                         string @parameters = "";
                         string @RiotGamesApiParameters = "";
@@ -107,7 +137,7 @@ namespace RiotGamesApi.AspNetCore
                             @useCacheMethod = $".UseCache(_useCache)\r\n";
                         }
                         string @queryParameters = "";
-                        string @optionalParameters = "new Dictionary<string, string>()\r\n{\r\n";
+                        string @optionalParameters = "new Dictionary<string, object>()\r\n{\r\n";
                         foreach (var query in urlSub.TypesOfQueryParameter)
                         {
                             string paramName = $"_{query.Key}";
@@ -121,6 +151,10 @@ namespace RiotGamesApi.AspNetCore
                             }
                             //string.Join(\"&tags=\", tags)
                             string @defaultParamValue = paramType == "Boolean" ? "false" : "null";
+                            if (IsDigitType(paramType))
+                            {
+                                paramType += "?";
+                            }
                             @queryParameters += $", {paramType} {paramName} = {@defaultParamValue}";
                             if (paramType.StartsWith("List<"))
                             {
@@ -147,15 +181,42 @@ namespace RiotGamesApi.AspNetCore
                         {
                             @optionalParameters = "";
                         }
-                        string @method = $"\r\npublic static IResult<{t1}> Get{urlSub.ApiMethodName}{uniqueParam}({nameof(ServicePlatform)} platform{@parameters})\r\n{{";
+                        string platformName = "";
+                        if (urlType == LolUrlType.Tournament)
+                        {
+                            platformName = nameof(PhysicalRegion);
+                            if (urlSub.RequestType != ApiMethodType.Get)
+                            {
+                                string bodyParam = $"_{urlSub.BodyValueType.Name.ToLower()}";
+                                string @mergedParameters = $",{urlSub.BodyValueType.Namespace}.{urlSub.BodyValueType.Name} {bodyParam}";
+                                if (urlSub.IsBodyRequired)
+                                {
+                                    var cacheParams = @parameters;
+                                    mergedParameters += cacheParams;
+                                    @parameters = mergedParameters;
+                                }
+                                else
+                                {
+                                    @parameters += $"{mergedParameters} = null";
+                                }
+                                if (@optionalParameters.Length > 0)
+                                    @optionalParameters += ",";
+                                optionalParameters += bodyParam;
+                            }
+                        }
+                        else
+                        {
+                            platformName = nameof(ServicePlatform);
+                        }
+                        string @method = $"\r\npublic static {nameOfNs}.Interfaces.IResult<{t1}> {urlSub.RequestType}{urlSub.ApiMethodName}{uniqueParam}({platformName} platform{@parameters})\r\n{{";
 
-                        string @apiCall = $"\r\nIResult<{t1}> rit = new {nameof(ApiCall)}()\r\n" +
+                        string @apiCall = $"\r\n{nameOfNs}.Interfaces.IResult<{t1}> rit = new {nameof(ApiCall)}()\r\n" +
                                           $".SelectApi<{t1}>({nameof(LolApiName)}.{url.ApiName})\r\n" +
                                           $".For({nameof(LolApiMethodName)}.{urlSub.ApiMethodName})\r\n" +
                                           $".AddParameter({@RiotGamesApiParameters})\r\n" +
                                           ".Build(platform)\r\n" +
                                           @useCacheMethod +
-                                          $".Get({@optionalParameters});";
+                                          $".{urlSub.RequestType}({@optionalParameters});";
                         @method += @apiCall;
                         @method += "\r\nreturn rit;\r\n}";
                         class2 += @method;
@@ -167,7 +228,6 @@ namespace RiotGamesApi.AspNetCore
                 @class += "\r\n}\r\n";
                 Classes[urlType] = @class;
             }
-            string nameOfNs = typeof(ApiSettings).Namespace;
             string @references = Reference(nameOfNs);
             string @namespaces = @references + $"\r\nnamespace {nameOfNs}\r\n{{";
             string @apiClass = $"\r\n// ReSharper disable InconsistentNaming\r\n" +
@@ -187,34 +247,10 @@ namespace RiotGamesApi.AspNetCore
 
         private static string Reference(string Namespace)
         {
-            string @references =
-                $"using {Namespace}.Enums;\r\n" +
-                $"using {Namespace}.Interfaces;\r\n" +
-                $"using {Namespace}.Models;\r\n" +
-                $"using {Namespace}.RiotApi.Enums;\r\n" +
-                $"using {Namespace}.RiotApi.NonStaticEndPoints.ChampionMastery;\r\n" +
-                $"using {Namespace}.RiotApi.NonStaticEndPoints.League;\r\n" +
-                $"using {Namespace}.RiotApi.NonStaticEndPoints.Mastery;\r\n" +
-                $"using {Namespace}.RiotApi.NonStaticEndPoints.Match;\r\n" +
-                $"using {Namespace}.RiotApi.NonStaticEndPoints.Rune;\r\n" +
-                $"using {Namespace}.RiotApi.NonStaticEndPoints.Spectator;\r\n" +
-                $"using {Namespace}.RiotApi.NonStaticEndPoints.Summoner;\r\n" +
-                $"using {Namespace}.RiotApi.StaticEndPoints.Champions;\r\n" +
-                $"using {Namespace}.RiotApi.StaticEndPoints.Items;\r\n" +
-                $"using {Namespace}.RiotApi.StaticEndPoints.LanguageStrings;\r\n" +
-                $"using {Namespace}.RiotApi.StaticEndPoints.Maps;\r\n" +
-                $"using {Namespace}.RiotApi.StaticEndPoints.Masteries;\r\n" +
-                $"using {Namespace}.RiotApi.StaticEndPoints.Profile;\r\n" +
-                $"using {Namespace}.RiotApi.StaticEndPoints.Realms;\r\n" +
-                $"using {Namespace}.RiotApi.StaticEndPoints.Runes;\r\n" +
-                $"using {Namespace}.RiotApi.StaticEndPoints.SummonerSpell;\r\n" +
-                $"using {Namespace}.RiotApi.StatusEndPoints;\r\n" +
-                $"using System;\r\n" +
-                $"using System.Collections.Generic;\r\n" +
-                $"using System.ComponentModel;\r\n" +
-                $"using System.Text;\r\n" +
-                $"using MasteryDto = {Namespace}.RiotApi.StaticEndPoints.Masteries.MasteryDto;\r\n" +
-                $"using RuneDto = {Namespace}.RiotApi.StaticEndPoints.Runes.RuneDto;";
+            string @references = $"using {Namespace}.Enums;\r\n" +
+                                 $"using {Namespace}.Models;\r\n" +
+                                 $"using {Namespace}.RiotApi.Enums;\r\n" +
+                                 $"using System;\r\nusing System.Collections.Generic;";
 
             return @references;
         }
