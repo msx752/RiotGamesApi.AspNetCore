@@ -1,4 +1,6 @@
-﻿namespace RiotGamesApi.AspNetCore.Interfaces
+﻿using System;
+
+namespace RiotGamesApi.AspNetCore.Interfaces
 {
     public interface IApiBuilder
     {
@@ -9,5 +11,13 @@
         IApiBuilder UseApiUrl(string _url);
 
         IApiBuilder UseRiotApiKey(string riotApiKey);
+
+        IApiBuilder UseTournamentApi(Func<Models.RiotGamesApi, Models.RiotGamesApi> action);
+
+        IApiBuilder UseNonStaticApi(Func<Models.RiotGamesApi, Models.RiotGamesApi> action);
+
+        IApiBuilder UseStaticApi(Func<Models.RiotGamesApi, Models.RiotGamesApi> action);
+
+        IApiBuilder UseStatusApi(Func<Models.RiotGamesApi, Models.RiotGamesApi> action);
     }
 }

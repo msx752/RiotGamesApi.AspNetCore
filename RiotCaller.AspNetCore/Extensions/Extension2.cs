@@ -35,75 +35,6 @@ namespace RiotGamesApi.AspNetCore.Extensions
 {
     public static class Extension2
     {
-        public static LolApiUrl AddApi(this Models.RiotGamesApi option, LolApiName suffix1, double _version)
-        {
-            LolApiUrl sff1 = new LolApiUrl(suffix1, _version);
-            option.RiotGamesApiUrls.Add(sff1);
-            return sff1;
-        }
-
-        public static LolApiUrl GetMethod(this LolApiUrl option, LolApiMethodName middleType, Type returnType, params LolApiPath[] subApis)
-        {
-            option.ApiMethods.Add(new Method(middleType, subApis, returnType, ApiMethodType.Get));
-            option.LastApiMethodIndex = option.ApiMethods.Count - 1;
-            return option;
-        }
-
-        public static LolApiUrl PostMethod(this LolApiUrl option, LolApiMethodName middleType, Type returnType, Type bodyValueType, bool IsBodyRequired,
-            params LolApiPath[] subApis)
-        {
-            option.ApiMethods.Add(new Method(middleType, subApis, returnType, ApiMethodType.Post, bodyValueType, IsBodyRequired));
-            option.LastApiMethodIndex = option.ApiMethods.Count - 1;
-            return option;
-        }
-
-        public static LolApiUrl PutMethod(this LolApiUrl option, LolApiMethodName methodName, Type bodyValueType, bool IsBodyRequired,
-            params LolApiPath[] subApis)
-        {
-            option.ApiMethods.Add(new Method(methodName, subApis, typeof(int), ApiMethodType.Put, bodyValueType, IsBodyRequired));
-            option.LastApiMethodIndex = option.ApiMethods.Count - 1;
-            return option;
-        }
-
-        /// <summary>
-        /// </summary>
-        /// <param name="option">
-        /// </param>
-        /// <param name="queryParameterTypes">
-        /// NAME,TYPE 
-        /// </param>
-        /// <returns>
-        /// </returns>
-        public static LolApiUrl AddQueryParameter(this LolApiUrl option, Dictionary<string, Type> queryParameterTypes)
-        {
-            try
-            {
-                if (option.ApiName == LolApiName.StaticData ||
-                    option.ApiName == LolApiName.Tournament ||
-                    option.ApiName == LolApiName.TournamentStub)
-                {
-                    option.ApiMethods[option.LastApiMethodIndex].TypesOfQueryParameter = queryParameterTypes;
-                }
-                else
-                {
-                    throw new Exception("QueryParameters only for static-data and tournament");
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                throw;
-            }
-            return option;
-        }
-
-        public static IApplicationBuilder UseRiotGamesApi(this IApplicationBuilder app)
-        {
-            var sProvider = app.ApplicationServices;
-            ApiSettings.ServiceProvider = sProvider;
-            return app;
-        }
-
         public static void AddLeagueOfLegendsApi(this IServiceCollection services, string riotApiKey, Func<CacheOption, CacheOption> cacheOption = null)
         {
             //can convertable to json
@@ -300,6 +231,13 @@ namespace RiotGamesApi.AspNetCore.Extensions
             services.AddMemoryCache();
             services.AddSingleton<IApiCache>(new ApiCache());
             services.AddSingleton<Api>(new Api());
+        }
+
+        public static IApplicationBuilder UseRiotGamesApi(this IApplicationBuilder app)
+        {
+            var sProvider = app.ApplicationServices;
+            ApiSettings.ServiceProvider = sProvider;
+            return app;
         }
     }
 }

@@ -23,10 +23,6 @@ namespace RiotGamesApi.AspNetCore.Models
 
         public LolApiUrl ApiList { get; internal set; }
         public string BaseUrl { get; internal set; }
-        public List<ApiParameter> ParametersWithValue { get; private set; }
-        public string RequestUrl { get; private set; }
-
-        public bool Caching { get; internal set; } = false;
 
         public String CacheKey
         {
@@ -36,6 +32,10 @@ namespace RiotGamesApi.AspNetCore.Models
                     .Replace($"?api_key={ApiSettings.ApiOptions.RiotApiKey}", "");
             }
         }
+
+        public bool Caching { get; internal set; } = false;
+        public List<ApiParameter> ParametersWithValue { get; private set; }
+        public string RequestUrl { get; private set; }
 
         public IResult<T> RiotResult
         {
@@ -76,7 +76,7 @@ namespace RiotGamesApi.AspNetCore.Models
                     }
                     SelectedSubUrlCache.Clear();
                     if (selected == null)
-                        throw new Exception("SelectedSubUrl is not found with this parameters");
+                        throw new Exception("SelectedSubUrlCache is not found with this parameters");
                     SelectedApiIndex = ApiList.ApiMethods.FindIndex(p => p == selected);
                 }
                 catch (Exception e)
@@ -123,8 +123,6 @@ namespace RiotGamesApi.AspNetCore.Models
                 {
                     var parameter = selected.RiotGamesApiPaths[index];
                     newUrl = $"{newUrl}/{parameter.GetStringValue()}";
-                    //if (index != selected.RiotGamesApiSubApiTypes.Length - 1)
-                    //    newUrl += "/";
                 }
                 //it can change with 'selectedParam.FindParameterType()' method in he future
                 for (var index = 0; index < array.Count; index++)
@@ -167,12 +165,10 @@ namespace RiotGamesApi.AspNetCore.Models
             return this;
         }
 
-        public IRequestMethod<T> UseCache(bool useCache = false)
+        public IResult<T> Get(Dictionary<string, object> optionalParameters = null)
         {
-            if (ApiSettings.ApiOptions.CacheOptions.EnableStaticApiCaching &&
-                this.UrlType == LolUrlType.Static)
-                Caching = useCache;
-            return this;
+            GetAsync(optionalParameters).Wait();
+            return RiotResult;
         }
 
         public async Task<IResult<T>> GetAsync(Dictionary<string, object> optionalParameters = null)
@@ -190,18 +186,7 @@ namespace RiotGamesApi.AspNetCore.Models
                      HttpClient httpClient = new HttpClient();
                      using (HttpResponseMessage response = await httpClient.GetAsync(request.RequestUri))
                      {
-                         if (!response.IsSuccessStatusCode)
-                         {
-                             ExceptionControl(response);
-                         }
-                         else
-                         {
-                             using (HttpContent content = response.Content)
-                             {
-                                 string json = content.ReadAsStringAsync().Result;
-                                 RiotResult.Result = JsonConvert.DeserializeObject<T>(json);
-                             }
-                         }
+                         GetResult(response);
                      }
                      if (Caching)
                      {
@@ -211,36 +196,73 @@ namespace RiotGamesApi.AspNetCore.Models
                  catch (Exception e)
                  {
                      RiotResult.Exception = e;
+                     Console.WriteLine(e);
                  }
                  return RiotResult;
              });
         }
 
-        private void RegisterQueryParameter(Dictionary<string, object> optionalParameters)
+        public IResult<T> Post(object bodyParameter = null)
         {
-            if (optionalParameters != null)
+            return Post(new Dictionary<string, object>(), bodyParameter);
+        }
+
+        public IResult<T> Post(Dictionary<string, object> optionalParameters = null, object bodyParameter = null)
+        {
+            PostAsync(optionalParameters, bodyParameter).Wait();
+            return RiotResult;
+        }
+
+        public Task<IResult<T>> PostAsync(object bodyParameter = null)
+        {
+            return PostAsync(null, bodyParameter);
+        }
+
+        private void GetResult(HttpResponseMessage response)
+        {
+            if (!response.IsSuccessStatusCode)
             {
-                foreach (var parameter in optionalParameters)
+                ExceptionControl(response);
+            }
+            else
+            {
+                using (HttpContent content = response.Content)
                 {
-                    if (parameter.Value != null)
-                        this.RequestUrl += $"&{parameter.Key}={parameter.Value}";
+                    string json = content.ReadAsStringAsync().Result;
+                    RiotResult.Result = JsonConvert.DeserializeObject<T>(json);
                 }
             }
         }
 
-        private HttpRequestMessage CreateHttpRequest(HttpMethod method)
+        public async Task<IResult<T>> PostAsync(Dictionary<string, object> optionalParameters = null, object bodyParameter = null)
         {
-            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, this.RequestUrl);
-            request.Headers.Add("UserAgent", "RiotGamesApi.AspNetCore");
-            request.Headers.Add("Accept-Language", "tr-TR,tr;q=0.8,en-US;q=0.6,en;q=0.4,ru;q=0.2");
-            request.Headers.Add("Accept-Charset", "ISO-8859-1,UTF-8");
-            return request;
-        }
+            return await Task.Run(async () =>
+            {
+                try
+                {
+                    RegisterApiKey();
+                    RegisterQueryParameter(optionalParameters);
 
-        public IResult<T> Get(Dictionary<string, object> optionalParameters = null)
-        {
-            GetAsync(optionalParameters).Wait();
-            return RiotResult;
+                    HttpRequestMessage request = CreateHttpRequest(HttpMethod.Post);
+                    HttpClient httpClient = new HttpClient();
+                    StringContent data = null;
+                    if (bodyParameter != null)
+                        data = new StringContent(JsonConvert.SerializeObject(bodyParameter));
+                    else
+                        data = new StringContent("");
+
+                    using (HttpResponseMessage response = await httpClient.PostAsync(request.RequestUri, data))
+                    {
+                        GetResult(response);
+                    }
+                }
+                catch (Exception e)
+                {
+                    RiotResult.Exception = e;
+                    Console.WriteLine(e);
+                }
+                return RiotResult;
+            });
         }
 
         public IResult<T> Put(object bodyParameter = null)
@@ -266,77 +288,57 @@ namespace RiotGamesApi.AspNetCore.Models
 
                     using (HttpResponseMessage response = await httpClient.PutAsync(request.RequestUri, data))
                     {
-                        if (!response.IsSuccessStatusCode)
-                        {
-                            ExceptionControl(response);
-                        }
-                        else
-                        {
-                            using (HttpContent content = response.Content)
-                            {
-                                string json = "1";//???? what is the type of response class
-                                RiotResult.Result = JsonConvert.DeserializeObject<T>(json);
-                            }
-                        }
+                        GetResult(response);
                     }
                 }
                 catch (Exception e)
                 {
                     RiotResult.Exception = e;
+                    Console.WriteLine(e);
                 }
                 return RiotResult;
             });
         }
 
-        public IResult<T> Post(object bodyParameter = null)
+        public override string ToString()
         {
-            return Post(new Dictionary<string, object>(), bodyParameter);
+            if (RequestUrl != null)
+                return RequestUrl;
+            else
+                return base.ToString();
         }
 
-        public Task<IResult<T>> PostAsync(object bodyParameter = null)
+        public IRequestMethod<T> UseCache(bool useCache = false)
         {
-            return PostAsync(null, bodyParameter);
+            if (ApiSettings.ApiOptions.CacheOptions.EnableStaticApiCaching &&
+                this.UrlType == LolUrlType.Static)
+                Caching = useCache;
+            return this;
         }
 
-        public async Task<IResult<T>> PostAsync(Dictionary<string, object> optionalParameters = null, object bodyParameter = null)
+        private bool CacheControl()
         {
-            return await Task.Run(async () =>
+            if (Caching)
             {
-                try
+                T data;
+                var rslt = ApiSettings.ApiCache.Get<T>(this, out data);
+                if (rslt)
                 {
-                    RegisterApiKey();
-                    RegisterQueryParameter(optionalParameters);
-
-                    HttpRequestMessage request = CreateHttpRequest(HttpMethod.Post);
-                    HttpClient httpClient = new HttpClient();
-                    StringContent data = null;
-                    if (bodyParameter != null)
-                        data = new StringContent(JsonConvert.SerializeObject(bodyParameter));
-                    else
-                        data = new StringContent("");
-
-                    using (HttpResponseMessage response = await httpClient.PostAsync(request.RequestUri, data))
-                    {
-                        if (!response.IsSuccessStatusCode)
-                        {
-                            ExceptionControl(response);
-                        }
-                        else
-                        {
-                            using (HttpContent content = response.Content)
-                            {
-                                string json = content.ReadAsStringAsync().Result;
-                                RiotResult.Result = JsonConvert.DeserializeObject<T>(json);
-                            }
-                        }
-                    }
+                    RiotResult.IsCache = true;
+                    RiotResult.Result = data;
+                    return true;
                 }
-                catch (Exception e)
-                {
-                    RiotResult.Exception = e;
-                }
-                return RiotResult;
-            });
+            }
+            return false;
+        }
+
+        private HttpRequestMessage CreateHttpRequest(HttpMethod method)
+        {
+            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, this.RequestUrl);
+            request.Headers.Add("UserAgent", "RiotGamesApi.AspNetCore");
+            request.Headers.Add("Accept-Language", "tr-TR,tr;q=0.8,en-US;q=0.6,en;q=0.4,ru;q=0.2");
+            request.Headers.Add("Accept-Charset", "ISO-8859-1,UTF-8");
+            return request;
         }
 
         private void ExceptionControl(HttpResponseMessage response)
@@ -369,12 +371,6 @@ namespace RiotGamesApi.AspNetCore.Models
             throw exp;
         }
 
-        public IResult<T> Post(Dictionary<string, object> optionalParameters = null, object bodyParameter = null)
-        {
-            PostAsync(optionalParameters, bodyParameter).Wait();
-            return RiotResult;
-        }
-
         private void RegisterApiKey()
         {
             if (string.IsNullOrWhiteSpace(ApiSettings.ApiOptions.RiotApiKey))
@@ -382,28 +378,16 @@ namespace RiotGamesApi.AspNetCore.Models
             this.RequestUrl += $"?api_key={ApiSettings.ApiOptions.RiotApiKey}";
         }
 
-        private bool CacheControl()
+        private void RegisterQueryParameter(Dictionary<string, object> optionalParameters)
         {
-            if (Caching)
+            if (optionalParameters != null)
             {
-                T data;
-                var rslt = ApiSettings.ApiCache.Get<T>(this, out data);
-                if (rslt)
+                foreach (var parameter in optionalParameters)
                 {
-                    RiotResult.IsCache = true;
-                    RiotResult.Result = data;
-                    return true;
+                    if (parameter.Value != null)
+                        this.RequestUrl += $"&{parameter.Key}={parameter.Value}";
                 }
             }
-            return false;
-        }
-
-        public override string ToString()
-        {
-            if (RequestUrl != null)
-                return RequestUrl;
-            else
-                return base.ToString();
         }
     }
 }

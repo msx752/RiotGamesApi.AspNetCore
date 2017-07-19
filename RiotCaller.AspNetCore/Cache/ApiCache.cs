@@ -10,18 +10,9 @@ namespace RiotGamesApi.AspNetCore.Cache
 {
     public class ApiCache : IApiCache
     {
-        private IMemoryCache _memoryCache;
-
-        internal IMemoryCache MemoryCache
-        {
-            get
-            {
-                return (_memoryCache ?? ApiSettings.MemoryCache);
-            }
-            set { _memoryCache = value; }
-        }
-
+        private static object _lock = new object();
         private CacheOption _cacheOption;
+        private IMemoryCache _memoryCache;
 
         public CacheOption CacheOption
         {
@@ -30,6 +21,15 @@ namespace RiotGamesApi.AspNetCore.Cache
                 return (_cacheOption ?? ApiSettings.ApiOptions.CacheOptions);
             }
             set { _cacheOption = value; }
+        }
+
+        internal IMemoryCache MemoryCache
+        {
+            get
+            {
+                return (_memoryCache ?? ApiSettings.MemoryCache);
+            }
+            set { _memoryCache = value; }
         }
 
         public void Add<T>(IProperty<T> data) where T : new()
