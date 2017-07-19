@@ -5,3 +5,5 @@
 
 # RiotGamesApi.AspNetCore
 League Of Legends  API V3.0 with AspNetCore
+
+go to [wiki](https://github.com/msx752/RiotGamesApi.AspNetCore/wiki)
