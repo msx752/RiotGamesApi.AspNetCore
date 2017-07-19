@@ -46,18 +46,6 @@ namespace RiotGamesApi.AspNetCore.Models
         public int SelectedApiIndex { get; private set; } = -1;
         public List<Method> SelectedSubUrlCache { get; internal set; }
         public LolUrlType UrlType { get; internal set; }
-        //moved to another class
-        //public IFor<T> SelectApi(ApiName apiType, double version = 3.0)
-        //{
-        //    UrlType = apiType.GetUrlType();
-        //    BaseUrl = RiotGamesApiSettings.RiotGamesApiOptions.RiotGamesApis[UrlType].ApiUrl;
-        //    ApiList = RiotGamesApiSettings.RiotGamesApiOptions.RiotGamesApis[UrlType].RiotGamesApiUrls
-        //        .FirstOrDefault(p => p.SubUrl == apiType && p.CompareVersion(version));
-        //    if (ApiList == null)
-        //        throw new Exception($"{UrlType} is not defined in RiotGamesApiBuilder or selected version:{version} is not defined");
-
-        //    return this;
-        //}
 
         public IBuild<T> AddParameter(params ApiParameter[] parameters)
         {
@@ -307,7 +295,7 @@ namespace RiotGamesApi.AspNetCore.Models
 
         public Task<IResult<T>> PostAsync(object bodyParameter = null)
         {
-            return PostAsync(bodyParameter);
+            return PostAsync(null, bodyParameter);
         }
 
         public async Task<IResult<T>> PostAsync(Dictionary<string, object> optionalParameters = null, object bodyParameter = null)
