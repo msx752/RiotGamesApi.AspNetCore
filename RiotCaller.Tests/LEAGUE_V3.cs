@@ -26,7 +26,7 @@ namespace RiotGamesApi.Tests
                 .SelectApi<LeagueListDTO>(LolApiName.League)
                 .For(LolApiMethodName.ChallengerLeagues)
                 .AddParameter(new ApiParameter(LolApiPath.ByQueue, Queue.RANKED_SOLO_5x5))
-                .Build(PlatformType)
+                .Build(ServicePlatform)
                 .Get();
             Assert.False(rit.HasError);
         }
@@ -38,7 +38,7 @@ namespace RiotGamesApi.Tests
                 .SelectApi<List<LeagueListDTO>>(LolApiName.League)
                 .For(LolApiMethodName.Leagues)
                 .AddParameter(new ApiParameter(LolApiPath.BySummoner, SummonerId))
-                .Build(PlatformType)
+                .Build(ServicePlatform)
                 .Get();
             Assert.False(rit.HasError);
         }
@@ -50,7 +50,7 @@ namespace RiotGamesApi.Tests
                 .SelectApi<LeagueListDTO>(LolApiName.League)
                 .For(LolApiMethodName.MasterLeagues)
                 .AddParameter(new ApiParameter(LolApiPath.ByQueue, Queue.RANKED_SOLO_5x5))
-                .Build(PlatformType)
+                .Build(ServicePlatform)
                 .Get();
             Assert.False(rit.HasError);
         }
@@ -62,7 +62,7 @@ namespace RiotGamesApi.Tests
                 .SelectApi<List<LeaguePositionDTO>>(LolApiName.League)
                 .For(LolApiMethodName.Positions)
                 .AddParameter(new ApiParameter(LolApiPath.BySummoner, SummonerId))
-                .Build(PlatformType)
+                .Build(ServicePlatform)
                 .Get();
             Assert.False(rit.HasError);
         }

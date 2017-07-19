@@ -17,7 +17,7 @@ namespace RiotGamesApi.Tests
                 .SelectApi<List<ChampionMasteryDto>>(LolApiName.ChampionMastery)
                 .For(LolApiMethodName.ChampionMasteries)
                 .AddParameter(new ApiParameter(LolApiPath.BySummoner, SummonerId))
-                .Build(PlatformType)
+                .Build(ServicePlatform)
                 .Get();
             Assert.False(rit.HasError);
         }
@@ -30,7 +30,7 @@ namespace RiotGamesApi.Tests
                 .For(LolApiMethodName.ChampionMasteries)
                 .AddParameter(new ApiParameter(LolApiPath.BySummoner, SummonerId),
                                new ApiParameter(LolApiPath.ByChampion, ChampionId))
-                .Build(PlatformType)
+                .Build(ServicePlatform)
                 .Get();
             Assert.False(rit.HasError);
         }
@@ -42,7 +42,7 @@ namespace RiotGamesApi.Tests
                 .SelectApi<int>(LolApiName.ChampionMastery)
                 .For(LolApiMethodName.Scores)
                 .AddParameter(new ApiParameter(LolApiPath.BySummoner, SummonerId))
-                .Build(PlatformType)
+                .Build(ServicePlatform)
                 .Get();
             Assert.False(rit.HasError);
         }

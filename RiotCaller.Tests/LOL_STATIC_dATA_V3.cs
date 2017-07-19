@@ -27,7 +27,7 @@ namespace RiotGamesApi.Tests
                 .SelectApi<ChampionListDto>(LolApiName.StaticData)
                 .For(LolApiMethodName.Champions)
                 .AddParameter()
-                .Build(PlatformType)
+                .Build(ServicePlatform)
                 .UseCache(false)
                 .Get();
             Assert.False(rit.HasError);
@@ -40,7 +40,7 @@ namespace RiotGamesApi.Tests
                 .SelectApi<ChampionDto>(LolApiName.StaticData)
                 .For(LolApiMethodName.Champions)
                 .AddParameter(new ApiParameter(LolApiPath.OnlyId, ChampionId))
-                .Build(PlatformType)
+                .Build(ServicePlatform)
                 .UseCache(false)
                 .Get();
             Assert.False(rit.HasError);
@@ -53,7 +53,7 @@ namespace RiotGamesApi.Tests
                 .SelectApi<ItemListDto>(LolApiName.StaticData)
                 .For(LolApiMethodName.Champions)
                 .AddParameter()
-                .Build(PlatformType)
+                .Build(ServicePlatform)
                 .UseCache(false)
                 .Get();
             Assert.False(rit.HasError);
@@ -66,7 +66,7 @@ namespace RiotGamesApi.Tests
                 .SelectApi<ItemDto>(LolApiName.StaticData)
                 .For(LolApiMethodName.Items)
                 .AddParameter(new ApiParameter(LolApiPath.OnlyId, ItemId))
-                .Build(PlatformType)
+                .Build(ServicePlatform)
                 .UseCache(false)
                 .Get();
             Assert.False(rit.HasError);
@@ -79,7 +79,7 @@ namespace RiotGamesApi.Tests
                 .SelectApi<LanguageStringsDto>(LolApiName.StaticData)
                 .For(LolApiMethodName.LanguageStrings)
                 .AddParameter()
-                .Build(PlatformType)
+                .Build(ServicePlatform)
                 .UseCache(false)
                 .Get();
             Assert.False(rit.HasError);
@@ -92,7 +92,7 @@ namespace RiotGamesApi.Tests
                 .SelectApi<List<string>>(LolApiName.StaticData)
                 .For(LolApiMethodName.Languages)
                 .AddParameter()
-                .Build(PlatformType)
+                .Build(ServicePlatform)
                 .UseCache(false)
                 .Get();
             Assert.False(rit.HasError);
@@ -105,7 +105,7 @@ namespace RiotGamesApi.Tests
                 .SelectApi<MapDataDto>(LolApiName.StaticData)
                 .For(LolApiMethodName.Maps)
                 .AddParameter()
-                .Build(PlatformType)
+                .Build(ServicePlatform)
                 .UseCache(false)
                 .Get();
             Assert.False(rit.HasError);
@@ -118,7 +118,7 @@ namespace RiotGamesApi.Tests
                 .SelectApi<MasteryListDto>(LolApiName.StaticData)
                 .For(LolApiMethodName.Masteries)
                 .AddParameter()
-                .Build(PlatformType)
+                .Build(ServicePlatform)
                 .UseCache(false)
                 .Get();
             Assert.False(rit.HasError);
@@ -131,7 +131,7 @@ namespace RiotGamesApi.Tests
                 .SelectApi<MasteryDto>(LolApiName.StaticData)
                 .For(LolApiMethodName.Masteries)
                 .AddParameter(new ApiParameter(LolApiPath.OnlyId, MasteryId))
-                .Build(PlatformType)
+                .Build(ServicePlatform)
                 .UseCache(false)
                 .Get();
             Assert.False(rit.HasError);
@@ -144,7 +144,7 @@ namespace RiotGamesApi.Tests
                 .SelectApi<RealmDto>(LolApiName.StaticData)
                 .For(LolApiMethodName.Realms)
                 .AddParameter()
-                .Build(PlatformType)
+                .Build(ServicePlatform)
                 .UseCache(false)
                 .Get();
             Assert.False(rit.HasError);
@@ -157,7 +157,7 @@ namespace RiotGamesApi.Tests
                 .SelectApi<RuneListDto>(LolApiName.StaticData)
                 .For(LolApiMethodName.Runes)
                 .AddParameter()
-                .Build(PlatformType)
+                .Build(ServicePlatform)
                 .UseCache(false)
                 .Get();
             Assert.False(rit.HasError);
@@ -170,7 +170,7 @@ namespace RiotGamesApi.Tests
                 .SelectApi<RuneDto>(LolApiName.StaticData)
                 .For(LolApiMethodName.Runes)
                 .AddParameter(new ApiParameter(LolApiPath.OnlyId, (long)1))
-                .Build(PlatformType)
+                .Build(ServicePlatform)
                 .UseCache(false)
                 .Get();
             Assert.False(rit.HasError);
@@ -183,7 +183,7 @@ namespace RiotGamesApi.Tests
                 .SelectApi<SummonerSpellListDto>(LolApiName.StaticData)
                 .For(LolApiMethodName.SummonerSpells)
                 .AddParameter()
-                .Build(PlatformType)
+                .Build(ServicePlatform)
                 .UseCache(false)
                 .Get();
             Assert.False(rit.HasError);
@@ -196,7 +196,7 @@ namespace RiotGamesApi.Tests
                 .SelectApi<SummonerSpellDto>(LolApiName.StaticData)
                 .For(LolApiMethodName.SummonerSpells)
                 .AddParameter(new ApiParameter(LolApiPath.OnlyId, (long)1))
-                .Build(PlatformType)
+                .Build(ServicePlatform)
                 .UseCache(false)
                 .Get();
             Assert.False(rit.HasError);
@@ -209,7 +209,7 @@ namespace RiotGamesApi.Tests
                 .SelectApi<List<string>>(LolApiName.StaticData)
                 .For(LolApiMethodName.Versions)
                 .AddParameter()
-                .Build(PlatformType)
+                .Build(ServicePlatform)
                 .UseCache(false)
                 .Get();
             Assert.False(rit.HasError);

@@ -26,7 +26,7 @@ namespace RiotGamesApi.Tests
                 .SelectApi<RunePagesDto>(LolApiName.Platform)
                 .For(LolApiMethodName.Runes)
                 .AddParameter(new ApiParameter(LolApiPath.BySummoner, SummonerId))
-                .Build(PlatformType)
+                .Build(ServicePlatform)
                 .Get();
             Assert.False(rit.HasError);
         }
