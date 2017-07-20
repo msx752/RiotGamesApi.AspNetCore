@@ -1,14 +1,7 @@
-﻿using Newtonsoft.Json;
-using RiotGamesApi.AspNetCore;
-using RiotGamesApi.AspNetCore.Enums;
-using RiotGamesApi.AspNetCore.Extensions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using RiotGamesApi.AspNetCore.Extensions;
 using Xunit;
 
-namespace RiotGamesApi.Tests
+namespace RiotGamesApi.Tests.Others
 {
     public class RiotGamesApiBuilder : BaseTestClass
     {

@@ -1,15 +1,10 @@
-﻿using Microsoft.Extensions.Configuration;
-using RiotGamesApi.AspNetCore.Enums;
+﻿using System;
+using System.IO;
+using Microsoft.Extensions.Configuration;
 using RiotGamesApi.AspNetCore.RiotApi.Enums;
 using RiotGamesApi.AspNetCore.RiotApi.Extensions;
 
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text;
-using Xunit;
-
-namespace RiotGamesApi.Tests
+namespace RiotGamesApi.Tests.Others
 {
     public class BaseTestClass
     {

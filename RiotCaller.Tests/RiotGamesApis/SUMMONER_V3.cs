@@ -1,11 +1,10 @@
-﻿using RiotGamesApi.AspNetCore;
-using RiotGamesApi.AspNetCore.Enums;
+﻿using RiotGamesApi.AspNetCore.Enums;
 using RiotGamesApi.AspNetCore.Models;
-using RiotGamesApi.AspNetCore.RiotApi.Enums;
 using RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.Summoner;
+using RiotGamesApi.Tests.Others;
 using Xunit;
 
-namespace RiotGamesApi.Tests
+namespace RiotGamesApi.Tests.RiotGamesApis
 {
     public class SUMMONER_V3 : BaseTestClass
     {

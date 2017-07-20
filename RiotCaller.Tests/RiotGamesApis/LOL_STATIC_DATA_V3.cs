@@ -1,8 +1,6 @@
-﻿using RiotGamesApi.AspNetCore;
+﻿using System.Collections.Generic;
 using RiotGamesApi.AspNetCore.Enums;
 using RiotGamesApi.AspNetCore.Models;
-using RiotGamesApi.AspNetCore.Extensions;
-using RiotGamesApi.AspNetCore.RiotApi.Enums;
 using RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.Champions;
 using RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.Items;
 using RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.LanguageStrings;
@@ -11,12 +9,10 @@ using RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.Masteries;
 using RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.Realms;
 using RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.Runes;
 using RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.SummonerSpell;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using RiotGamesApi.Tests.Others;
 using Xunit;
 
-namespace RiotGamesApi.Tests
+namespace RiotGamesApi.Tests.RiotGamesApis
 {
     public class LOL_STATIC_DATA_V3 : BaseTestClass
     {

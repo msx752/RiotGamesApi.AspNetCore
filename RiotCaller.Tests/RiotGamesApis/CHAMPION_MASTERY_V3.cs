@@ -1,12 +1,11 @@
-﻿using RiotGamesApi.AspNetCore;
+﻿using System.Collections.Generic;
 using RiotGamesApi.AspNetCore.Enums;
 using RiotGamesApi.AspNetCore.Models;
-using RiotGamesApi.AspNetCore.RiotApi.Enums;
 using RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.ChampionMastery;
-using System.Collections.Generic;
+using RiotGamesApi.Tests.Others;
 using Xunit;
 
-namespace RiotGamesApi.Tests
+namespace RiotGamesApi.Tests.RiotGamesApis
 {
     public class CHAMPION_MASTERY_V3 : BaseTestClass
     {

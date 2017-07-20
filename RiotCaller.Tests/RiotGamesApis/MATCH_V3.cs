@@ -1,21 +1,11 @@
-﻿using RiotGamesApi.AspNetCore;
-
-using RiotGamesApi.AspNetCore;
-
+﻿using System.Collections.Generic;
 using RiotGamesApi.AspNetCore.Enums;
-
-using RiotGamesApi.AspNetCore.Enums;
-
 using RiotGamesApi.AspNetCore.Models;
-using RiotGamesApi.AspNetCore.RiotApi.Enums;
-using RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.Mastery;
 using RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.Match;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using RiotGamesApi.Tests.Others;
 using Xunit;
 
-namespace RiotGamesApi.Tests
+namespace RiotGamesApi.Tests.RiotGamesApis
 {
     public class MATCH_V3 : BaseTestClass
     {

@@ -1,15 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using RiotGamesApi.AspNetCore.Enums;
 using RiotGamesApi.AspNetCore.Models;
 using RiotGamesApi.AspNetCore.RiotApi.Enums;
 using RiotGamesApi.AspNetCore.RiotApi.TournamentEndPoints;
+using RiotGamesApi.Tests.Others;
 using Xunit;
 using LobbyEventDTOWrapper = RiotGamesApi.AspNetCore.RiotApi.TournamentStubEndPoints.LobbyEventDTOWrapper;
 using TournamentCodeParameters = RiotGamesApi.AspNetCore.RiotApi.TournamentStubEndPoints.TournamentCodeParameters;
 
-namespace RiotGamesApi.Tests
+namespace RiotGamesApi.Tests.RiotGamesApis
 {
     public class TOURNAMENT_STUB_V3 : BaseTestClass
     {

@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using RiotGamesApi.AspNetCore;
 using RiotGamesApi.AspNetCore.RiotApi.Enums;
 using Xunit;
 
-namespace RiotGamesApi.Tests
+namespace RiotGamesApi.Tests.Others
 {
     public class UsingStaticApiClass : BaseTestClass
     {

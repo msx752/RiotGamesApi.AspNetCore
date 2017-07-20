@@ -1,13 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using RiotGamesApi.AspNetCore.Enums;
 using RiotGamesApi.AspNetCore.Models;
 using RiotGamesApi.AspNetCore.RiotApi.Enums;
 using RiotGamesApi.AspNetCore.RiotApi.TournamentEndPoints;
+using RiotGamesApi.Tests.Others;
 using Xunit;
 
-namespace RiotGamesApi.Tests
+namespace RiotGamesApi.Tests.RiotGamesApis
 {
     public class TOURNAMENT_V3 : BaseTestClass
     {

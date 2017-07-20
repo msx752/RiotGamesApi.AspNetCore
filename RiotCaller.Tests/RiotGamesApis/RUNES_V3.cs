@@ -1,21 +1,10 @@
-﻿using RiotGamesApi.AspNetCore;
-
-using RiotGamesApi.AspNetCore;
-
-using RiotGamesApi.AspNetCore.Enums;
-
-using RiotGamesApi.AspNetCore.Enums;
-
+﻿using RiotGamesApi.AspNetCore.Enums;
 using RiotGamesApi.AspNetCore.Models;
-using RiotGamesApi.AspNetCore.RiotApi.Enums;
-using RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.League;
 using RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.Rune;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using RiotGamesApi.Tests.Others;
 using Xunit;
 
-namespace RiotGamesApi.Tests
+namespace RiotGamesApi.Tests.RiotGamesApis
 {
     public class RUNES_V3 : BaseTestClass
     {

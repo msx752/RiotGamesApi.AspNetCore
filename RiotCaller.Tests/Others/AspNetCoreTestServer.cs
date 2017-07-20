@@ -1,17 +1,10 @@
-﻿using Microsoft.AspNetCore.Builder.Internal;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Hosting.Internal;
-using Microsoft.AspNetCore.TestHost;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using RiotGamesApi.Web;
-using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using System;
 using System.Net.Http;
-using System.Text;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.TestHost;
+using RiotGamesApi.Web;
 
-namespace RiotGamesApi.Tests
+namespace RiotGamesApi.Tests.Others
 {
     public class AspNetCoreTestServer
     {

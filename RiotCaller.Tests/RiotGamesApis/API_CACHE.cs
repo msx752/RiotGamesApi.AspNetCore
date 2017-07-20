@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Microsoft.Extensions.Caching.Memory;
-using RiotGamesApi.AspNetCore;
-using RiotGamesApi.AspNetCore.Enums;
+﻿using RiotGamesApi.AspNetCore.Enums;
 using RiotGamesApi.AspNetCore.Models;
 using RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.Champions;
-using RiotGamesApi.AspNetCore.RiotApi.StatusEndPoints;
+using RiotGamesApi.Tests.Others;
 using Xunit;
 
-namespace RiotGamesApi.Tests
+namespace RiotGamesApi.Tests.RiotGamesApis
 {
     public class API_CACHE : BaseTestClass
     {
