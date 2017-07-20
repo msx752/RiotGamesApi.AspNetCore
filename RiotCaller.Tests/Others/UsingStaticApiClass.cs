@@ -10,8 +10,7 @@ namespace RiotGamesApi.Tests.Others
         [Fact]
         public void Using()
         {
-            Api p = new Api();
-            var champions = p.StaticApi.StaticDatav3.GetChampions(AspNetCore.RiotApi.Enums.ServicePlatform.TR1, false, null, null,
+            var champions = LolApi.StaticApi.StaticDatav3.GetChampions(AspNetCore.RiotApi.Enums.ServicePlatform.TR1, false, null, null,
                   new List<ChampionTag>() { ChampionTag.all }, true);
             Assert.False(champions.HasError);
         }
@@ -20,7 +19,7 @@ namespace RiotGamesApi.Tests.Others
         public async void UsingAsync()
         {
             Api p = new Api();
-            var champions = await p.StaticApi.StaticDatav3.GetChampionsAsync(AspNetCore.RiotApi.Enums.ServicePlatform.TR1, false, null, null,
+            var champions = await LolApi.StaticApi.StaticDatav3.GetChampionsAsync(AspNetCore.RiotApi.Enums.ServicePlatform.TR1, false, null, null,
                 new List<ChampionTag>() { ChampionTag.all }, true);
             Assert.False(champions.HasError);
         }

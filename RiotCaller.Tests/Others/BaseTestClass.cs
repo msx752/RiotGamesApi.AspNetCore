@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using Microsoft.Extensions.Configuration;
+using RiotGamesApi.AspNetCore;
 using RiotGamesApi.AspNetCore.RiotApi.Enums;
 using RiotGamesApi.AspNetCore.RiotApi.Extensions;
 
@@ -26,6 +27,11 @@ namespace RiotGamesApi.Tests.Others
         public string TournamentCode { get; }
 
         public long MasteryId { get; }
+
+        public Api LolApi
+        {
+            get { return (Api)ApiSettings.ServiceProvider.GetService(typeof(Api)); }
+        }
 
         public BaseTestClass()
         {
