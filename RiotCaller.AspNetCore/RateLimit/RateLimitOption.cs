@@ -4,86 +4,26 @@ using System.Text;
 
 namespace RiotGamesApi.AspNetCore.RateLimit
 {
-    public interface IRateLimitAdd
+    public class RateLimitOption
     {
-        IRateLimitCount AddEvery();
-    }
+        public Dictionary<TimeSpan, int> Limits { get; set; } =
+            new Dictionary<TimeSpan, int>();
 
-    public interface IRateLimitCount
-    {
-        IRateLimitTime One();
-
-        IRateLimitTime Two();
-
-        IRateLimitTime Three();
-
-        IRateLimitTime Four();
-
-        IRateLimitTime Five();
-    }
-
-    public interface IRateLimitTime
-    {
-        void Seconds(int limit);
-
-        void Minutes(int limit);
-
-        void Hours(int limit);
-    }
-
-    public class RateLimitOption : IRateLimitAdd, IRateLimitTime, IRateLimitCount
-    {
-        public Dictionary<TimeSpan, int> Limits { get; set; } = new Dictionary<TimeSpan, int>();
-        private int Times = 0;
-
-        public IRateLimitCount AddEvery()
+        public RateLimitOption AddHours(short timeMultiplier, int limit)
         {
-            Times = 0;
+            Limits[new TimeSpan(timeMultiplier, 0, 0)] = limit;
             return this;
         }
 
-        public void Seconds(int limit)
+        public RateLimitOption AddMinutes(short timeMultiplier, int limit)
         {
-            Limits[new TimeSpan(0, 0, Times)] = limit;
-        }
-
-        public void Minutes(int limit)
-        {
-            Limits[new TimeSpan(0, Times, 0)] = limit;
-        }
-
-        public void Hours(int limit)
-        {
-            Limits[new TimeSpan(Times, 0, 0)] = limit;
-        }
-
-        public IRateLimitTime One()
-        {
-            Times = 1;
+            Limits[new TimeSpan(0, timeMultiplier, 0)] = limit;
             return this;
         }
 
-        public IRateLimitTime Two()
+        public RateLimitOption AddSeconds(short timeMultiplier, int limit)
         {
-            Times = 2;
-            return this;
-        }
-
-        public IRateLimitTime Three()
-        {
-            Times = 3;
-            return this;
-        }
-
-        public IRateLimitTime Four()
-        {
-            Times = 4;
-            return this;
-        }
-
-        public IRateLimitTime Five()
-        {
-            Times = 5;
+            Limits[new TimeSpan(0, 0, timeMultiplier)] = limit;
             return this;
         }
     }

@@ -243,10 +243,9 @@ namespace RiotGamesApi.AspNetCore.Extensions
             }
             else
             {
-                var rlo = new RateLimitOption();
-                rlo.AddEvery().One().Seconds(10);
-                rlo.AddEvery().Two().Minutes(100);
-                riotGamesApiOption.RateLimitOptions = rlo;//default settings
+                riotGamesApiOption.RateLimitOptions = new RateLimitOption()
+                    .AddSeconds(1, 20)
+                    .AddMinutes(2, 100);//default settings
             }
 
             services.AddSingleton<IApiOption>(riotGamesApiOption);

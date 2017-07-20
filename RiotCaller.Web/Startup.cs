@@ -8,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using RiotGamesApi.AspNetCore.Extensions;
+using RiotGamesApi.AspNetCore.RateLimit;
 
 /*
     using RiotGamesApi.AspNetCore.Extensions;
@@ -38,7 +39,7 @@ namespace RiotGamesApi.Web
             services.AddMvc();
 
             //necessary
-            services.AddLeagueOfLegendsApi("RGAPI-a5dcfb69-f596-4ddb-b407-f56852f359a1",
+            services.AddLeagueOfLegendsApi("RGAPI-a5dcfb69-f59g-4ddb-b407-f56852f359a1",
             (cache) =>
             {
                 cache.EnableStaticApiCaching = true;
@@ -47,9 +48,7 @@ namespace RiotGamesApi.Web
             },
             (rateLimit) =>
             {
-                rateLimit.AddEvery().One().Seconds(10);
-                rateLimit.AddEvery().Two().Minutes(100);
-                return rateLimit;
+                return rateLimit.AddSeconds(1, 20).AddMinutes(2, 100);
             }
             );
             //use your key
