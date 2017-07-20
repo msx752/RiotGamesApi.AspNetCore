@@ -38,12 +38,20 @@ namespace RiotGamesApi.Web
             services.AddMvc();
 
             //necessary
-            services.AddLeagueOfLegendsApi("RGAPI-9b9acac4-0dd6-4cec-9f03-7b8d62d040db", (cache) =>
+            services.AddLeagueOfLegendsApi("RGAPI-a5dcfb69-f596-4ddb-b407-f56852f359a1",
+            (cache) =>
             {
                 cache.EnableStaticApiCaching = true;
                 cache.StaticApiCacheExpiry = new TimeSpan(1, 0, 0);
                 return cache;
-            });
+            },
+            (rateLimit) =>
+            {
+                rateLimit.AddEvery().One().Seconds(10);
+                rateLimit.AddEvery().Two().Minutes(100);
+                return rateLimit;
+            }
+            );
             //use your key
         }
 
