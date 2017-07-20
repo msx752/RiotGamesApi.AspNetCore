@@ -238,9 +238,16 @@ namespace RiotGamesApi.AspNetCore.Extensions
                 riotGamesApiOption.CacheOptions = new CacheOption();//default settings
 
             if (rateLimitOption != null)
-                riotGamesApiOption.RateLimitOptions = rateLimitOption(new RateLimitOption());//user settings
+            {
+                riotGamesApiOption.RateLimitOptions = rateLimitOption(new RateLimitOption()); //user settings
+            }
             else
-                riotGamesApiOption.RateLimitOptions = new RateLimitOption();//default settings
+            {
+                var rlo = new RateLimitOption();
+                rlo.AddEvery().One().Seconds(10);
+                rlo.AddEvery().Two().Minutes(100);
+                riotGamesApiOption.RateLimitOptions = rlo;//default settings
+            }
 
             services.AddSingleton<IApiOption>(riotGamesApiOption);
             services.AddMemoryCache();
