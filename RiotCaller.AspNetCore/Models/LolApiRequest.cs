@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using RiotGamesApi.AspNetCore.RiotApi.Enums;
 using RiotGamesApi.AspNetCore.RiotApi.TournamentStubEndPoints;
@@ -33,7 +34,7 @@ namespace RiotGamesApi.AspNetCore.Models
             }
         }
 
-        public bool Caching { get; internal set; } = false;
+        public bool Caching { get; internal set; }
         public List<ApiParameter> ParametersWithValue { get; private set; }
         public string RequestUrl { get; private set; }
 
@@ -119,30 +120,33 @@ namespace RiotGamesApi.AspNetCore.Models
                     ((LolParameterType[])Enum.GetValues(typeof(LolParameterType)))
                     .ToList();
 
-                for (var index = 0; index < selected.RiotGamesApiPaths.Length; index++)
+                //url replace value
+                for (int i = 0; i < selected.RiotGamesApiPaths.Length; i++)
                 {
-                    var parameter = selected.RiotGamesApiPaths[index];
+                    var parameter = selected.RiotGamesApiPaths[i];
                     newUrl = $"{newUrl}/{parameter.GetStringValue()}";
-                }
-                //it can change with 'selectedParam.FindParameterType()' method in he future
-                for (var index = 0; index < array.Count; index++)
-                {
-                    var parameterType = array[index];
-                    var condition = $"{{{parameterType}}}";
-                    var ParameterIndex = newUrl.IndexOf(condition, StringComparison.Ordinal);
-                    if (ParameterIndex != -1)
+                    var prUrl = parameter.GetStringValue();
+                    Regex r = new Regex("\\{\\w+\\}", RegexOptions.RightToLeft);
+                    var m = r.Match(prUrl);
+                    if (m.Success)
                     {
-                        var para = ParametersWithValue.First(p => p.Type.GetStringValue().IndexOf(condition) != -1);
-
+                        string nameOfParameterType = m.Value;
+                        var para = ParametersWithValue.First(p => p.Type.GetStringValue().IndexOf(parameter.GetStringValue()) != -1);
+                        var parameterType = array.First(p => $"{{{p.ToString()}}}" == nameOfParameterType);
                         if (parameterType.CompareParameterType(para.Value.GetType()))
-                            newUrl = newUrl.Replace(condition, para.Value.ToString());
+                            newUrl = newUrl.Replace(nameOfParameterType, para.Value.ToString());
                         else
                             throw new Exception($"types of parameter value doesn't match: expected:{parameterType.GetParameterType()}, actual:{para.Value.GetType()}");
+
+                        if (i == selected.RiotGamesApiPaths.Length - 1)
+                        {
+                            RequestUrl = newUrl;
+                            break;
+                        }
                     }
-                    if (index == array.Count - 1 || selected.RiotGamesApiPaths.Length == 0)
+                    else
                     {
-                        RequestUrl = newUrl;
-                        break;
+                        throw new Exception($"undefined 'parameterType' detected {prUrl}");
                     }
                 }
             }
@@ -182,16 +186,7 @@ namespace RiotGamesApi.AspNetCore.Models
                      if (CacheControl())
                          return RiotResult;
 
-                     HttpRequestMessage request = CreateHttpRequest(HttpMethod.Get);
-                     HttpClient httpClient = new HttpClient();
-                     using (HttpResponseMessage response = await httpClient.GetAsync(request.RequestUri))
-                     {
-                         GetResult(response);
-                     }
-                     if (Caching)
-                     {
-                         ApiSettings.ApiCache.Add<T>(this);
-                     }
+                     await GetHttpResponse(HttpMethod.Get);
                  }
                  catch (Exception e)
                  {
@@ -218,22 +213,6 @@ namespace RiotGamesApi.AspNetCore.Models
             return PostAsync(null, bodyParameter);
         }
 
-        private void GetResult(HttpResponseMessage response)
-        {
-            if (!response.IsSuccessStatusCode)
-            {
-                ExceptionControl(response);
-            }
-            else
-            {
-                using (HttpContent content = response.Content)
-                {
-                    string json = content.ReadAsStringAsync().Result;
-                    RiotResult.Result = JsonConvert.DeserializeObject<T>(json);
-                }
-            }
-        }
-
         public async Task<IResult<T>> PostAsync(Dictionary<string, object> optionalParameters = null, object bodyParameter = null)
         {
             return await Task.Run(async () =>
@@ -242,19 +221,10 @@ namespace RiotGamesApi.AspNetCore.Models
                 {
                     RegisterApiKey();
                     RegisterQueryParameter(optionalParameters);
+                    if (CacheControl())
+                        return RiotResult;
 
-                    HttpRequestMessage request = CreateHttpRequest(HttpMethod.Post);
-                    HttpClient httpClient = new HttpClient();
-                    StringContent data = null;
-                    if (bodyParameter != null)
-                        data = new StringContent(JsonConvert.SerializeObject(bodyParameter));
-                    else
-                        data = new StringContent("");
-
-                    using (HttpResponseMessage response = await httpClient.PostAsync(request.RequestUri, data))
-                    {
-                        GetResult(response);
-                    }
+                    await GetHttpResponse(HttpMethod.Post);
                 }
                 catch (Exception e)
                 {
@@ -278,18 +248,10 @@ namespace RiotGamesApi.AspNetCore.Models
                 try
                 {
                     RegisterApiKey();
-                    HttpRequestMessage request = CreateHttpRequest(HttpMethod.Put);
-                    HttpClient httpClient = new HttpClient();
-                    StringContent data = null;
-                    if (bodyParameter != null)
-                        data = new StringContent(JsonConvert.SerializeObject(bodyParameter));
-                    else
-                        data = new StringContent("");
+                    if (CacheControl())
+                        return RiotResult;
 
-                    using (HttpResponseMessage response = await httpClient.PutAsync(request.RequestUri, data))
-                    {
-                        GetResult(response);
-                    }
+                    await GetHttpResponse(HttpMethod.Put);
                 }
                 catch (Exception e)
                 {
@@ -310,9 +272,12 @@ namespace RiotGamesApi.AspNetCore.Models
 
         public IRequestMethod<T> UseCache(bool useCache = false)
         {
-            if (ApiSettings.ApiOptions.CacheOptions.EnableStaticApiCaching &&
-                this.UrlType == LolUrlType.Static)
+            if (ApiSettings.ApiOptions.CacheOptions.EnableStaticApiCaching && this.UrlType == LolUrlType.Static)
                 Caching = useCache;
+            else
+            {
+                Caching = false;
+            }
             return this;
         }
 
@@ -332,43 +297,74 @@ namespace RiotGamesApi.AspNetCore.Models
             return false;
         }
 
-        private HttpRequestMessage CreateHttpRequest(HttpMethod method)
+        private async Task GetHttpResponse(HttpMethod method, object bodyData = null)
         {
+            StringContent data = null;
+            if (method == HttpMethod.Put || method == HttpMethod.Post)
+            {
+                if (bodyData != null)
+                    data = new StringContent(JsonConvert.SerializeObject(bodyData));
+                else
+                    data = new StringContent("");
+            }
+
             HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, this.RequestUrl);
             request.Headers.Add("UserAgent", "RiotGamesApi.AspNetCore");
             request.Headers.Add("Accept-Language", "tr-TR,tr;q=0.8,en-US;q=0.6,en;q=0.4,ru;q=0.2");
             request.Headers.Add("Accept-Charset", "ISO-8859-1,UTF-8");
-            return request;
-        }
 
-        private void ExceptionControl(HttpResponseMessage response)
-        {
-            Exception exp = null;
-            if ((int)response.StatusCode == 400)
-                exp = new Exception($"Bad request:{(int)response.StatusCode}");
-            else if ((int)response.StatusCode == 401)
-                exp = new Exception($"Unauthorized:{(int)response.StatusCode}");
-            else if ((int)response.StatusCode == 403)
-                exp = new Exception($"Forbidden:{(int)response.StatusCode}");
-            else if ((int)response.StatusCode == 404)
-                exp = new Exception($"Data not found:{(int)response.StatusCode}");
-            else if ((int)response.StatusCode == 405)
-                exp = new Exception($"Method not allowed:{(int)response.StatusCode}");
-            else if ((int)response.StatusCode == 415)
-                exp = new Exception($"Unsupported media type:{(int)response.StatusCode}");
-            else if ((int)response.StatusCode == 429)
-                exp = new Exception($"Rate limit exceeded:{(int)response.StatusCode}");
-            else if ((int)response.StatusCode == 500)
-                exp = new Exception($"Internal server error:{(int)response.StatusCode}");
-            else if ((int)response.StatusCode == 502)
-                exp = new Exception($"Bad gateway:{(int)response.StatusCode}");
-            else if ((int)response.StatusCode == 503)
-                exp = new Exception($"Service unavailable:{(int)response.StatusCode}");
-            else if ((int)response.StatusCode == 504)
-                exp = new Exception($"Gateway timeout:{(int)response.StatusCode}");
+            HttpClient httpClient = new HttpClient();
+            HttpResponseMessage response = null;
+            if (method == HttpMethod.Get)
+                response = await httpClient.GetAsync(request.RequestUri);
+            else if (method == HttpMethod.Post)
+                response = await httpClient.PostAsync(request.RequestUri, data);
+            else if (method == HttpMethod.Put)
+                response = await httpClient.PutAsync(request.RequestUri, data);
             else
-                exp = new Exception($"Unknown Error code:{(int)response.StatusCode}");
-            throw exp;
+                throw new Exception("undefined httpMethod request");
+            if (!response.IsSuccessStatusCode)
+            {
+                Exception exp = null;
+                if ((int)response.StatusCode == 400)
+                    exp = new Exception($"Bad request:{(int)response.StatusCode}");
+                else if ((int)response.StatusCode == 401)
+                    exp = new Exception($"Unauthorized:{(int)response.StatusCode}");
+                else if ((int)response.StatusCode == 403)
+                    exp = new Exception($"Forbidden:{(int)response.StatusCode}");
+                else if ((int)response.StatusCode == 404)
+                    exp = new Exception($"Data not found:{(int)response.StatusCode}");
+                else if ((int)response.StatusCode == 405)
+                    exp = new Exception($"Method not allowed:{(int)response.StatusCode}");
+                else if ((int)response.StatusCode == 415)
+                    exp = new Exception($"Unsupported media type:{(int)response.StatusCode}");
+                else if ((int)response.StatusCode == 429)
+                    exp = new Exception($"Rate limit exceeded:{(int)response.StatusCode}");
+                else if ((int)response.StatusCode == 500)
+                    exp = new Exception($"Internal server error:{(int)response.StatusCode}");
+                else if ((int)response.StatusCode == 502)
+                    exp = new Exception($"Bad gateway:{(int)response.StatusCode}");
+                else if ((int)response.StatusCode == 503)
+                    exp = new Exception($"Service unavailable:{(int)response.StatusCode}");
+                else if ((int)response.StatusCode == 504)
+                    exp = new Exception($"Gateway timeout:{(int)response.StatusCode}");
+                else
+                    exp = new Exception($"Unknown Error code:{(int)response.StatusCode}");
+                throw exp;
+            }
+            else
+            {
+                using (HttpContent content = response.Content)
+                {
+                    string json = await content.ReadAsStringAsync();
+                    RiotResult.Result = JsonConvert.DeserializeObject<T>(json);
+                }
+            }
+
+            if (Caching)
+            {
+                ApiSettings.ApiCache.Add<T>(this);
+            }
         }
 
         private void RegisterApiKey()
