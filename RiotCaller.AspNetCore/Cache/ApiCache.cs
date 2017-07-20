@@ -42,7 +42,7 @@ namespace RiotGamesApi.AspNetCore.Cache
             }
             else
             {
-                throw new Exception("cache works with static api for now!");
+                throw new RiotGamesApiException("cache works with static api for now!");
             }
 
             MemoryCache.Set(data.CacheKey, data.RiotResult.Result, cacheEntryOptions);

@@ -89,7 +89,7 @@ namespace RiotGamesApi.AspNetCore.Models
                 }
                 else
                 {
-                    throw new Exception("QueryParameters only for static-data and tournament");
+                    throw new RiotGamesApiException("QueryParameters only for static-data and tournament");
                 }
             }
             catch (Exception e)

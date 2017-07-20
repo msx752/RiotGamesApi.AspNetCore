@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using RiotGamesApi.AspNetCore.Models;
 
 namespace RiotGamesApi.AspNetCore.Extensions
 {
@@ -15,7 +16,7 @@ namespace RiotGamesApi.AspNetCore.Extensions
             var v = typeInfo.DeclaredMembers.First(x => x.Name == enumVal.ToString());
             var attr = v.GetCustomAttribute<ParameterTypeAttribute>();
             if (attr == null)
-                throw new Exception("ParameterTypeAttribute not found");
+                throw new RiotGamesApiException("ParameterTypeAttribute not found");
             var t1 = attr.ParameterType;
             var t2 = requestValueType;
             return t1 == t2;
@@ -27,7 +28,7 @@ namespace RiotGamesApi.AspNetCore.Extensions
             var v = typeInfo.DeclaredMembers.First(x => x.Name == enumVal.ToString());
             var attr = v.GetCustomAttribute<ParameterTypeAttribute>();
             if (attr == null)
-                throw new Exception("ParameterTypeAttribute not found");
+                throw new RiotGamesApiException("ParameterTypeAttribute not found");
             return attr.ParameterType;
         }
 
@@ -58,7 +59,7 @@ namespace RiotGamesApi.AspNetCore.Extensions
             var v = typeInfo.DeclaredMembers.First(x => x.Name == enumVal.ToString());
             var attr = v.GetCustomAttribute<UrlTypeAttribute>();
             if (attr == null)
-                throw new Exception("UrlTypeAttribute not found");
+                throw new RiotGamesApiException("UrlTypeAttribute not found");
             return attr.ApiType;
         }
     }
