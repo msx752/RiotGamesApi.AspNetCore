@@ -10,7 +10,6 @@ namespace RiotGamesApi.AspNetCore.Cache
 {
     public class ApiCache : IApiCache
     {
-        private static object _lock = new object();
         private CacheOption _cacheOption;
         private IMemoryCache _memoryCache;
 
