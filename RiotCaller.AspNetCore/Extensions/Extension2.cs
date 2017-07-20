@@ -25,6 +25,7 @@ using RiotGamesApi.AspNetCore.RiotApi.StatusEndPoints;
 using System;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Builder;
+using RiotGamesApi.AspNetCore.RateLimit;
 using RiotGamesApi.AspNetCore.RiotApi.TournamentEndPoints;
 using LobbyEventDTOWrapper = RiotGamesApi.AspNetCore.RiotApi.TournamentStubEndPoints.LobbyEventDTOWrapper;
 using MasteryDto = RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.Masteries.MasteryDto;
@@ -35,7 +36,20 @@ namespace RiotGamesApi.AspNetCore.Extensions
 {
     public static class Extension2
     {
-        public static void AddLeagueOfLegendsApi(this IServiceCollection services, string riotApiKey, Func<CacheOption, CacheOption> cacheOption = null)
+        public static void AddLeagueOfLegendsApi(this IServiceCollection services, string riotApiKey)
+        {
+            AddLeagueOfLegendsApi(services, riotApiKey, null);
+        }
+
+        public static void AddLeagueOfLegendsApi(this IServiceCollection services, string riotApiKey,
+            Func<CacheOption, CacheOption> cacheOption = null)
+        {
+            AddLeagueOfLegendsApi(services, riotApiKey, cacheOption, null);
+        }
+
+        public static void AddLeagueOfLegendsApi(this IServiceCollection services, string riotApiKey,
+            Func<CacheOption, CacheOption> cacheOption = null,
+            Func<RateLimitOption, RateLimitOption> rateLimitOption = null)
         {
             //can convertable to json
             var riotGamesApiBuilder = new RiotGamesApiBuilder()
@@ -219,13 +233,14 @@ namespace RiotGamesApi.AspNetCore.Extensions
             var riotGamesApiOption = riotGamesApiBuilder.Build();
 
             if (cacheOption != null)
-            {
                 riotGamesApiOption.CacheOptions = cacheOption(new CacheOption());//user settings
-            }
             else
-            {
                 riotGamesApiOption.CacheOptions = new CacheOption();//default settings
-            }
+
+            if (rateLimitOption != null)
+                riotGamesApiOption.RateLimitOptions = rateLimitOption(new RateLimitOption());//user settings
+            else
+                riotGamesApiOption.RateLimitOptions = new RateLimitOption();//default settings
 
             services.AddSingleton<IApiOption>(riotGamesApiOption);
             services.AddMemoryCache();

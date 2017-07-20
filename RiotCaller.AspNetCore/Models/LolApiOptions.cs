@@ -2,6 +2,7 @@
 using RiotGamesApi.AspNetCore.Enums;
 using RiotGamesApi.AspNetCore.Interfaces;
 using System.Collections.Generic;
+using RiotGamesApi.AspNetCore.RateLimit;
 
 namespace RiotGamesApi.AspNetCore.Models
 {
@@ -14,6 +15,7 @@ namespace RiotGamesApi.AspNetCore.Models
             RiotGamesApis = new Dictionary<LolUrlType, Models.RiotGamesApi>();
         }
 
+        public RateLimitOption RateLimitOptions { get; set; }
         public CacheOption CacheOptions { get; set; }
         public string NonStaticUrl { get { return $"{Url}/lol"; }/* set { _nonStaticUrl = value; }*/ }
         public string RiotApiKey { get; set; }
