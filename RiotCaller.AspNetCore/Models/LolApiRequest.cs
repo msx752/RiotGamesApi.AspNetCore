@@ -125,7 +125,6 @@ namespace RiotGamesApi.AspNetCore.Models
                 List<LolParameterType> array =
                     ((LolParameterType[])Enum.GetValues(typeof(LolParameterType)))
                     .ToList();
-
                 //url replace value
                 for (int i = 0; i < selected.RiotGamesApiPaths.Length; i++)
                 {
@@ -137,14 +136,20 @@ namespace RiotGamesApi.AspNetCore.Models
                     if (m.Success)
                     {
                         string nameOfParameterType = m.Value;
+                        string paramStringVl = parameter.GetStringValue();
                         var para = ParametersWithValue.First(
-                            p => p.Type.GetStringValue().IndexOf(parameter.GetStringValue()) != -1);
+                            p => p.Type.GetStringValue().IndexOf(paramStringVl) != -1);
                         var parameterType = array.First(p => $"{{{p.ToString()}}}" == nameOfParameterType);
-                        if (parameterType.CompareParameterType(para.Value.GetType()))
-                            newUrl = newUrl.Replace(nameOfParameterType, para.Value.ToString());
+                        Type paraValueGetType = para.Value.GetType();
+                        string paraValueToString = para.Value.ToString();
+                        if (parameterType.CompareParameterType(paraValueGetType))
+                            newUrl = newUrl.Replace(nameOfParameterType, paraValueToString);
                         else
-                            throw new RiotGamesApiException(
-                                $"types of parameter value doesn't match: expected:{parameterType.GetParameterType()}, actual:{para.Value.GetType()}");
+                        {
+                            Type parameterTypeGetParameterType = parameterType.GetParameterType();
+                            throw new RiotGamesApiException
+                                ($"types of parameter value doesn't match: expected:{parameterTypeGetParameterType}, actual:{paraValueGetType}");
+                        }
 
                         if (i == selected.RiotGamesApiPaths.Length - 1)
                         {
@@ -156,6 +161,10 @@ namespace RiotGamesApi.AspNetCore.Models
                     {
                         throw new RiotGamesApiException($"undefined 'parameterType' detected {prUrl}");
                     }
+                }
+                if (selected.RiotGamesApiPaths.Length == 0)
+                {
+                    RequestUrl = newUrl;
                 }
             }
             catch (RiotGamesApiException e)
