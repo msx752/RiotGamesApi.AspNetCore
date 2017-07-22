@@ -9,22 +9,14 @@ namespace RiotGamesApi.Tests.Others
     public class RateLimiter : BaseTestClass
     {
         [Fact]
-        public void RateLimiting()//testing
+        public void RateLimiting()//debug mode
         {
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < 205; i++)
             {
                 IResult<ChampionDto> result =
-                    LolApi.StaticApi.StaticDatav3.GetChampionsOnlyId(AspNetCore.RiotApi.Enums.ServicePlatform.TR1, 45);
+                    LolApi.StaticApi.StaticDatav3.GetChampionsOnlyId(AspNetCore.RiotApi.Enums.ServicePlatform.TR1, 45, true);
                 Assert.False(result.HasError);
             }
-            Assert.Throws(typeof(RiotGamesApiException), () =>
-            {
-                IResult<ChampionDto> result =
-                    LolApi.StaticApi.StaticDatav3
-                        .GetChampionsOnlyId(AspNetCore.RiotApi.Enums.ServicePlatform.TR1, 45);
-                Assert.False(result.HasError); //429
-                //throw result.Exception;
-            });
         }
     }
 }

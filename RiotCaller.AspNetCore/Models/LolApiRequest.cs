@@ -4,6 +4,7 @@ using RiotGamesApi.AspNetCore.Extensions;
 using RiotGamesApi.AspNetCore.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net.Http;
 using System.Text.RegularExpressions;
@@ -336,12 +337,11 @@ namespace RiotGamesApi.AspNetCore.Models
 
         private async Task GetHttpResponse(HttpMethod method, object bodyData = null)
         {
-            //disabling now
-            //if (UrlType == LolUrlType.Static ||
-            //    UrlType == LolUrlType.Tournament)
-            //{
-            //    ApiSettings.RateLimiter.Handle();
-            //}
+            if (UrlType == LolUrlType.Static ||
+                UrlType == LolUrlType.Tournament)
+            {
+                ApiSettings.RateLimiter.Handle();
+            }
 
             StringContent data = null;
             if (method == HttpMethod.Put || method == HttpMethod.Post)
@@ -368,7 +368,6 @@ namespace RiotGamesApi.AspNetCore.Models
             else
                 throw new RiotGamesApiException("undefined httpMethod request");
 
-            var st = response.Headers;
             if (!response.IsSuccessStatusCode)
             {
                 RiotGamesApiException exp = null;
@@ -387,6 +386,9 @@ namespace RiotGamesApi.AspNetCore.Models
                 else if ((int)response.StatusCode == 429)
                 {
                     //handle response
+#if DEBUG
+                    Debug.WriteLine(response.Headers);
+#endif
                     exp = new RiotGamesApiException($"Rate limit exceeded:{(int)response.StatusCode}");
                 }
                 else if ((int)response.StatusCode == 500)

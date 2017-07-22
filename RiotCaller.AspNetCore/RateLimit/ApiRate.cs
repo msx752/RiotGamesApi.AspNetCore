@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading.Tasks;
 
 namespace RiotGamesApi.AspNetCore.RateLimit
@@ -38,7 +39,9 @@ namespace RiotGamesApi.AspNetCore.RateLimit
                 if (v.Counter < v.Limit) continue;
 
                 var largestDelay = v.ChainStartTime.Add(v.Time) - DateTime.Now;
-                //Debug.WriteLine($"[{DateTime.Now:MM/dd/yyyy HH:mm:ss.fff}] limit:{v.Limit}\tmultipler:{v.Time}\tcount:{v.Counter}\t\tDelay:{largestDelay}");
+#if DEBUG
+                Debug.WriteLine($"[{DateTime.Now:MM/dd/yyyy HH:mm:ss.fff}] limit:{v.Limit}\tmultipler:{v.Time}\tcount:{v.Counter}\t\tDelay:{largestDelay}");
+#endif
                 if (largestDelay > currentDelay)
                     currentDelay = largestDelay;
 
