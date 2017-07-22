@@ -30,6 +30,7 @@
     <files>
     <file src="RiotCaller.AspNetCore\bin\Release\netcoreapp1.1\RiotGamesApi.AspNetCore.dll" target="lib\netcoreapp11\RiotGamesApi.AspNetCore.dll" />
     <file src="RiotCaller.AspNetCore\bin\Release\netcoreapp1.1\RiotGamesApi.AspNetCore.xml" target="lib\netcoreapp11\RiotGamesApi.AspNetCore.xml" />
+    <file src="RiotCaller.AspNetCore\readme.txt" target="readme.txt" />
 
 
     </files>
