@@ -341,6 +341,7 @@ namespace RiotGamesApi.AspNetCore.Models
             {
                 ApiSettings.RateLimiter.Handle();
             }
+
             StringContent data = null;
             if (method == HttpMethod.Put || method == HttpMethod.Post)
             {
@@ -365,6 +366,7 @@ namespace RiotGamesApi.AspNetCore.Models
                 response = await httpClient.PutAsync(request.RequestUri, data);
             else
                 throw new RiotGamesApiException("undefined httpMethod request");
+
             if (!response.IsSuccessStatusCode)
             {
                 RiotGamesApiException exp = null;
