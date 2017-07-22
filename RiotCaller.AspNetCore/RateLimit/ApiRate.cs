@@ -12,8 +12,7 @@ namespace RiotGamesApi.AspNetCore.RateLimit
         {
             get
             {
-                return ((RateLimitOption)ApiSettings.ServiceProvider
-                  .GetService(typeof(RateLimitOption))).RateLimits;
+                return ApiSettings.RateOptions.RateLimits;
             }
         }
 

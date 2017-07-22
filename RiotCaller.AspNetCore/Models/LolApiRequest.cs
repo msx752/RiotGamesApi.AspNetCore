@@ -336,11 +336,12 @@ namespace RiotGamesApi.AspNetCore.Models
 
         private async Task GetHttpResponse(HttpMethod method, object bodyData = null)
         {
-            if (UrlType == LolUrlType.Static ||
-                UrlType == LolUrlType.Tournament)
-            {
-                ApiSettings.RateLimiter.Handle();
-            }
+            //disabling now
+            //if (UrlType == LolUrlType.Static ||
+            //    UrlType == LolUrlType.Tournament)
+            //{
+            //    ApiSettings.RateLimiter.Handle();
+            //}
 
             StringContent data = null;
             if (method == HttpMethod.Put || method == HttpMethod.Post)
@@ -367,6 +368,7 @@ namespace RiotGamesApi.AspNetCore.Models
             else
                 throw new RiotGamesApiException("undefined httpMethod request");
 
+            var st = response.Headers;
             if (!response.IsSuccessStatusCode)
             {
                 RiotGamesApiException exp = null;
