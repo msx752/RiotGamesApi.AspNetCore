@@ -8,6 +8,7 @@ using System.Reflection;
 using Microsoft.Extensions.Caching.Memory;
 using RiotGamesApi.AspNetCore.Cache;
 using RiotGamesApi.AspNetCore.Models;
+using RiotGamesApi.AspNetCore.RateLimit;
 using RiotGamesApi.AspNetCore.RiotApi.Enums;
 
 namespace RiotGamesApi.AspNetCore
@@ -29,6 +30,14 @@ namespace RiotGamesApi.AspNetCore
             get
             {
                 return (IApiOption)ServiceProvider.GetService(typeof(IApiOption));
+            }
+        }
+
+        public static ApiRate RateLimiter
+        {
+            get
+            {
+                return (ApiRate)ServiceProvider.GetService(typeof(ApiRate));
             }
         }
 
