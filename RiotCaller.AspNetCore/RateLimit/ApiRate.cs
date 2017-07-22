@@ -1,9 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace RiotGamesApi.AspNetCore.RateLimit
@@ -14,7 +10,11 @@ namespace RiotGamesApi.AspNetCore.RateLimit
 
         public List<RLimit> RateLimits
         {
-            get { return ((RateLimitOption)ApiSettings.ServiceProvider.GetService(typeof(RateLimitOption))).RateLimits; }
+            get
+            {
+                return ((RateLimitOption)ApiSettings.ServiceProvider
+                  .GetService(typeof(RateLimitOption))).RateLimits;
+            }
         }
 
         private DateTime? ReTry { get; set; }
@@ -23,6 +23,7 @@ namespace RiotGamesApi.AspNetCore.RateLimit
         {
             if (RateLimits.Count == 0)
                 return;
+
             lock (_lock)
             {
                 //Debug.WriteLine($"{Task.CurrentId}");
