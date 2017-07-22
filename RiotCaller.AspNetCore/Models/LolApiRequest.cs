@@ -337,7 +337,7 @@ namespace RiotGamesApi.AspNetCore.Models
 
         private async Task GetHttpResponse(HttpMethod method, object bodyData = null)
         {
-            if (UrlType == LolUrlType.Static ||
+            if (UrlType == LolUrlType.NonStatic ||
                 UrlType == LolUrlType.Tournament)
             {
                 ApiSettings.RateLimiter.Handle();
