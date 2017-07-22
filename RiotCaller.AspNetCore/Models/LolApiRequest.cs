@@ -336,7 +336,8 @@ namespace RiotGamesApi.AspNetCore.Models
 
         private async Task GetHttpResponse(HttpMethod method, object bodyData = null)
         {
-            if (UrlType == LolUrlType.Static)
+            if (UrlType == LolUrlType.Static ||
+                UrlType == LolUrlType.Tournament)
             {
                 ApiSettings.RateLimiter.Handle();
             }
@@ -380,7 +381,10 @@ namespace RiotGamesApi.AspNetCore.Models
                 else if ((int)response.StatusCode == 415)
                     exp = new RiotGamesApiException($"Unsupported media type:{(int)response.StatusCode}");
                 else if ((int)response.StatusCode == 429)
+                {
+                    //handle response
                     exp = new RiotGamesApiException($"Rate limit exceeded:{(int)response.StatusCode}");
+                }
                 else if ((int)response.StatusCode == 500)
                     exp = new RiotGamesApiException($"Internal server error:{(int)response.StatusCode}");
                 else if ((int)response.StatusCode == 502)
