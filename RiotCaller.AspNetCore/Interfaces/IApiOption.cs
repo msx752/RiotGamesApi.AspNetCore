@@ -1,11 +1,13 @@
 ﻿using RiotGamesApi.AspNetCore.Cache;
 using RiotGamesApi.AspNetCore.Enums;
 using System.Collections.Generic;
+using RiotGamesApi.AspNetCore.RateLimit;
 
 namespace RiotGamesApi.AspNetCore.Interfaces
 {
     public interface IApiOption
     {
+        RateLimitOption RateLimitOptions { get; set; }
         CacheOption CacheOptions { get; set; }
         string NonStaticUrl { get; }
         string RiotApiKey { get; set; }

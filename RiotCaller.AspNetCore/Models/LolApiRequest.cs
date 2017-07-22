@@ -4,6 +4,7 @@ using RiotGamesApi.AspNetCore.Extensions;
 using RiotGamesApi.AspNetCore.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net.Http;
 using System.Text.RegularExpressions;
@@ -336,6 +337,12 @@ namespace RiotGamesApi.AspNetCore.Models
 
         private async Task GetHttpResponse(HttpMethod method, object bodyData = null)
         {
+            if (UrlType == LolUrlType.NonStatic ||
+                UrlType == LolUrlType.Tournament)
+            {
+                ApiSettings.RateLimiter.Handle();
+            }
+
             StringContent data = null;
             if (method == HttpMethod.Put || method == HttpMethod.Post)
             {
@@ -360,6 +367,7 @@ namespace RiotGamesApi.AspNetCore.Models
                 response = await httpClient.PutAsync(request.RequestUri, data);
             else
                 throw new RiotGamesApiException("undefined httpMethod request");
+
             if (!response.IsSuccessStatusCode)
             {
                 RiotGamesApiException exp = null;
@@ -376,7 +384,13 @@ namespace RiotGamesApi.AspNetCore.Models
                 else if ((int)response.StatusCode == 415)
                     exp = new RiotGamesApiException($"Unsupported media type:{(int)response.StatusCode}");
                 else if ((int)response.StatusCode == 429)
+                {
+                    //handle response
+#if DEBUG
+                    Debug.WriteLine(response.Headers);
+#endif
                     exp = new RiotGamesApiException($"Rate limit exceeded:{(int)response.StatusCode}");
+                }
                 else if ((int)response.StatusCode == 500)
                     exp = new RiotGamesApiException($"Internal server error:{(int)response.StatusCode}");
                 else if ((int)response.StatusCode == 502)
