@@ -17,13 +17,13 @@
         <language />
         <tags>RiotGames LeagueOfLegends v3 API with C# AspNetCore 1.1 project</tags>
         <dependencies>
-            <group targetFramework=".NETCoreApp1.1">
-                <dependency id="Microsoft.Extensions.DependencyInjection" version="1.1.1" exclude="Build,Analyzers" />
-                <dependency id="Microsoft.NETCore.App" version="1.1.2" exclude="Build,Analyzers" />
-                <dependency id="Microsoft.AspNetCore.Http.Abstractions" version="1.1.2" exclude="Build,Analyzers" />
-                <dependency id="Microsoft.Extensions.Caching.Memory" version="1.1.2" exclude="Build,Analyzers" />
-                <dependency id="Newtonsoft.Json" version="10.0.3" exclude="Build,Analyzers" />
-				<dependency id="RiotGamesApi.AspNetCore.RiotApi" version="1.7.23.1551" exclude="Build,Analyzers"/>
+            <group targetFramework=".NETCoreApp1.1">               
+                <dependency id="Microsoft.NETCore.App" version="1.1.2" />
+                <dependency id="Microsoft.Extensions.DependencyInjection" version="1.1.1" /> 
+                <dependency id="Microsoft.AspNetCore.Http.Abstractions" version="1.1.2" />
+                <dependency id="Microsoft.Extensions.Caching.Memory" version="1.1.2"  />
+                <dependency id="Newtonsoft.Json" version="10.0.3"/>
+                <dependency id="RiotGamesApi.AspNetCore.RiotApi" version="1.7.23.1551" />
             </group>
         </dependencies>
     </metadata>
