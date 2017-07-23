@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Newtonsoft.Json;
 using RiotGamesApi.AspNetCore.Models;
 
 namespace RiotGamesApi.AspNetCore.Extensions
@@ -61,6 +62,13 @@ namespace RiotGamesApi.AspNetCore.Extensions
             if (attr == null)
                 throw new RiotGamesApiException("UrlTypeAttribute not found");
             return attr.ApiType;
+        }
+
+        public static T ForceClone<T>(this T value)
+        {
+            string json = JsonConvert.SerializeObject(value);
+
+            return JsonConvert.DeserializeObject<T>(json);
         }
     }
 }
