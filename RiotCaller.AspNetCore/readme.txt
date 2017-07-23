@@ -5,7 +5,7 @@
 
 	- V3-api
 	- Sync/Async 
-	- RateLimiting (there may be a bug)
+	- RateLimiting[respects by region] (there may be a bug) (it can be improve for more performance)
 	- TournamentApi  (there may be a bug)
 	- StaticApi
 	- NonStaticApi
