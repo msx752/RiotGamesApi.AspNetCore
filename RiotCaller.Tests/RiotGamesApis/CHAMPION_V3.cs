@@ -15,7 +15,7 @@ namespace RiotGamesApi.Tests.RiotGamesApis
                 .SelectApi<ChampionListDto>(LolApiName.Platform)
                 .For(LolApiMethodName.Champions)
                 .AddParameter()
-                .Build(ServicePlatform)
+                .Build(Service_Platform)
                 .Get();
             Assert.False(rit.HasError);
         }
@@ -27,7 +27,7 @@ namespace RiotGamesApi.Tests.RiotGamesApis
                 .SelectApi<ChampionDto>(LolApiName.Platform)
                 .For(LolApiMethodName.Champions)
                 .AddParameter(new ApiParameter(LolApiPath.OnlyId, ChampionId))
-                .Build(ServicePlatform)
+                .Build(Service_Platform)
                 .Get();
             Assert.False(rit.HasError);
         }

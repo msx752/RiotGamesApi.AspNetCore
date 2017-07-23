@@ -15,7 +15,7 @@ namespace RiotGamesApi.Tests.RiotGamesApis
                 .SelectApi<CurrentGameInfo>(LolApiName.Spectator)
                 .For(LolApiMethodName.ActiveGames)
                 .AddParameter(new ApiParameter(LolApiPath.BySummoner, SummonerId))
-                .Build(ServicePlatform)
+                .Build(Service_Platform)
                 .Get();
             if (rit.HasError)
                 Assert.Equal("Data not found:404", rit.Exception.Message);
@@ -30,7 +30,7 @@ namespace RiotGamesApi.Tests.RiotGamesApis
                 .SelectApi<FeaturedGames>(LolApiName.Spectator)
                 .For(LolApiMethodName.FeaturedGames)
                 .AddParameter()
-                .Build(ServicePlatform)
+                .Build(Service_Platform)
                 .Get();
             Assert.False(rit.HasError);
         }

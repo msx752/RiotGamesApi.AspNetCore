@@ -15,7 +15,7 @@ namespace RiotGamesApi.Tests.RiotGamesApis
                 .SelectApi<SummonerDto>(LolApiName.Summoner)
                 .For(LolApiMethodName.Summoners)
                 .AddParameter(new ApiParameter(LolApiPath.ByAccount, AccountId))
-                .Build(ServicePlatform)
+                .Build(Service_Platform)
                 .Get();
             Assert.False(rit.HasError);
         }
@@ -27,7 +27,7 @@ namespace RiotGamesApi.Tests.RiotGamesApis
                 .SelectApi<SummonerDto>(LolApiName.Summoner)
                 .For(LolApiMethodName.Summoners)
                 .AddParameter(new ApiParameter(LolApiPath.ByName, SummonerName))
-                .Build(ServicePlatform)
+                .Build(Service_Platform)
                 .Get();
             Assert.False(rit.HasError);
         }
@@ -39,7 +39,7 @@ namespace RiotGamesApi.Tests.RiotGamesApis
                 .SelectApi<SummonerDto>(LolApiName.Summoner)
                 .For(LolApiMethodName.Summoners)
                 .AddParameter(new ApiParameter(LolApiPath.OnlySummonerId, SummonerId))
-                .Build(ServicePlatform)
+                .Build(Service_Platform)
                 .Get();
             Assert.False(rit.HasError);
         }

@@ -22,7 +22,7 @@ namespace RiotGamesApi.Tests.Others
                     .SelectApi<SummonerDto>(LolApiName.Summoner)
                     .For(LolApiMethodName.ShardData)//there is no such thing
                     .AddParameter(new ApiParameter(LolApiPath.OnlySummonerId, SummonerId))
-                    .Build(ServicePlatform)
+                    .Build(Service_Platform)
                     .Get();
             });
 
@@ -32,7 +32,7 @@ namespace RiotGamesApi.Tests.Others
                      .SelectApi<SummonerDto>(LolApiName.Summoner)
                      .For(LolApiMethodName.Summoners)
                      .AddParameter(new ApiParameter(LolApiPath.ByCode, "0"))//there is no such thing
-                     .Build(ServicePlatform)
+                     .Build(Service_Platform)
                      .Get();
              });
 
@@ -42,7 +42,7 @@ namespace RiotGamesApi.Tests.Others
                     .SelectApi<SummonerDto>(LolApiName.Summoner)
                     .For(LolApiMethodName.Summoners)
                     .AddParameter(new ApiParameter(LolApiPath.OnlySummonerId, (int)SummonerId))//must be long
-                    .Build(ServicePlatform)
+                    .Build(Service_Platform)
                     .Get();
             });
 
@@ -52,7 +52,7 @@ namespace RiotGamesApi.Tests.Others
                     .SelectApi<ChampionListDto>(LolApiName.Summoner)
                     .For(LolApiMethodName.Summoners)
                     .AddParameter()//summoner must be a parameter
-                    .Build(ServicePlatform)
+                    .Build(Service_Platform)
                     .Get();
             });
 
@@ -62,7 +62,7 @@ namespace RiotGamesApi.Tests.Others
                     .SelectApi<long>(LolApiName.Summoner)//return type must be 'SummonerDto'
                     .For(LolApiMethodName.Summoners)
                     .AddParameter(new ApiParameter(LolApiPath.OnlySummonerId, SummonerId))
-                    .Build(ServicePlatform)
+                    .Build(Service_Platform)
                     .Get(
                     /*
                     there is no queryParameter for nonStaticApi

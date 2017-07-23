@@ -12,10 +12,10 @@ namespace RiotGamesApi.AspNetCore.RateLimit
             Time = ts;
         }
 
-        public DateTime ChainStartTime { get; protected internal set; }
-        public int Counter { get; protected internal set; }
-        public int Limit { get; protected internal set; }
-        public TimeSpan Time { get; protected internal set; }
+        public DateTime ChainStartTime { get; internal set; }
+        public int Counter { get; internal set; }
+        public int Limit { get; internal set; }
+        public TimeSpan Time { get; internal set; }
 
         public void Reset()
         {
@@ -23,6 +23,12 @@ namespace RiotGamesApi.AspNetCore.RateLimit
                 Counter = 0;
             ChainStartTime = DateTime.Now;
             Counter++;
+        }
+
+        public RLimit DeepCopy()
+        {
+            RLimit other = (RLimit)this.MemberwiseClone();
+            return other;
         }
     }
 }

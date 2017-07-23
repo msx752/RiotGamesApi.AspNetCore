@@ -15,7 +15,7 @@ namespace RiotGamesApi.Tests.RiotGamesApis
                 .SelectApi<ShardStatus>(LolApiName.Status)
                 .For(LolApiMethodName.ShardData)
                 .AddParameter()
-                .Build(ServicePlatform)
+                .Build(Service_Platform)
                 .Get();
             Assert.False(rit.HasError);
         }

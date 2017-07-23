@@ -15,7 +15,7 @@ namespace RiotGamesApi.Tests.RiotGamesApis
                 .SelectApi<ChampionListDto>(LolApiName.StaticData)
                 .For(LolApiMethodName.Champions)
                 .AddParameter()
-                .Build(ServicePlatform)
+                .Build(Service_Platform)
                 .UseCache(true)
                 .Get();
             Assert.False(rit.HasError);
@@ -25,7 +25,7 @@ namespace RiotGamesApi.Tests.RiotGamesApis
                 .SelectApi<ChampionListDto>(LolApiName.StaticData)
                 .For(LolApiMethodName.Champions)
                 .AddParameter()
-                .Build(ServicePlatform)
+                .Build(Service_Platform)
                 .UseCache(true)
                 .Get();
             Assert.False(rit.HasError);

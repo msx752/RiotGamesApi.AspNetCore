@@ -9,6 +9,8 @@ namespace RiotGamesApi.Tests.Others
 {
     public class BaseTestClass
     {
+        private readonly ServiceRegion _serviceRegion;
+        private readonly ServicePlatform _servicePlatform;
         public long AccountId { get; }
         public AspNetCoreTestServer AspNetCoreTestServer { get; }
 
@@ -18,8 +20,15 @@ namespace RiotGamesApi.Tests.Others
         public long MatchId { get; }
         public long ItemId { get; }
 
-        public ServiceRegion ServiceRegion { get; }
-        public ServicePlatform ServicePlatform { get; }
+        public ServiceRegion Service_Region
+        {
+            get { return _serviceRegion; }
+        }
+
+        public ServicePlatform Service_Platform
+        {
+            get { return _servicePlatform; }
+        }
 
         public long SummonerId { get; }
 
@@ -47,9 +56,9 @@ namespace RiotGamesApi.Tests.Others
 
             ItemId = long.Parse(Configuration["itemId"]);
 
-            ServiceRegion = (ServiceRegion)Enum.Parse(typeof(ServiceRegion), Configuration["region"]);
+            _serviceRegion = (ServiceRegion)Enum.Parse(typeof(ServiceRegion), Configuration["region"]);
 
-            ServicePlatform = ServiceRegion.ToPlatform();
+            _servicePlatform = Service_Region.ToPlatform();
 
             SummonerId = long.Parse(Configuration["summonerId"]);
 

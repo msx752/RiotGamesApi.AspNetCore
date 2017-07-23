@@ -1,7 +1,11 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading.Tasks;
+using RiotGamesApi.AspNetCore.Extensions;
+using RiotGamesApi.AspNetCore.RiotApi.Enums;
 
 namespace RiotGamesApi.AspNetCore.RateLimit
 {
@@ -9,32 +13,56 @@ namespace RiotGamesApi.AspNetCore.RateLimit
     {
         private static object _lock = new object();
 
-        public List<RLimit> RateLimits
+        public ConcurrentDictionary<string, List<RLimit>> RegionLimits { get; } =
+            new ConcurrentDictionary<string, List<RLimit>>();
+
+        private DateTime ReTry { get; set; }
+
+        public void Handle(PhysicalRegion region)
         {
-            get
-            {
-                return ApiSettings.RateOptions.RateLimits;
-            }
+            Handle(region.ToString());
         }
 
-        private DateTime? ReTry { get; set; }
-
-        public void Handle()
+        public void Handle(ServicePlatform region)
         {
-            if (RateLimits.Count == 0)
-                return;
+            Handle(region.ToString());
+        }
 
+        public void Handle(string region)
+        {
             lock (_lock)
             {
                 //Debug.WriteLine($"{Task.CurrentId}");
-                Wait();
+                Wait(region);
             }
         }
 
-        private void Wait()
+        private bool IsRetryActive
         {
-            TimeSpan currentDelay = (ReTry - DateTime.Now) ?? TimeSpan.Zero;
-            foreach (var v in RateLimits)
+            get { return ReTry > DateTime.Now; }
+        }
+
+        private List<RLimit> SelectedRegionLimits(string region)
+        {
+            List<RLimit> regionLimit;
+            if (RegionLimits.TryGetValue(region, out regionLimit) == false)
+            {
+                var _rlimits = ApiSettings.RateOptions.RateLimits;
+                regionLimit = _rlimits.Select(r => r.DeepCopy()).ToList();
+                RegionLimits.TryAdd(region, regionLimit);
+            }
+            return regionLimit;
+        }
+
+        private void Wait(string region)
+        {
+            List<RLimit> regionLimit = SelectedRegionLimits(region);
+
+            TimeSpan currentDelay = TimeSpan.Zero;
+            if (IsRetryActive)
+                currentDelay = (ReTry - DateTime.Now);
+
+            foreach (var v in regionLimit)
             {
                 if (v.Counter < v.Limit) continue;
 
@@ -47,7 +75,7 @@ namespace RiotGamesApi.AspNetCore.RateLimit
 
                 break;
             }
-            RateLimits.ForEach((v) =>
+            regionLimit.ForEach((v) =>
             {
                 if (v.ChainStartTime <= DateTime.Now.Add(currentDelay) - v.Time)
                     v.Counter = 0;

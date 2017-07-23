@@ -16,7 +16,7 @@ namespace RiotGamesApi.Tests.RiotGamesApis
                 .SelectApi<MatchDto>(LolApiName.Match)
                 .For(LolApiMethodName.Matches)
                 .AddParameter(new ApiParameter(LolApiPath.OnlyMatchId, MatchId))//not tested
-                .Build(ServicePlatform)
+                .Build(Service_Platform)
                 .Get();
             if (rit.HasError)
                 Assert.Equal("Data not found:404", rit.Exception.Message);
@@ -31,7 +31,7 @@ namespace RiotGamesApi.Tests.RiotGamesApis
                 .SelectApi<MatchlistDto>(LolApiName.Match)
                 .For(LolApiMethodName.MatchLists)
                 .AddParameter(new ApiParameter(LolApiPath.ByAccount, AccountId))
-                .Build(ServicePlatform)
+                .Build(Service_Platform)
                 .Get(/*
                 it has optional parameters
                 https://developer.riotgames.com/api-methods/#match-v3/GET_getMatchlist
@@ -46,7 +46,7 @@ namespace RiotGamesApi.Tests.RiotGamesApis
                 .SelectApi<MatchlistDto>(LolApiName.Match)
                 .For(LolApiMethodName.MatchLists)
                 .AddParameter(new ApiParameter(LolApiPath.ByAccountRecent, AccountId))//not tested
-                .Build(ServicePlatform)
+                .Build(Service_Platform)
                 .Get();
             Assert.False(rit.HasError);
         }
@@ -58,7 +58,7 @@ namespace RiotGamesApi.Tests.RiotGamesApis
                 .SelectApi<MatchTimelineDto>(LolApiName.Match)
                 .For(LolApiMethodName.Timelines)
                 .AddParameter(new ApiParameter(LolApiPath.ByMatch, MatchId))//not tested
-                .Build(ServicePlatform)
+                .Build(Service_Platform)
                 .Get();
             if (rit.HasError)
                 Assert.Equal("Data not found:404", rit.Exception.Message);
@@ -73,7 +73,7 @@ namespace RiotGamesApi.Tests.RiotGamesApis
                 .SelectApi<List<long>>(LolApiName.Match)
                 .For(LolApiMethodName.Matches)
                 .AddParameter(new ApiParameter(LolApiPath.ByTournamentCodeIds, TournamentCode))//not tested
-                .Build(ServicePlatform)
+                .Build(Service_Platform)
                 .Get();
             Assert.False(rit.HasError);
         }
@@ -87,7 +87,7 @@ namespace RiotGamesApi.Tests.RiotGamesApis
                 .AddParameter(
                     new ApiParameter(LolApiPath.OnlyMatchId, MatchId),
                     new ApiParameter(LolApiPath.ByTournamentCode, TournamentCode))//not tested
-                .Build(ServicePlatform)
+                .Build(Service_Platform)
                 .Get();
             Assert.False(rit.HasError);
         }

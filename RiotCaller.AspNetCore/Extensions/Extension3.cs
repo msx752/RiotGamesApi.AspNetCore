@@ -63,12 +63,5 @@ namespace RiotGamesApi.AspNetCore.Extensions
                 throw new RiotGamesApiException("UrlTypeAttribute not found");
             return attr.ApiType;
         }
-
-        public static T ForceClone<T>(this T value)
-        {
-            string json = JsonConvert.SerializeObject(value);
-
-            return JsonConvert.DeserializeObject<T>(json);
-        }
     }
 }

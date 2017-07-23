@@ -15,7 +15,7 @@ namespace RiotGamesApi.Tests.RiotGamesApis
                 .SelectApi<MasteryPagesDto>(LolApiName.Platform)
                 .For(LolApiMethodName.Masteries)
                 .AddParameter(new ApiParameter(LolApiPath.BySummoner, SummonerId))
-                .Build(ServicePlatform)
+                .Build(Service_Platform)
                 .Get();
             Assert.False(rit.HasError);
         }
