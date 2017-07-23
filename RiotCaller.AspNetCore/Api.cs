@@ -4,6 +4,7 @@ using RiotGamesApi.AspNetCore.RiotApi.Enums;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using RiotGamesApi.AspNetCore.RiotApi.Enums.GameConstants;
 
 namespace RiotGamesApi.AspNetCore
 {
@@ -685,7 +686,7 @@ namespace RiotGamesApi.AspNetCore
         //"League/v3
         public class League_v3
         {
-            public RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.League.LeagueListDTO> GetChallengerLeaguesByQueue(ServicePlatform platform, Queue _ByQueue)
+            public RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.League.LeagueListDTO> GetChallengerLeaguesByQueue(ServicePlatform platform, MatchMakingQueue _ByQueue)
             {
                 var t = GetChallengerLeaguesByQueueAsync(platform, _ByQueue);
                 t.Wait();
@@ -693,7 +694,7 @@ namespace RiotGamesApi.AspNetCore
                 return rit;
             }
 
-            public async Task<RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.League.LeagueListDTO>> GetChallengerLeaguesByQueueAsync(ServicePlatform platform, Queue _ByQueue)
+            public async Task<RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.League.LeagueListDTO>> GetChallengerLeaguesByQueueAsync(ServicePlatform platform, MatchMakingQueue _ByQueue)
             {
                 RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.League.LeagueListDTO> rit = await new ApiCall()
                     .SelectApi<RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.League.LeagueListDTO>(LolApiName.League, 3)
@@ -723,7 +724,7 @@ namespace RiotGamesApi.AspNetCore
                 return rit;
             }
 
-            public RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.League.LeagueListDTO> GetMasterLeaguesByQueue(ServicePlatform platform, Queue _ByQueue)
+            public RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.League.LeagueListDTO> GetMasterLeaguesByQueue(ServicePlatform platform, MatchMakingQueue _ByQueue)
             {
                 var t = GetMasterLeaguesByQueueAsync(platform, _ByQueue);
                 t.Wait();
@@ -731,7 +732,7 @@ namespace RiotGamesApi.AspNetCore
                 return rit;
             }
 
-            public async Task<RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.League.LeagueListDTO>> GetMasterLeaguesByQueueAsync(ServicePlatform platform, Queue _ByQueue)
+            public async Task<RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.League.LeagueListDTO>> GetMasterLeaguesByQueueAsync(ServicePlatform platform, MatchMakingQueue _ByQueue)
             {
                 RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.League.LeagueListDTO> rit = await new ApiCall()
                     .SelectApi<RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.League.LeagueListDTO>(LolApiName.League, 3)
@@ -940,7 +941,7 @@ namespace RiotGamesApi.AspNetCore
         //"TournamentStub/v3
         public class TournamentStub_v3
         {
-            public RiotGamesApi.AspNetCore.Interfaces.IResult<List<System.String>> PostCodes(PhysicalRegion platform, Int32? _count = null, Int32? _tournamentId = null, RiotGamesApi.AspNetCore.RiotApi.TournamentStubEndPoints.TournamentCodeParameters _tournamentcodeparameters = null)
+            public RiotGamesApi.AspNetCore.Interfaces.IResult<List<System.String>> PostCodes(PhysicalRegion platform, Int32? _count = null, Int32? _tournamentId = null, RiotGamesApi.AspNetCore.RiotApi.TournamentEndPoints.TournamentCodeParameters _tournamentcodeparameters = null)
             {
                 var t = PostCodesAsync(platform, _count, _tournamentId, _tournamentcodeparameters);
                 t.Wait();
@@ -948,7 +949,7 @@ namespace RiotGamesApi.AspNetCore
                 return rit;
             }
 
-            public async Task<RiotGamesApi.AspNetCore.Interfaces.IResult<List<System.String>>> PostCodesAsync(PhysicalRegion platform, Int32? _count = null, Int32? _tournamentId = null, RiotGamesApi.AspNetCore.RiotApi.TournamentStubEndPoints.TournamentCodeParameters _tournamentcodeparameters = null)
+            public async Task<RiotGamesApi.AspNetCore.Interfaces.IResult<List<System.String>>> PostCodesAsync(PhysicalRegion platform, Int32? _count = null, Int32? _tournamentId = null, RiotGamesApi.AspNetCore.RiotApi.TournamentEndPoints.TournamentCodeParameters _tournamentcodeparameters = null)
             {
                 RiotGamesApi.AspNetCore.Interfaces.IResult<List<System.String>> rit = await new ApiCall()
                     .SelectApi<List<System.String>>(LolApiName.TournamentStub, 3)
@@ -964,18 +965,18 @@ namespace RiotGamesApi.AspNetCore
                 return rit;
             }
 
-            public RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.TournamentStubEndPoints.LobbyEventDTOWrapper> GetLobbyEventsByCode(PhysicalRegion platform, String _ByCode)
+            public RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.TournamentEndPoints.LobbyEventDTOWrapper> GetLobbyEventsByCode(PhysicalRegion platform, String _ByCode)
             {
                 var t = GetLobbyEventsByCodeAsync(platform, _ByCode);
                 t.Wait();
-                RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.TournamentStubEndPoints.LobbyEventDTOWrapper> rit = t.Result;
+                RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.TournamentEndPoints.LobbyEventDTOWrapper> rit = t.Result;
                 return rit;
             }
 
-            public async Task<RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.TournamentStubEndPoints.LobbyEventDTOWrapper>> GetLobbyEventsByCodeAsync(PhysicalRegion platform, String _ByCode)
+            public async Task<RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.TournamentEndPoints.LobbyEventDTOWrapper>> GetLobbyEventsByCodeAsync(PhysicalRegion platform, String _ByCode)
             {
-                RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.TournamentStubEndPoints.LobbyEventDTOWrapper> rit = await new ApiCall()
-                    .SelectApi<RiotGamesApi.AspNetCore.RiotApi.TournamentStubEndPoints.LobbyEventDTOWrapper>(LolApiName.TournamentStub, 3)
+                RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.TournamentEndPoints.LobbyEventDTOWrapper> rit = await new ApiCall()
+                    .SelectApi<RiotGamesApi.AspNetCore.RiotApi.TournamentEndPoints.LobbyEventDTOWrapper>(LolApiName.TournamentStub, 3)
                     .For(LolApiMethodName.LobbyEvents)
                     .AddParameter(new ApiParameter(LolApiPath.ByCode, _ByCode))
                     .Build(platform)

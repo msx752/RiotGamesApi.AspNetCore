@@ -26,10 +26,10 @@ using System.Collections.Generic;
 using Microsoft.AspNetCore.Builder;
 using RiotGamesApi.AspNetCore.RateLimit;
 using RiotGamesApi.AspNetCore.RiotApi.TournamentEndPoints;
-using LobbyEventDTOWrapper = RiotGamesApi.AspNetCore.RiotApi.TournamentStubEndPoints.LobbyEventDTOWrapper;
+using LobbyEventDTOWrapper = RiotGamesApi.AspNetCore.RiotApi.TournamentEndPoints.LobbyEventDTOWrapper;
 using MasteryDto = RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.Masteries.MasteryDto;
 using RuneDto = RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.Runes.RuneDto;
-using TournamentCodeParameters = RiotGamesApi.AspNetCore.RiotApi.TournamentStubEndPoints.TournamentCodeParameters;
+using TournamentCodeParameters = RiotGamesApi.AspNetCore.RiotApi.TournamentEndPoints.TournamentCodeParameters;
 
 namespace RiotGamesApi.AspNetCore.Extensions
 {

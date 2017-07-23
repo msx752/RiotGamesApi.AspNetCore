@@ -240,7 +240,8 @@ namespace RiotGamesApi.AspNetCore.Extensions
                                  $"using {Namespace}.RiotApi.Enums;\r\n" +
                                  $"using System;\r\n" +
                                  $"using System.Collections.Generic;\r\n" +
-                                 $"using System.Threading.Tasks;";
+                                 $"using System.Threading.Tasks;\r\n" +
+                                 $"using {Namespace}.RiotApi.Enums.GameConstants; ";
 
             return @references;
         }

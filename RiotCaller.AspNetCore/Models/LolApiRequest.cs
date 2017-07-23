@@ -10,7 +10,7 @@ using System.Net.Http;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using RiotGamesApi.AspNetCore.RiotApi.Enums;
-using RiotGamesApi.AspNetCore.RiotApi.TournamentStubEndPoints;
+using RiotGamesApi.AspNetCore.RiotApi.TournamentEndPoints;
 
 namespace RiotGamesApi.AspNetCore.Models
 {

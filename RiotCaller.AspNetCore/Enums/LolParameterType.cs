@@ -1,5 +1,6 @@
 ﻿using RiotGamesApi.AspNetCore.Attributes;
 using RiotGamesApi.AspNetCore.RiotApi.Enums;
+using RiotGamesApi.AspNetCore.RiotApi.Enums.GameConstants;
 
 // ReSharper disable InconsistentNaming
 
@@ -25,7 +26,7 @@ namespace RiotGamesApi.AspNetCore.Enums
         [ParameterType(typeof(long))]
         id,
 
-        [ParameterType(typeof(Queue))]
+        [ParameterType(typeof(MatchMakingQueue))]
         queue,
 
         [ParameterType(typeof(string))]

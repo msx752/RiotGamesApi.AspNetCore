@@ -5,8 +5,8 @@ using RiotGamesApi.AspNetCore.RiotApi.Enums;
 using RiotGamesApi.AspNetCore.RiotApi.TournamentEndPoints;
 using RiotGamesApi.Tests.Others;
 using Xunit;
-using LobbyEventDTOWrapper = RiotGamesApi.AspNetCore.RiotApi.TournamentStubEndPoints.LobbyEventDTOWrapper;
-using TournamentCodeParameters = RiotGamesApi.AspNetCore.RiotApi.TournamentStubEndPoints.TournamentCodeParameters;
+using LobbyEventDTOWrapper = RiotGamesApi.AspNetCore.RiotApi.TournamentEndPoints.LobbyEventDTOWrapper;
+using TournamentCodeParameters = RiotGamesApi.AspNetCore.RiotApi.TournamentEndPoints.TournamentCodeParameters;
 
 namespace RiotGamesApi.Tests.RiotGamesApis
 {

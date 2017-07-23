@@ -2,6 +2,7 @@
 using RiotGamesApi.AspNetCore.Enums;
 using RiotGamesApi.AspNetCore.Models;
 using RiotGamesApi.AspNetCore.RiotApi.Enums;
+using RiotGamesApi.AspNetCore.RiotApi.Enums.GameConstants;
 using RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.League;
 using RiotGamesApi.Tests.Others;
 using Xunit;
@@ -16,7 +17,7 @@ namespace RiotGamesApi.Tests.RiotGamesApis
             var rit = new ApiCall()
                 .SelectApi<LeagueListDTO>(LolApiName.League)
                 .For(LolApiMethodName.ChallengerLeagues)
-                .AddParameter(new ApiParameter(LolApiPath.ByQueue, Queue.RANKED_SOLO_5x5))
+                .AddParameter(new ApiParameter(LolApiPath.ByQueue, MatchMakingQueue.RANKED_SOLO_5x5))
                 .Build(ServicePlatform)
                 .Get();
             Assert.False(rit.HasError);
@@ -40,7 +41,7 @@ namespace RiotGamesApi.Tests.RiotGamesApis
             var rit = new ApiCall()
                 .SelectApi<LeagueListDTO>(LolApiName.League)
                 .For(LolApiMethodName.MasterLeagues)
-                .AddParameter(new ApiParameter(LolApiPath.ByQueue, Queue.RANKED_SOLO_5x5))
+                .AddParameter(new ApiParameter(LolApiPath.ByQueue, MatchMakingQueue.RANKED_SOLO_5x5))
                 .Build(ServicePlatform)
                 .Get();
             Assert.False(rit.HasError);

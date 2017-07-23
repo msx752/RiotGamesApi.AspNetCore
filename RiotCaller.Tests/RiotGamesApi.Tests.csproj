@@ -32,12 +32,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="RiotGamesApi.AspNetCore.RiotApi">
-      <HintPath>..\..\RiotGamesApi.AspNetCore.RiotApi\RiotGamesApi.AspNetCore.RiotApi\bin\Debug\netcoreapp1.1\RiotGamesApi.AspNetCore.RiotApi.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-
-  <ItemGroup>
     <Service Include="{82a7f48d-3b50-4b1e-b82e-3ada8210c358}" />
   </ItemGroup>
 
