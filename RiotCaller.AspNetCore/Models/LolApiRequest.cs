@@ -25,6 +25,7 @@ namespace RiotGamesApi.AspNetCore.Models
 
         public LolApiUrl ApiList { get; internal set; }
         public string BaseUrl { get; internal set; }
+        public string Platform { get; private set; }
 
         public String CacheKey
         {
@@ -108,6 +109,7 @@ namespace RiotGamesApi.AspNetCore.Models
         {
             try
             {
+                Platform = platform;
                 Method selected = null;
                 if (SelectedApiIndex != -1)
                 {
@@ -122,7 +124,7 @@ namespace RiotGamesApi.AspNetCore.Models
                 }
                 var newUrl =
                     $"{BaseUrl}/{ApiList.ApiName.GetStringValue()}/{ApiList.Version}/{selected.ApiMethodName.GetStringValue()}";
-                newUrl = newUrl.Replace("{platformId}", platform);
+                newUrl = newUrl.Replace("{platformId}", Platform);
                 List<LolParameterType> array =
                     ((LolParameterType[])Enum.GetValues(typeof(LolParameterType)))
                     .ToList();
@@ -340,7 +342,7 @@ namespace RiotGamesApi.AspNetCore.Models
             if (UrlType == LolUrlType.NonStatic ||
                 UrlType == LolUrlType.Tournament)
             {
-                ApiSettings.RateLimiter.Handle();
+                ApiSettings.RateLimiter.Handle(Platform);
             }
 
             StringContent data = null;
