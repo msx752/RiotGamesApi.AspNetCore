@@ -6,6 +6,8 @@
 - configure 'Configure' method as mentioned in wiki
 - prefers to using with services [DI]
 
+- IMPORTANT NOTICE: web-server setting must be "full-trust" for System.Reflection
+
 # RiotGamesApi.AspNetCore Wiki
 	- https://github.com/msx752/RiotGamesApi.AspNetCore/wiki
 
@@ -14,7 +16,12 @@
 	- V3-api
 	- Sync/Async 
 	- Caching (default: false)
-	- RateLimiting[respects by region] (there may be a bug) (it can be improve for more performance)
+	- RateLimiting[respects by region] (default: Active)
+		- X-App-Rate is supported
+		- X-Method-App-Rate is supported
+		- Find current ratelimit for any regions and any apiTypes
+		- ReTryAfterSeconds feature
+		- Enable/Disable feature
 	- TournamentApi  (there may be a bug)
 	- StaticApi
 	- NonStaticApi
