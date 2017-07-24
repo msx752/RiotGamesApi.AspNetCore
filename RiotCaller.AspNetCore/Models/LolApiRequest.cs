@@ -388,6 +388,8 @@ namespace RiotGamesApi.AspNetCore.Models
                 else if ((int)response.StatusCode == 429)
                 {
                     //handle response
+
+                    //ApiSettings.RateLimiter.SetRetryTime(Platform, DateTime.Now);
 #if DEBUG
                     Debug.WriteLine(response.Headers);
 #endif
