@@ -9,6 +9,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using RiotGamesApi.AspNetCore.RateLimit;
 using RiotGamesApi.AspNetCore.RiotApi.Enums;
 using RiotGamesApi.AspNetCore.RiotApi.TournamentEndPoints;
 
@@ -339,10 +340,14 @@ namespace RiotGamesApi.AspNetCore.Models
 
         private async Task GetHttpResponse(HttpMethod method, object bodyData = null)
         {
-            if (UrlType == LolUrlType.NonStatic ||
-                UrlType == LolUrlType.Tournament)
+            if (UrlType != LolUrlType.Static && UrlType != LolUrlType.Status)
             {
-                ApiSettings.RateLimiter.Handle(Platform);
+                RateLimitProperties prop = new RateLimitProperties();
+                prop.UrlType = UrlType;
+                prop.Platform = Platform;
+                prop.ApiName = ApiList.ApiName;
+                ApiSettings.RateL2.Handle(prop);
+                //ApiSettings.RateLimiter.Handle(Platform);
             }
 
             StringContent data = null;
@@ -370,6 +375,7 @@ namespace RiotGamesApi.AspNetCore.Models
             else
                 throw new RiotGamesApiException("undefined httpMethod request");
 
+            var headers = response.Headers;
             if (!response.IsSuccessStatusCode)
             {
                 RiotGamesApiException exp = null;
@@ -391,7 +397,7 @@ namespace RiotGamesApi.AspNetCore.Models
 
                     //ApiSettings.RateLimiter.SetRetryTime(Platform, DateTime.Now);
 #if DEBUG
-                    Debug.WriteLine(response.Headers);
+                    Debug.WriteLine(headers);
 #endif
                     exp = new RiotGamesApiException($"Rate limit exceeded:{(int)response.StatusCode}");
                 }

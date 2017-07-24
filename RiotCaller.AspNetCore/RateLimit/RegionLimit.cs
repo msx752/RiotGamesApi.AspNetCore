@@ -10,7 +10,6 @@ namespace RiotGamesApi.AspNetCore.RateLimit
         private object _lock = new object();
 
         //private object _lock2 = new object();
-        private DateTime _reTryAfter;
 
         private List<ApiLimit> _limits;
 
@@ -31,6 +30,8 @@ namespace RiotGamesApi.AspNetCore.RateLimit
                 }
             }
         }
+
+        private DateTime _reTryAfter;
 
         public DateTime ReTryAfter
         {

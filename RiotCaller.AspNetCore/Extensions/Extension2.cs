@@ -252,6 +252,7 @@ namespace RiotGamesApi.AspNetCore.Extensions
             services.AddSingleton<IApiCache>(new ApiCache());
             services.AddSingleton<Api>(new Api());
             services.AddSingleton<ApiRate>(new ApiRate());
+            services.AddSingleton<ApiRate2>(new ApiRate2());
         }
 
         public static IApplicationBuilder UseRiotGamesApi(this IApplicationBuilder app)
