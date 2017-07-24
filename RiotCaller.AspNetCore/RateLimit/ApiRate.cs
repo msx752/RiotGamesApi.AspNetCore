@@ -67,26 +67,26 @@ namespace RiotGamesApi.AspNetCore.RateLimit
             RegionLimit regionLimit = SelectedRegionLimits(region);
             if (regionLimit.IsRetryActive)
                 currentDelay = (regionLimit.ReTryAfter - DateTime.Now);
-            foreach (var v in regionLimit.Limits)
+            foreach (var limit in regionLimit.Limits)
             {
-                if (v.Counter < v.Limit) continue;
+                if (limit.Counter < limit.Limit) continue;
 
-                var largestDelay = v.ChainStartTime.Add(v.Time) - DateTime.Now;
+                var largestDelay = limit.ChainStartTime.Add(limit.Time) - DateTime.Now;
 #if DEBUG
-                Debug.WriteLine($"[{DateTime.Now:MM/dd/yyyy HH:mm:ss.fff}] limit:{v.Limit}\tmultipler:{v.Time}\tcount:{v.Counter}\t\tDelay:{largestDelay}");
+                Debug.WriteLine($"[{DateTime.Now:MM/dd/yyyy HH:mm:ss.fff}] limit:{limit.Limit}\tmultipler:{limit.Time}\tcount:{limit.Counter}\t\tDelay:{largestDelay}");
 #endif
                 if (largestDelay > currentDelay)
                     currentDelay = largestDelay;
 
                 break;
             }
-            regionLimit.Limits.ForEach((v) =>
+            regionLimit.Limits.ForEach((limit) =>
             {
-                if (v.ChainStartTime <= DateTime.Now.Add(currentDelay) - v.Time)
-                    v.Counter = 0;
+                if (limit.ChainStartTime <= DateTime.Now.Add(currentDelay) - limit.Time)
+                    limit.Counter = 0;
 
-                v.ChainStartTime = DateTime.Now.Add(currentDelay);
-                v.Counter++;
+                limit.ChainStartTime = DateTime.Now.Add(currentDelay);
+                limit.Counter++;
             });
             Task.Delay(currentDelay).Wait();
         }
