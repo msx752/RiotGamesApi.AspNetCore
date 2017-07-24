@@ -17,14 +17,6 @@ namespace RiotGamesApi.AspNetCore.RateLimit
         public int Limit { get; internal set; }
         public TimeSpan Time { get; internal set; }
 
-        public void Reset()
-        {
-            if (ChainStartTime <= DateTime.Now - Time)
-                Counter = 0;
-            ChainStartTime = DateTime.Now;
-            Counter++;
-        }
-
         public ApiLimit DeepCopy()
         {
             ApiLimit other = (ApiLimit)this.MemberwiseClone();
