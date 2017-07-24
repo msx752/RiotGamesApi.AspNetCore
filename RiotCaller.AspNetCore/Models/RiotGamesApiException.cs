@@ -17,5 +17,10 @@ namespace RiotGamesApi.AspNetCore.Models
         public RiotGamesApiException(string message, Exception exception) : base(message, exception)
         {
         }
+
+        public override string ToString()
+        {
+            return Message.ToString();
+        }
     }
 }

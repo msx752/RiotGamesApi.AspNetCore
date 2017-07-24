@@ -6,7 +6,7 @@ namespace RiotGamesApi.AspNetCore.RateLimit
 {
     public class RateLimitOption
     {
-        public List<RLimit> RateLimits { get; private set; } = new List<RLimit>();
+        public List<ApiLimit> RateLimits { get; private set; } = new List<ApiLimit>();
 
         public RateLimitOption AddDays(short multiplier, int limit)
         {
@@ -34,7 +34,7 @@ namespace RiotGamesApi.AspNetCore.RateLimit
 
         private void Add(TimeSpan ts, int limit)
         {
-            RateLimits.Add(new RLimit(ts, limit));
+            RateLimits.Add(new ApiLimit(ts, limit));
             RateLimits = RateLimits.OrderByDescending(p => p.Time).ToList();
         }
     }

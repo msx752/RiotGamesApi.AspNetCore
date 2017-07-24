@@ -4,9 +4,9 @@ using System.Text;
 
 namespace RiotGamesApi.AspNetCore.RateLimit
 {
-    public class RLimit
+    public class ApiLimit
     {
-        public RLimit(TimeSpan ts, int limit)
+        public ApiLimit(TimeSpan ts, int limit)
         {
             Limit = limit;
             Time = ts;
@@ -25,9 +25,9 @@ namespace RiotGamesApi.AspNetCore.RateLimit
             Counter++;
         }
 
-        public RLimit DeepCopy()
+        public ApiLimit DeepCopy()
         {
-            RLimit other = (RLimit)this.MemberwiseClone();
+            ApiLimit other = (ApiLimit)this.MemberwiseClone();
             return other;
         }
     }

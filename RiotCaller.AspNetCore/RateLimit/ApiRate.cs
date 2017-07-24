@@ -11,12 +11,9 @@ namespace RiotGamesApi.AspNetCore.RateLimit
 {
     public class ApiRate
     {
-        private static object _lock = new object();
+        private static object _lock3 = new object();
 
-        public ConcurrentDictionary<string, List<RLimit>> RegionLimits { get; } =
-            new ConcurrentDictionary<string, List<RLimit>>();
-
-        private DateTime ReTry { get; set; }
+        public ConcurrentDictionary<string, RegionLimit> RegionLimits { get; set; } = new ConcurrentDictionary<string, RegionLimit>();
 
         public void Handle(PhysicalRegion region)
         {
@@ -30,39 +27,47 @@ namespace RiotGamesApi.AspNetCore.RateLimit
 
         public void Handle(string region)
         {
-            lock (_lock)
-            {
-                //Debug.WriteLine($"{Task.CurrentId}");
-                Wait(region);
-            }
+            Wait(region);
         }
 
-        private bool IsRetryActive
+        public void SetRetryTime(PhysicalRegion region, DateTime retryAfter)
         {
-            get { return ReTry > DateTime.Now; }
+            SetRetryTime(region.ToString(), retryAfter);
         }
 
-        private List<RLimit> SelectedRegionLimits(string region)
+        public void SetRetryTime(ServicePlatform region, DateTime retryAfter)
         {
-            List<RLimit> regionLimit;
-            if (RegionLimits.TryGetValue(region, out regionLimit) == false)
+            SetRetryTime(region.ToString(), retryAfter);
+        }
+
+        public void SetRetryTime(string region, DateTime retryAfter)
+        {
+            var selected = SelectedRegionLimits(region);
+            selected.ReTryAfter = retryAfter;
+        }
+
+        private RegionLimit SelectedRegionLimits(string region)
+        {
+            lock (_lock3)
             {
-                var _rlimits = ApiSettings.RateOptions.RateLimits;
-                regionLimit = _rlimits.Select(r => r.DeepCopy()).ToList();
-                RegionLimits.TryAdd(region, regionLimit);
+                RegionLimit regionLimit;
+                if (RegionLimits.TryGetValue(region, out regionLimit) == false)
+                {
+                    regionLimit = new RegionLimit();
+                    regionLimit.AddLimits(ApiSettings.RateOptions.RateLimits);
+                    RegionLimits.TryAdd(region, regionLimit);
+                }
+                return regionLimit;
             }
-            return regionLimit;
         }
 
         private void Wait(string region)
         {
-            List<RLimit> regionLimit = SelectedRegionLimits(region);
-
             TimeSpan currentDelay = TimeSpan.Zero;
-            if (IsRetryActive)
-                currentDelay = (ReTry - DateTime.Now);
-
-            foreach (var v in regionLimit)
+            RegionLimit regionLimit = SelectedRegionLimits(region);
+            if (regionLimit.IsRetryActive)
+                currentDelay = (regionLimit.ReTryAfter - DateTime.Now);
+            foreach (var v in regionLimit.Limits)
             {
                 if (v.Counter < v.Limit) continue;
 
@@ -75,7 +80,7 @@ namespace RiotGamesApi.AspNetCore.RateLimit
 
                 break;
             }
-            regionLimit.ForEach((v) =>
+            regionLimit.Limits.ForEach((v) =>
             {
                 if (v.ChainStartTime <= DateTime.Now.Add(currentDelay) - v.Time)
                     v.Counter = 0;

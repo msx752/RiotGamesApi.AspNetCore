@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using RiotGamesApi.AspNetCore;
 using RiotGamesApi.AspNetCore.Interfaces;
@@ -31,27 +32,41 @@ namespace RiotGamesApi.Tests.Others
         {
             ApiRate rt = ApiSettings.RateLimiter;
 
-            for (int i = 0; i < 205; i++)
+            int expected = 25;
+            for (int i = 0; i < expected; i++)
             {
                 rt.Handle(Service_Platform);
             }
             Assert.Equal(1, rt.RegionLimits.Count);
+            Assert.Equal(expected, rt.RegionLimits[Service_Platform.ToString()].Limits.First().Counter);
         }
 
         [Fact]
-        public void RateLimitByRegion()//on debug mode
+        public void RateLimitByRegion()
         {
             ApiRate rt = ApiSettings.RateLimiter;
 
-            rt.Handle(Service_Platform);
-            Assert.Equal(1, rt.RegionLimits[Service_Platform.ToString()].First().Counter);
+            int regionCount = 12;
+            int rateCountPerRegion = 19;
+            Task.Run(() =>
+            {
+                List<Task> ts = new List<Task>();
+                for (int i = 1; i <= regionCount; i++)
+                {
+                    ServicePlatform spl = (ServicePlatform)i;
+                    for (int j = 0; j < rateCountPerRegion; j++)
+                    {
+                        ts.Add(Task.Run(() =>
+                        {
+                            rt.Handle(spl);
+                        }));
+                    }
+                }
+                Task.WaitAll(ts.ToArray());
+            }).Wait();
 
-            rt.Handle(ServicePlatform.NA1);
-            rt.Handle(ServicePlatform.NA1);
-            Assert.Equal(2, rt.RegionLimits[ServicePlatform.NA1.ToString()].First().Counter);
-
-            rt.Handle(PhysicalRegion.americas);
-            Assert.Equal(1, rt.RegionLimits[PhysicalRegion.americas.ToString()].First().Counter);
+            int totalServicePlatform = rt.RegionLimits.Count(p => p.Value.Limits.First().Counter == rateCountPerRegion);
+            Assert.Equal(regionCount, totalServicePlatform);
         }
     }
 }
