@@ -18,88 +18,11 @@ namespace RiotGamesApi.Tests.Others
     public class RateLimitTest : BaseTestClass
     {
         [Fact]
-        public void RateLimit1()//on debug mode
-        {
-            for (int i = 0; i < 205; i++)
-            {
-                IResult<SummonerDto> result =
-                    LolApi.NonStaticApi.Summonerv3.GetSummonersOnlySummonerId(Service_Platform, SummonerId);
-                //Assert.False(result.HasError);
-            }
-        }
-
-        [Fact]
-        public void RateLimit2()//on debug mode
-        {
-            ApiRate rt = ApiSettings.RateLimiter;
-
-            int expected = 25;
-            for (int i = 0; i < expected; i++)
-            {
-                rt.Handle(Service_Platform);
-            }
-            Assert.Equal(1, rt.RegionLimits.Count);
-            Assert.Equal(expected, rt.RegionLimits[Service_Platform.ToString()].Limits.First().Counter);
-        }
-
-        [Fact]
-        public void RateLimitByRegion()
-        {
-            ApiRate rt = ApiSettings.RateLimiter;
-
-            int regionCount = 12;
-            int rateCountPerRegion = 18;
-            Task.Run(() =>
-            {
-                List<Task> ts = new List<Task>();
-                for (int i = 1; i <= regionCount; i++)
-                {
-                    ServicePlatform spl = (ServicePlatform)i;
-                    for (int j = 0; j < rateCountPerRegion; j++)
-                    {
-                        ts.Add(Task.Run(() =>
-                        {
-                            rt.Handle(spl);
-                        }));
-                        ts.Add(Task.Run(() =>
-                        {
-                            rt.Handle(spl);
-                        }));
-                    }
-                }
-                Task.WaitAll(ts.ToArray());
-            }).Wait();
-
-            int totalServicePlatform = rt.RegionLimits.Count(p => p.Value.Limits.First().Counter == rateCountPerRegion * 2);
-            Assert.Equal(regionCount, totalServicePlatform);
-        }
-
-        [Fact]
         public void ApiRate2Test()
         {
             ApiRate2 apir = ApiSettings.RateL2;
-            apir.Add(ServicePlatform.TR1.ToString(), LolUrlType.NonStatic, new List<LolApiName>()
-            {
-                LolApiName.Match
-            }, new List<ApiLimit>()
-            {
-                new ApiLimit(new TimeSpan(0,0,1),20),
 
-                new ApiLimit(new TimeSpan(0,2,0),200)
-            });
-
-            apir.Add(ServicePlatform.NA1.ToString(), LolUrlType.NonStatic, new List<LolApiName>()
-                {
-                    LolApiName.Match
-                },
-                new List<ApiLimit>()
-                {
-                    new ApiLimit(new TimeSpan(0,0,1),20),
-
-                    new ApiLimit(new TimeSpan(0,2,0),200)
-                });
-
-            int rateCountPerRegion = 25;
+            int rateCountPerRegion = 5;
             Task.Run(() =>
             {
                 List<Task> ts = new List<Task>();
@@ -125,13 +48,46 @@ namespace RiotGamesApi.Tests.Others
                             UrlType = LolUrlType.NonStatic
                         });
                     }));
+                    ts.Add(Task.Run(() =>
+                    {
+                        apir.Handle(new RateLimitProperties()
+                        {
+                            Platform = ServicePlatform.NA1.ToString(),
+                            ApiName = LolApiName.Match,
+                            UrlType = LolUrlType.NonStatic
+                        });
+                    }));
                 }
 
                 Task.WaitAll(ts.ToArray());
             }).Wait();
 
-            //int totalServicePlatform = apir.RegionLimits.Count(p => p.Value.Limits.First().Counter == rateCountPerRegion * 2);
-            //Assert.Equal(regionCount, totalServicePlatform);
+            var na1 = apir.Rates.Find(ServicePlatform.NA1.ToString(), LolUrlType.NonStatic, LolApiName.Match);
+            var c1 = na1.Limits.First().Counter;
+            var tr1 = apir.Rates.Find(ServicePlatform.TR1.ToString(), LolUrlType.NonStatic, LolApiName.Match);
+            var c2 = tr1.Limits.First().Counter;
+
+            Assert.Equal(c1, rateCountPerRegion * 2);
+            var sn = ApiSettings.RateL2.FindRate(Service_Platform.ToString(), LolUrlType.NonStatic, LolApiName.Match);
+            Assert.Equal(3, sn.Limits.Count(p => p.Counter == rateCountPerRegion));//there are app,service and method rate limits
         }
+
+        //[Fact]
+        //public void XRateLimit()
+        //{
+        //    LolApi.NonStaticApi.ChampionMasteryv3.GetChampionMasteriesBySummoner(ServicePlatform.TR1, SummonerId);
+
+        // LolApi.NonStaticApi.Leaguev3.GetChallengerLeaguesByQueue(ServicePlatform.TR1, AspNetCore.RiotApi.Enums.GameConstants.MatchMakingQueue.RANKED_FLEX_SR);
+
+        // LolApi.NonStaticApi.Matchv3.GetMatchesOnlyMatchId(ServicePlatform.TR1, MatchId);
+
+        // LolApi.NonStaticApi.Platformv3.GetChampionsOnlyId(ServicePlatform.TR1, 45);
+
+        // LolApi.NonStaticApi.Summonerv3.GetSummonersByAccount(ServicePlatform.TR1, AccountId);
+
+        // LolApi.StaticApi.StaticDatav3.GetChampionsOnlyId(ServicePlatform.TR1, 45);
+
+        //    LolApi.StatusApi.Statusv3.GetShardData(ServicePlatform.TR1);
+        //}
     }
 }

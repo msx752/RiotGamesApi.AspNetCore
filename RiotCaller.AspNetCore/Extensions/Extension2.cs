@@ -48,7 +48,7 @@ namespace RiotGamesApi.AspNetCore.Extensions
 
         public static void AddLeagueOfLegendsApi(this IServiceCollection services, string riotApiKey,
             Func<CacheOption, CacheOption> cacheOption = null,
-            Func<RateLimitOption, RateLimitOption> rateLimitOption = null)
+            Func<RateLimitOption2, RateLimitOption2> rateLimitOption2 = null)
         {
             //can convertable to json
             var riotGamesApiBuilder = new RiotGamesApiBuilder()
@@ -236,23 +236,62 @@ namespace RiotGamesApi.AspNetCore.Extensions
             else
                 riotGamesApiOption.CacheOptions = new CacheOption();//default settings
 
-            if (rateLimitOption != null)
+            RateLimitOption2 limits = new RateLimitOption2();
+            if (rateLimitOption2 != null)
             {
-                riotGamesApiOption.RateLimitOptions = rateLimitOption(new RateLimitOption()); //user settings
+                limits = rateLimitOption2(new RateLimitOption2()); //user settings
             }
             else
             {
-                riotGamesApiOption.RateLimitOptions = new RateLimitOption()
-                    .AddSeconds(1, 20)
-                    .AddMinutes(2, 100);//default settings
+                limits.AddXAppRateLimits(new Dictionary<TimeSpan, int>()
+                {
+                    {new TimeSpan(0, 2, 0), 100 },
+                    {new TimeSpan(0, 0, 1), 20 }
+                });
+
+                limits.AddXMethodRateLimits(new Dictionary<TimeSpan, int>()
+                {
+                    {new TimeSpan(0, 10, 0), 1200000 },
+                    {new TimeSpan(0, 0, 10), 20000 }
+                });
+
+                limits.SetMatchXMethodRateLimit(new TimeSpan(0, 0, 10), 500);
             }
 
+            RateLimitBuilder rlb = new RateLimitBuilder()
+            .AddRateLimitFor(LolUrlType.Status, new List<LolApiName>()
+            {
+                LolApiName.Status
+            }, limits.GetXMethodRateLimit())
+            .AddRateLimitFor(LolUrlType.Static, new List<LolApiName>()
+            {
+                LolApiName.StaticData
+            }, limits.GetXMethodRateLimit())
+            .AddRateLimitFor(LolUrlType.NonStatic, new List<LolApiName>()
+            {
+                LolApiName.Match
+            }, limits.MergeWithMatch())
+            .AddRateLimitFor(LolUrlType.Tournament, new List<LolApiName>()
+                {
+                LolApiName.Tournament,
+                LolApiName.TournamentStub
+            }, limits.MergeNormal())
+            .AddRateLimitFor(LolUrlType.NonStatic, new List<LolApiName>()
+            {
+                LolApiName.ChampionMastery,
+                LolApiName.Platform,
+                LolApiName.League,
+                LolApiName.Spectator,
+                LolApiName.Summoner
+            }, limits.MergeNormal());
+
+            riotGamesApiOption.LolRateLimits = rlb.Build();
             services.AddSingleton<IApiOption>(riotGamesApiOption);
             services.AddMemoryCache();
             services.AddSingleton<IApiCache>(new ApiCache());
             services.AddSingleton<Api>(new Api());
-            services.AddSingleton<ApiRate>(new ApiRate());
-            services.AddSingleton<ApiRate2>(new ApiRate2());
+            var apirate2 = new ApiRate2();
+            services.AddSingleton<ApiRate2>(apirate2);
         }
 
         public static IApplicationBuilder UseRiotGamesApi(this IApplicationBuilder app)

@@ -1,4 +1,5 @@
-﻿using RiotGamesApi.AspNetCore.Cache;
+﻿using System.Collections.Concurrent;
+using RiotGamesApi.AspNetCore.Cache;
 using RiotGamesApi.AspNetCore.Enums;
 using RiotGamesApi.AspNetCore.Interfaces;
 using System.Collections.Generic;
@@ -15,7 +16,7 @@ namespace RiotGamesApi.AspNetCore.Models
             RiotGamesApis = new Dictionary<LolUrlType, Models.RiotGamesApi>();
         }
 
-        public RateLimitOption RateLimitOptions { get; set; }
+        public ConcurrentDictionary<LolUrlType, RLolApi> LolRateLimits { get; set; }
         public CacheOption CacheOptions { get; set; }
         public string NonStaticUrl { get { return $"{Url}/lol"; }/* set { _nonStaticUrl = value; }*/ }
         public string RiotApiKey { get; set; }

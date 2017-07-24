@@ -338,15 +338,24 @@ namespace RiotGamesApi.AspNetCore.Models
             return false;
         }
 
+        public RateLimitProperties Property
+        {
+            get
+            {
+                return new RateLimitProperties()
+                {
+                    UrlType = UrlType,
+                    Platform = Platform,
+                    ApiName = ApiList.ApiName
+                };
+            }
+        }
+
         private async Task GetHttpResponse(HttpMethod method, object bodyData = null)
         {
-            if (UrlType != LolUrlType.Static && UrlType != LolUrlType.Status)
+            //if (UrlType != LolUrlType.Static && UrlType != LolUrlType.Status)
             {
-                RateLimitProperties prop = new RateLimitProperties();
-                prop.UrlType = UrlType;
-                prop.Platform = Platform;
-                prop.ApiName = ApiList.ApiName;
-                ApiSettings.RateL2.Handle(prop);
+                ApiSettings.RateL2.Handle(Property);
                 //ApiSettings.RateLimiter.Handle(Platform);
             }
 
@@ -375,7 +384,8 @@ namespace RiotGamesApi.AspNetCore.Models
             else
                 throw new RiotGamesApiException("undefined httpMethod request");
 
-            var headers = response.Headers;
+            Debug.WriteLine($"----\r\n{Property}\r\n{response.Headers}\r\n");
+
             if (!response.IsSuccessStatusCode)
             {
                 RiotGamesApiException exp = null;
@@ -394,11 +404,10 @@ namespace RiotGamesApi.AspNetCore.Models
                 else if ((int)response.StatusCode == 429)
                 {
                     //handle response
+                    Debug.WriteLine("# RATE LIMIT EXCEEDED #");
+                    var retryseconds = response.Headers.First(p => p.Key == "Retry-After").Value.FirstOrDefault();
+                    ApiSettings.RateL2.SetRetryTime(Property, int.Parse(retryseconds));
 
-                    //ApiSettings.RateLimiter.SetRetryTime(Platform, DateTime.Now);
-#if DEBUG
-                    Debug.WriteLine(headers);
-#endif
                     exp = new RiotGamesApiException($"Rate limit exceeded:{(int)response.StatusCode}");
                 }
                 else if ((int)response.StatusCode == 500)

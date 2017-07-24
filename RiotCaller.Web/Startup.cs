@@ -39,19 +39,32 @@ namespace RiotGamesApi.Web
             services.AddMvc();
 
             //necessary
-            services.AddLeagueOfLegendsApi("RGAPI-a5dcfb69-f59g-4ddb-b407-f56852f359a1",
+            services.AddLeagueOfLegendsApi("RGAPI-e4bb22a3-5eeb-40f3-acca-1ffb72b93f1c",
             (cache) =>
             {
+                //overrides default values
                 cache.EnableStaticApiCaching = true;
                 cache.StaticApiCacheExpiry = new TimeSpan(1, 0, 0);
                 return cache;
             },
-            (rateLimit) =>
+            (limits) =>
             {
-                return rateLimit.AddSeconds(1, 20).AddMinutes(2, 100);
-            }
-            );
-            //use your key
+                //overrides default values
+                limits.AddXAppRateLimits(new Dictionary<TimeSpan, int>()
+                {
+                    {new TimeSpan(0, 2, 0), 100 },
+                    {new TimeSpan(0, 0, 1), 20 }
+                });
+
+                limits.AddXMethodRateLimits(new Dictionary<TimeSpan, int>()
+                {
+                    {new TimeSpan(0, 10, 0), 1200000 },
+                    {new TimeSpan(0, 0, 10), 20000 }
+                });
+
+                limits.SetMatchXMethodRateLimit(new TimeSpan(0, 0, 10), 500);
+                return limits;
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

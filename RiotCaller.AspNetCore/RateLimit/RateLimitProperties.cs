@@ -12,6 +12,11 @@ namespace RiotGamesApi.AspNetCore.RateLimit
         public string Platform { get; set; }
         public LolUrlType UrlType { get; set; }
         public LolApiName ApiName { get; set; }
+
+        public override string ToString()
+        {
+            return $"{Platform}:{UrlType}:{ApiName}";
+        }
     }
 
     public class MyRateLimit
@@ -39,9 +44,21 @@ namespace RiotGamesApi.AspNetCore.RateLimit
 
         public void Add(string region, LolUrlType type, List<LolApiName> apiNames, List<ApiLimit> limits)
         {
-            var lm = new RUrlType();
-            lm.Add(type, new RLolApiName(apiNames, limits.ToArray()));
-            Regions.TryAdd(region, lm);
+            var rut = new RUrlType();
+            rut.Add(type, new RLolApiName(apiNames, limits.ToArray()));
+            Add(region, rut);
+        }
+
+        public void Add(string region, LolUrlType type, RLolApi rla)
+        {
+            var rut = new RUrlType();
+            rut.Add(type, rla);
+            Regions.TryAdd(region, rut);
+        }
+
+        public void Add(string region, RUrlType rut)
+        {
+            Regions.TryAdd(region, rut);
         }
 
         public bool ContainsUrlTypes(string platform)
@@ -110,6 +127,11 @@ namespace RiotGamesApi.AspNetCore.RateLimit
             UrlTypes.TryAdd(val, new RLolApi(rlan));
         }
 
+        public void Add(LolUrlType val, RLolApi rlan)
+        {
+            UrlTypes.TryAdd(val, rlan);
+        }
+
         public bool ContainsUrlTypes(LolUrlType name)
         {
             return UrlTypes.ContainsKey(name);
@@ -163,7 +185,7 @@ namespace RiotGamesApi.AspNetCore.RateLimit
 
         public RLolApiName(List<LolApiName> names, params ApiLimit[] limit) : this(limit)
         {
-            ApiNames = names ?? new List<LolApiName>();
+            ApiNames = names;
         }
 
         public RLolApiName(params ApiLimit[] limit) : this()
@@ -174,15 +196,20 @@ namespace RiotGamesApi.AspNetCore.RateLimit
         public RLolApiName()
         {
             Limits = new List<ApiLimit>();
+            ApiNames = new List<LolApiName>();
         }
 
         public void AddLimit(params ApiLimit[] limit)
         {
             if (limit == null) return;
-            for (int i = 0; i < limit.Length; i++)
-            {
-                Limits.Add(limit[i].DeepCopy());
-            }
+            Limits.AddRange(limit);
+            Limits = Limits.OrderByDescending(p => p.Time).ToList();
+        }
+
+        public RLolApiName DeepCopy()
+        {
+            RLolApiName other = (RLolApiName)this.MemberwiseClone();
+            return other;
         }
 
         private DateTime _reTryAfter;
@@ -213,9 +240,10 @@ namespace RiotGamesApi.AspNetCore.RateLimit
             }
         }
 
-        public void Add(LolApiName val)
+        public void Add(params LolApiName[] val)
         {
-            ApiNames.Add(val);
+            if (val != null)
+                ApiNames.AddRange(val);
         }
 
         public bool ContainsApiName(LolApiName name)
