@@ -1,15 +1,11 @@
-﻿using System;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using RiotGamesApi.AspNetCore.Enums;
 using RiotGamesApi.AspNetCore.Models;
-using RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.Match;
-using RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.Spectator;
 using RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.Summoner;
 using RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.Champions;
-using RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.Runes;
 using Xunit;
 
-namespace RiotGamesApi.Tests.Others
+namespace RiotGamesApi.Tests.Others.Tests
 {
     public class ThrowExceptions : BaseTestClass
     {

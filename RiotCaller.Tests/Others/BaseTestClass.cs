@@ -2,6 +2,7 @@
 using System.IO;
 using Microsoft.Extensions.Configuration;
 using RiotGamesApi.AspNetCore;
+using RiotGamesApi.AspNetCore.RateLimit;
 using RiotGamesApi.AspNetCore.RiotApi.Enums;
 using RiotGamesApi.AspNetCore.RiotApi.Extensions;
 
@@ -40,6 +41,11 @@ namespace RiotGamesApi.Tests.Others
         public Api LolApi
         {
             get { return (Api)ApiSettings.ServiceProvider.GetService(typeof(Api)); }
+        }
+
+        public ApiRate ApiRateLimiting
+        {
+            get { return (ApiRate)ApiSettings.ServiceProvider.GetService(typeof(ApiRate)); }
         }
 
         public BaseTestClass()

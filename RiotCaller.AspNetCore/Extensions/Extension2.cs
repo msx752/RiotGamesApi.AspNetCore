@@ -48,7 +48,7 @@ namespace RiotGamesApi.AspNetCore.Extensions
 
         public static void AddLeagueOfLegendsApi(this IServiceCollection services, string riotApiKey,
             Func<CacheOption, CacheOption> cacheOption = null,
-            Func<RateLimitOption2, RateLimitOption2> rateLimitOption2 = null)
+            Func<RateLimitData, RateLimitData> rateLimitOption2 = null)
         {
             //can convertable to json
             var riotGamesApiBuilder = new RiotGamesApiBuilder()
@@ -236,13 +236,14 @@ namespace RiotGamesApi.AspNetCore.Extensions
             else
                 riotGamesApiOption.CacheOptions = new CacheOption();//default settings
 
-            RateLimitOption2 limits = new RateLimitOption2();
+            RateLimitData limits = new RateLimitData();
             if (rateLimitOption2 != null)
             {
-                limits = rateLimitOption2(new RateLimitOption2()); //user settings
+                limits = rateLimitOption2(new RateLimitData()); //user settings
             }
             else
             {
+                limits.DisableLimiting = false;
                 limits.AddXAppRateLimits(new Dictionary<TimeSpan, int>()
                 {
                     {new TimeSpan(0, 2, 0), 100 },
@@ -285,13 +286,13 @@ namespace RiotGamesApi.AspNetCore.Extensions
                 LolApiName.Summoner
             }, limits.MergeNormal());
 
-            riotGamesApiOption.LolRateLimits = rlb.Build();
+            riotGamesApiOption.RateLimitOptions.All = rlb.Build();
+            riotGamesApiOption.RateLimitOptions.DisableLimiting = limits.DisableLimiting;
             services.AddSingleton<IApiOption>(riotGamesApiOption);
             services.AddMemoryCache();
             services.AddSingleton<IApiCache>(new ApiCache());
             services.AddSingleton<Api>(new Api());
-            var apirate2 = new ApiRate2();
-            services.AddSingleton<ApiRate2>(apirate2);
+            services.AddSingleton<ApiRate>(new ApiRate());
         }
 
         public static IApplicationBuilder UseRiotGamesApi(this IApplicationBuilder app)

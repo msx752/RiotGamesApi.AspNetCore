@@ -14,10 +14,13 @@ namespace RiotGamesApi.AspNetCore.Models
         public LolApiOptions()
         {
             RiotGamesApis = new Dictionary<LolUrlType, Models.RiotGamesApi>();
+            RateLimitOptions = new RateLimitOption();
         }
 
-        public ConcurrentDictionary<LolUrlType, RLolApi> LolRateLimits { get; set; }
+        public RateLimitOption RateLimitOptions { get; internal set; }
+
         public CacheOption CacheOptions { get; set; }
+
         public string NonStaticUrl { get { return $"{Url}/lol"; }/* set { _nonStaticUrl = value; }*/ }
         public string RiotApiKey { get; set; }
         public Dictionary<LolUrlType, Models.RiotGamesApi> RiotGamesApis { get; set; }

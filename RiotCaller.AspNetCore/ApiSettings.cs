@@ -46,11 +46,11 @@ namespace RiotGamesApi.AspNetCore
         //    }
         //}
 
-        public static ApiRate2 RateL2
+        public static ApiRate ApiRate
         {
             get
             {
-                return (ApiRate2)ServiceProvider.GetService(typeof(ApiRate2));
+                return (ApiRate)ServiceProvider.GetService(typeof(ApiRate));
             }
         }
 

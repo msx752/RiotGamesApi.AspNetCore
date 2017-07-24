@@ -355,7 +355,7 @@ namespace RiotGamesApi.AspNetCore.Models
         {
             //if (UrlType != LolUrlType.Static && UrlType != LolUrlType.Status)
             {
-                ApiSettings.RateL2.Handle(Property);
+                ApiSettings.ApiRate.Handle(Property);
                 //ApiSettings.RateLimiter.Handle(Platform);
             }
 
@@ -406,7 +406,7 @@ namespace RiotGamesApi.AspNetCore.Models
                     //handle response
                     Debug.WriteLine("# RATE LIMIT EXCEEDED #");
                     var retryseconds = response.Headers.First(p => p.Key == "Retry-After").Value.FirstOrDefault();
-                    ApiSettings.RateL2.SetRetryTime(Property, int.Parse(retryseconds));
+                    ApiSettings.ApiRate.SetRetryTime(Property, int.Parse(retryseconds));
 
                     exp = new RiotGamesApiException($"Rate limit exceeded:{(int)response.StatusCode}");
                 }

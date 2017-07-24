@@ -8,7 +8,7 @@ using RiotGamesApi.AspNetCore.Enums;
 
 namespace RiotGamesApi.AspNetCore.RateLimit
 {
-    public class ApiRate2
+    public class ApiRate
     {
         private object _lock2 = new object();
 
@@ -26,9 +26,12 @@ namespace RiotGamesApi.AspNetCore.RateLimit
 
         public void Handle(RateLimitProperties prop)
         {
-            //DateTime start = DateTime.Now;
-            Wait(prop);
-            //Debug.WriteLine($"{(DateTime.Now - start).Milliseconds} ms elapsed.");
+            if (ApiSettings.ApiOptions.RateLimitOptions.DisableLimiting == false)
+            {
+                //DateTime start = DateTime.Now;
+                Wait(prop);
+                //Debug.WriteLine($"{(DateTime.Now - start).Milliseconds} ms elapsed.");
+            }
         }
 
         public void Add(string region, LolUrlType type, List<LolApiName> apiNames, List<ApiLimit> limits)
@@ -64,7 +67,7 @@ namespace RiotGamesApi.AspNetCore.RateLimit
             RLolApiName regionLimit = Rates.Find(prop.Platform, prop.UrlType, prop.ApiName);
             if (regionLimit == null)
             {
-                var snc = ApiSettings.ApiOptions.LolRateLimits[prop.UrlType];
+                var snc = ApiSettings.ApiOptions.RateLimitOptions.All[prop.UrlType];
                 Rates.Add(prop.Platform, prop.UrlType, snc.DeepClone());
                 regionLimit = Rates.Find(prop.Platform, prop.UrlType, prop.ApiName);
             }

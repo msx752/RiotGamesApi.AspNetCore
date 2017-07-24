@@ -1,27 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using RiotGamesApi.AspNetCore;
 using RiotGamesApi.AspNetCore.Enums;
-using RiotGamesApi.AspNetCore.Interfaces;
-using RiotGamesApi.AspNetCore.Models;
 using RiotGamesApi.AspNetCore.RateLimit;
 using RiotGamesApi.AspNetCore.RiotApi.Enums;
-using RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.Summoner;
-using RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.Champions;
 using Xunit;
 
-namespace RiotGamesApi.Tests.Others
+namespace RiotGamesApi.Tests.Others.Tests
 {
     public class RateLimitTest : BaseTestClass
     {
         [Fact]
-        public void ApiRate2Test()
+        public void RegionalApiLimit()
         {
-            ApiRate2 apir = ApiSettings.RateL2;
-
             int rateCountPerRegion = 5;
             Task.Run(() =>
             {
@@ -31,7 +23,7 @@ namespace RiotGamesApi.Tests.Others
                 {
                     ts.Add(Task.Run(() =>
                     {
-                        apir.Handle(new RateLimitProperties()
+                        ApiRateLimiting.Handle(new RateLimitProperties()
                         {
                             Platform = ServicePlatform.TR1.ToString(),
                             ApiName = LolApiName.Match,
@@ -41,7 +33,7 @@ namespace RiotGamesApi.Tests.Others
 
                     ts.Add(Task.Run(() =>
                     {
-                        apir.Handle(new RateLimitProperties()
+                        ApiRateLimiting.Handle(new RateLimitProperties()
                         {
                             Platform = ServicePlatform.NA1.ToString(),
                             ApiName = LolApiName.Match,
@@ -50,7 +42,7 @@ namespace RiotGamesApi.Tests.Others
                     }));
                     ts.Add(Task.Run(() =>
                     {
-                        apir.Handle(new RateLimitProperties()
+                        ApiRateLimiting.Handle(new RateLimitProperties()
                         {
                             Platform = ServicePlatform.NA1.ToString(),
                             ApiName = LolApiName.Match,
@@ -62,13 +54,13 @@ namespace RiotGamesApi.Tests.Others
                 Task.WaitAll(ts.ToArray());
             }).Wait();
 
-            var na1 = apir.Rates.Find(ServicePlatform.NA1.ToString(), LolUrlType.NonStatic, LolApiName.Match);
+            var na1 = ApiRateLimiting.Rates.Find(ServicePlatform.NA1.ToString(), LolUrlType.NonStatic, LolApiName.Match);
             var c1 = na1.Limits.First().Counter;
-            var tr1 = apir.Rates.Find(ServicePlatform.TR1.ToString(), LolUrlType.NonStatic, LolApiName.Match);
+            var tr1 = ApiRateLimiting.Rates.Find(ServicePlatform.TR1.ToString(), LolUrlType.NonStatic, LolApiName.Match);
             var c2 = tr1.Limits.First().Counter;
 
-            Assert.Equal(c1, rateCountPerRegion * 2);
-            var sn = ApiSettings.RateL2.FindRate(Service_Platform.ToString(), LolUrlType.NonStatic, LolApiName.Match);
+            Assert.Equal(c1, c2 * 2);
+            var sn = ApiRateLimiting.FindRate(Service_Platform.ToString(), LolUrlType.NonStatic, LolApiName.Match);
             Assert.Equal(3, sn.Limits.Count(p => p.Counter == rateCountPerRegion));//there are app,service and method rate limits
         }
 

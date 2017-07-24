@@ -8,7 +8,7 @@ using RiotGamesApi.AspNetCore.Enums;
 
 namespace RiotGamesApi.AspNetCore.RateLimit
 {
-    public class RateLimitOption2
+    public class RateLimitData
     {
         public List<ApiLimit> MergeNormal()
         {
@@ -44,6 +44,11 @@ namespace RiotGamesApi.AspNetCore.RateLimit
 
             return newl;
         }
+
+        /// <summary>
+        /// default false 
+        /// </summary>
+        public bool DisableLimiting { get; set; } = false;
 
         private List<ApiLimit> XAppRateLimit { get; } = new List<ApiLimit>();
 

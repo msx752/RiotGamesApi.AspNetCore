@@ -8,8 +8,10 @@ namespace RiotGamesApi.AspNetCore.Interfaces
 {
     public interface IApiOption
     {
-        ConcurrentDictionary<LolUrlType, RLolApi> LolRateLimits { get; set; }
+        RateLimitOption RateLimitOptions { get; }
+
         CacheOption CacheOptions { get; set; }
+
         string NonStaticUrl { get; }
         string RiotApiKey { get; set; }
         Dictionary<LolUrlType, Models.RiotGamesApi> RiotGamesApis { get; set; }
