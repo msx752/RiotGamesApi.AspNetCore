@@ -21,7 +21,7 @@ namespace RiotGamesApi.AspNetCore.RateLimit
         {
             foreach (var li in limits)
             {
-                XAppRateLimit.Add(new ApiLimit(li.Key, li.Value));
+                XAppRateLimit.Add(new ApiLimit(li.Key, li.Value, RateLimitType.AppRate));
             }
         }
 
@@ -29,7 +29,7 @@ namespace RiotGamesApi.AspNetCore.RateLimit
         {
             foreach (var li in limits)
             {
-                XMethodRateLimit.Add(new ApiLimit(li.Key, li.Value));
+                XMethodRateLimit.Add(new ApiLimit(li.Key, li.Value, RateLimitType.MethodRate));
             }
         }
 

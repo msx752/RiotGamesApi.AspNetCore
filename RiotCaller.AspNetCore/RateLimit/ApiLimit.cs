@@ -5,18 +5,49 @@ namespace RiotGamesApi.AspNetCore.RateLimit
 {
     public class ApiLimit
     {
-        public ApiLimit(TimeSpan ts, int limit, RateLimitType limitType = RateLimitType.AppRate)
+        private object _lock = new object();
+        private object _lock2 = new object();
+        private int _counter;
+        private DateTime _chainStartTime;
+
+        public ApiLimit(TimeSpan ts, int limit, RateLimitType limitType)
         {
             Limit = limit;
             Time = ts;
             LimitType = limitType;
         }
 
-        public DateTime ChainStartTime { get; internal set; }
-        public int Counter { get; internal set; }
-        public int Limit { get; internal set; }
-        public RateLimitType LimitType { get; internal set; }
-        public TimeSpan Time { get; internal set; }
+        public DateTime ChainStartTime
+        {
+            get
+            {
+                lock (_lock2)
+                    return _chainStartTime;
+            }
+            internal set
+            {
+                lock (_lock2)
+                    _chainStartTime = value;
+            }
+        }
+
+        public int Counter
+        {
+            get
+            {
+                lock (_lock)
+                    return _counter;
+            }
+            internal set
+            {
+                lock (_lock)
+                    _counter = value;
+            }
+        }
+
+        public int Limit { get; private set; }
+        public RateLimitType LimitType { get; private set; }
+        public TimeSpan Time { get; private set; }
 
         public override string ToString()
         {

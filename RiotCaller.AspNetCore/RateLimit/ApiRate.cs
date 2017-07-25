@@ -11,7 +11,8 @@ namespace RiotGamesApi.AspNetCore.RateLimit
     public class ApiRate
     {
         private readonly MyRateLimit _rates = new MyRateLimit();
-        private object _lock = new object();
+
+        //private object _lock = new object();
         private object _lock2 = new object();
 
         public MyRateLimit Rates
@@ -70,7 +71,7 @@ namespace RiotGamesApi.AspNetCore.RateLimit
                 Rates.Add(prop.Platform, prop.UrlType, snc.DeepClone());
                 regionLimit = Rates.Find(prop.Platform, prop.UrlType, prop.ApiName);
             }
-            lock (_lock)
+            //lock (_lock)
             {
                 if (regionLimit.IsRetryActive)
                     currentDelay = (regionLimit.ReTryAfter - DateTime.Now);
@@ -80,10 +81,10 @@ namespace RiotGamesApi.AspNetCore.RateLimit
                         continue;
 
                     var largestDelay = limit.ChainStartTime.Add(limit.Time) - DateTime.Now;
-#if DEBUG
+
                     Debug.WriteLine(
                         $"[{DateTime.Now:MM/dd/yyyy HH:mm:ss.fff}] limit:{limit.Limit}\tregion:{prop.Platform}\ttype:{prop.UrlType}\tapiName:{prop.ApiName}\tmultipler:{limit.Time}\tcount:{limit.Counter}\t\tDelay:{largestDelay}");
-#endif
+
                     if (largestDelay > currentDelay)
                         currentDelay = largestDelay;
 

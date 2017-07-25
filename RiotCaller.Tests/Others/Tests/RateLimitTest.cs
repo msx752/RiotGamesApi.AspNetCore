@@ -14,7 +14,7 @@ namespace RiotGamesApi.Tests.Others.Tests
         [Fact]
         public void RegionalApiLimit()
         {
-            int rateCountPerRegion = 5;
+            int rateCountPerRegion = 15;
             Task.Run(() =>
             {
                 List<Task> ts = new List<Task>();
