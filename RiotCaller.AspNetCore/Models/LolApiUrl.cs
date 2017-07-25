@@ -6,8 +6,20 @@ using System.Globalization;
 
 namespace RiotGamesApi.AspNetCore.Models
 {
+    /// <summary>
+    /// lol apiurl creator 
+    /// </summary>
     public class LolApiUrl
     {
+        /// <summary>
+        /// lol apiurl creator 
+        /// </summary>
+        /// <param name="_newApiUrl">
+        /// name of apiMethod 
+        /// </param>
+        /// <param name="_version">
+        /// version of Method 
+        /// </param>
         public LolApiUrl(LolApiName _newApiUrl, double _version)
         {
             ApiMethods = new List<Method>();
@@ -16,6 +28,7 @@ namespace RiotGamesApi.AspNetCore.Models
         }
 
         public LolApiName ApiName { get; set; }
+
         public List<Method> ApiMethods { get; set; }
         public string Version { get; set; }
         public int LastApiMethodIndex { get; set; }
@@ -69,11 +82,10 @@ namespace RiotGamesApi.AspNetCore.Models
         }
 
         /// <summary>
+        /// Query parameter for static-data and tournament apis OR Post-Request 
         /// </summary>
-        /// <param name="option">
-        /// </param>
         /// <param name="queryParameterTypes">
-        /// NAME,TYPE 
+        /// NameOfQuery, ValueTypeOfQuery 
         /// </param>
         /// <returns>
         /// </returns>

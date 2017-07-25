@@ -1,72 +1,77 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using RiotGamesApi.AspNetCore;
-using RiotGamesApi.AspNetCore.Interfaces;
-using RiotGamesApi.AspNetCore.Models;
+﻿using RiotGamesApi.AspNetCore.Enums;
 using RiotGamesApi.AspNetCore.RateLimit;
 using RiotGamesApi.AspNetCore.RiotApi.Enums;
-using RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.Summoner;
-using RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.Champions;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using RiotGamesApi.AspNetCore.RateLimit.Property;
 using Xunit;
 
-namespace RiotGamesApi.Tests.Others
+namespace RiotGamesApi.Tests.Others.Tests
 {
     public class RateLimitTest : BaseTestClass
     {
         [Fact]
-        public void RateLimit1()//on debug mode
+        public void DebugRespecToRegionLimits()//run with DebugMode
         {
-            for (int i = 0; i < 205; i++)
+            for (int i = 0; i < 1000; i++)
             {
-                IResult<SummonerDto> result =
-                    LolApi.NonStaticApi.Summonerv3.GetSummonersOnlySummonerId(Service_Platform, SummonerId);
-                //Assert.False(result.HasError);
+                LolApi.NonStaticApi.Summonerv3
+                    .GetSummonersOnlySummonerId(ServicePlatform.TR1, SummonerId);
             }
         }
 
         [Fact]
-        public void RateLimit2()//on debug mode
+        public void RegionalApiLimitTesting()
         {
-            ApiRate rt = ApiSettings.RateLimiter;
-
-            int expected = 25;
-            for (int i = 0; i < expected; i++)
-            {
-                rt.Handle(Service_Platform);
-            }
-            Assert.Equal(1, rt.RegionLimits.Count);
-            Assert.Equal(expected, rt.RegionLimits[Service_Platform.ToString()].Limits.First().Counter);
-        }
-
-        [Fact]
-        public void RateLimitByRegion()
-        {
-            ApiRate rt = ApiSettings.RateLimiter;
-
-            int regionCount = 12;
-            int rateCountPerRegion = 19;
+            int rateCountPerRegion = 15;
             Task.Run(() =>
             {
                 List<Task> ts = new List<Task>();
-                for (int i = 1; i <= regionCount; i++)
+
+                for (int j = 0; j < rateCountPerRegion; j++)
                 {
-                    ServicePlatform spl = (ServicePlatform)i;
-                    for (int j = 0; j < rateCountPerRegion; j++)
+                    ts.Add(Task.Run(() =>
                     {
-                        ts.Add(Task.Run(() =>
+                        ApiRateLimiting.Handle(new RateLimitProperties()
                         {
-                            rt.Handle(spl);
-                        }));
-                    }
+                            Platform = ServicePlatform.TR1.ToString(),
+                            ApiName = LolApiName.Match,
+                            UrlType = LolUrlType.NonStatic
+                        });
+                    }));
+
+                    ts.Add(Task.Run(() =>
+                    {
+                        ApiRateLimiting.Handle(new RateLimitProperties()
+                        {
+                            Platform = ServicePlatform.NA1.ToString(),
+                            ApiName = LolApiName.Match,
+                            UrlType = LolUrlType.NonStatic
+                        });
+                    }));
+                    ts.Add(Task.Run(() =>
+                    {
+                        ApiRateLimiting.Handle(new RateLimitProperties()
+                        {
+                            Platform = ServicePlatform.NA1.ToString(),
+                            ApiName = LolApiName.Match,
+                            UrlType = LolUrlType.NonStatic
+                        });
+                    }));
                 }
+
                 Task.WaitAll(ts.ToArray());
             }).Wait();
 
-            int totalServicePlatform = rt.RegionLimits.Count(p => p.Value.Limits.First().Counter == rateCountPerRegion);
-            Assert.Equal(regionCount, totalServicePlatform);
+            var na1 = ApiRateLimiting.Rates.Find(ServicePlatform.NA1.ToString(), LolUrlType.NonStatic, LolApiName.Match);
+            var c1 = na1.Limits.First().Counter;
+            var tr1 = ApiRateLimiting.Rates.Find(ServicePlatform.TR1.ToString(), LolUrlType.NonStatic, LolApiName.Match);
+            var c2 = tr1.Limits.First().Counter;
+
+            Assert.Equal(c1, c2 * 2);
+            var sn = ApiRateLimiting.FindRate(Service_Platform.ToString(), LolUrlType.NonStatic, LolApiName.Match);
+            Assert.Equal(3, sn.Limits.Count(p => p.Counter == rateCountPerRegion));//there are app,service and method rate limits
         }
     }
 }

@@ -2,6 +2,9 @@
 
 namespace RiotGamesApi.AspNetCore.Attributes
 {
+    /// <summary>
+    /// allows special characters in request Url 
+    /// </summary>
     [AttributeUsage(AttributeTargets.Field, AllowMultiple = false)]
     public class StringValueAttribute : Attribute
     {

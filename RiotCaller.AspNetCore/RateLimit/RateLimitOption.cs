@@ -1,41 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using RiotGamesApi.AspNetCore.Enums;
+using System.Collections.Concurrent;
+using RiotGamesApi.AspNetCore.RateLimit.Property;
 
 namespace RiotGamesApi.AspNetCore.RateLimit
 {
     public class RateLimitOption
     {
-        public List<ApiLimit> RateLimits { get; private set; } = new List<ApiLimit>();
-
-        public RateLimitOption AddDays(short multiplier, int limit)
+        public RateLimitOption()
         {
-            Add(new TimeSpan(multiplier, 0, 0, 0), limit);
-            return this;
+            DisableLimiting = false;
         }
 
-        public RateLimitOption AddHours(short multiplier, int limit)
-        {
-            Add(new TimeSpan(multiplier, 0, 0), limit);
-            return this;
-        }
+        /// <summary>
+        /// rate-limits which defined from userSettings 
+        /// </summary>
+        public ConcurrentDictionary<LolUrlType, RLolApi> All { get; internal set; }
 
-        public RateLimitOption AddMinutes(short multiplier, int limit)
-        {
-            Add(new TimeSpan(0, multiplier, 0), limit);
-            return this;
-        }
-
-        public RateLimitOption AddSeconds(short multiplier, int limit)
-        {
-            Add(new TimeSpan(0, 0, multiplier), limit);
-            return this;
-        }
-
-        private void Add(TimeSpan ts, int limit)
-        {
-            RateLimits.Add(new ApiLimit(ts, limit));
-            RateLimits = RateLimits.OrderByDescending(p => p.Time).ToList();
-        }
+        /// <summary>
+        /// disable rate-limiter (default: false) 
+        /// </summary>
+        public bool DisableLimiting { get; internal set; }
     }
 }

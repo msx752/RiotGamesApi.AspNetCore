@@ -17,6 +17,9 @@ namespace RiotGamesApi.AspNetCore
     {
         private static IServiceProvider _serviceProvider = null;
 
+        /// <summary>
+        /// ApiCache controller 
+        /// </summary>
         public static IApiCache ApiCache
         {
             get
@@ -25,6 +28,9 @@ namespace RiotGamesApi.AspNetCore
             }
         }
 
+        /// <summary>
+        /// RiotGamesApi all Options 
+        /// </summary>
         public static IApiOption ApiOptions
         {
             get
@@ -33,12 +39,10 @@ namespace RiotGamesApi.AspNetCore
             }
         }
 
-        public static RateLimitOption RateOptions
-        {
-            get { return ApiOptions.RateLimitOptions; }
-        }
-
-        public static ApiRate RateLimiter
+        /// <summary>
+        /// RiotGamesApi Rate-Limiter 
+        /// </summary>
+        public static ApiRate ApiRate
         {
             get
             {
@@ -46,6 +50,9 @@ namespace RiotGamesApi.AspNetCore
             }
         }
 
+        /// <summary>
+        /// .net core dependency injection 
+        /// </summary>
         public static IServiceProvider ServiceProvider
         {
             get { return _serviceProvider; }
@@ -56,6 +63,9 @@ namespace RiotGamesApi.AspNetCore
             }
         }
 
+        /// <summary>
+        /// .net core controller of memory caching 
+        /// </summary>
         internal static IMemoryCache MemoryCache
         {
             get

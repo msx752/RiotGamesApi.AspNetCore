@@ -763,6 +763,40 @@ namespace RiotGamesApi.AspNetCore
             }
         }
 
+        private League_v3_1 _Leaguev31;
+        public League_v3_1 Leaguev31 { get { return _Leaguev31 ?? (_Leaguev31 = new League_v3_1()); } }
+
+        /// <summary>
+        /// "League/v3.1 version 3.1 testing (NOT WORKS only for displaying) 
+        /// </summary>
+        public class League_v3_1
+        {
+            /// <summary>
+            /// "League/v3.1 version 3.1 testing (NOT WORKS only for displaying) 
+            /// </summary>
+            public RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.v31.Empty> GetChallengerLeaguesByQueue(ServicePlatform platform, MatchMakingQueue _ByQueue)
+            {
+                var t = GetChallengerLeaguesByQueueAsync(platform, _ByQueue);
+                t.Wait();
+                RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.v31.Empty> rit = t.Result;
+                return rit;
+            }
+
+            /// <summary>
+            /// "League/v3.1 version 3.1 testing (NOT WORKS only for displaying) 
+            /// </summary>
+            public async Task<RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.v31.Empty>> GetChallengerLeaguesByQueueAsync(ServicePlatform platform, MatchMakingQueue _ByQueue)
+            {
+                RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.v31.Empty> rit = await new ApiCall()
+                    .SelectApi<RiotGamesApi.AspNetCore.RiotApi.v31.Empty>(LolApiName.League, 3.1)
+                    .For(LolApiMethodName.ChallengerLeagues)
+                    .AddParameter(new ApiParameter(LolApiPath.ByQueue, _ByQueue))
+                    .Build(platform)
+                    .GetAsync();
+                return rit;
+            }
+        }
+
         private Match_v3 _Matchv3;
         public Match_v3 Matchv3 { get { return _Matchv3 ?? (_Matchv3 = new Match_v3()); } }
 

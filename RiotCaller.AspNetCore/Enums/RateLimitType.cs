@@ -2,17 +2,15 @@
 using System.Collections.Generic;
 using System.Text;
 
-// ReSharper disable InconsistentNaming
-
 namespace RiotGamesApi.AspNetCore.Enums
 {
     /// <summary>
-    /// request type 
+    /// RiotGames X-Rate-Limit-Type 
     /// </summary>
-    public enum ApiMethodType
+    public enum RateLimitType
     {
-        Get,
-        Post,
-        Put
+        AppRate = 0,
+        MethodRate = 1,
+        ServiceRate = 2,
     }
 }

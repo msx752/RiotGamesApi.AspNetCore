@@ -3,7 +3,7 @@ using RiotGamesApi.AspNetCore;
 using RiotGamesApi.AspNetCore.RiotApi.Enums;
 using Xunit;
 
-namespace RiotGamesApi.Tests.Others
+namespace RiotGamesApi.Tests.Others.Tests
 {
     public class UsingStaticApiClass : BaseTestClass
     {

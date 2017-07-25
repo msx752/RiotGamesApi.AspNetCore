@@ -1,26 +1,89 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using RiotGamesApi.AspNetCore.Enums;
+using System;
 
 namespace RiotGamesApi.AspNetCore.RateLimit
 {
+    /// <summary>
+    /// specified rate limit 
+    /// </summary>
     public class ApiLimit
     {
-        public ApiLimit(TimeSpan ts, int limit)
+        //private object _lock = new object();
+        private int _counter;
+
+        private DateTime _chainStartTime;
+
+        /// <summary>
+        /// specified rate limit 
+        /// </summary>
+        /// <param name="ts">
+        /// timer interval 
+        /// </param>
+        /// <param name="limit">
+        /// max. limit 
+        /// </param>
+        /// <param name="limitType">
+        /// RiotGames X-Rate-Limit-Type 
+        /// </param>
+        public ApiLimit(TimeSpan ts, int limit, RateLimitType limitType)
         {
             Limit = limit;
             Time = ts;
+            LimitType = limitType;
         }
 
-        public DateTime ChainStartTime { get; internal set; }
-        public int Counter { get; internal set; }
-        public int Limit { get; internal set; }
-        public TimeSpan Time { get; internal set; }
-
-        public ApiLimit DeepCopy()
+        /// <summary>
+        /// request start time 
+        /// </summary>
+        public DateTime ChainStartTime
         {
-            ApiLimit other = (ApiLimit)this.MemberwiseClone();
-            return other;
+            get
+            {
+                //lock (_lock)
+                return _chainStartTime;
+            }
+            internal set
+            {
+                //lock (_lock)
+                _chainStartTime = value;
+            }
+        }
+
+        /// <summary>
+        /// consumed limit 
+        /// </summary>
+        public int Counter
+        {
+            get
+            {
+                //lock (_lock)
+                return _counter;
+            }
+            internal set
+            {
+                //lock (_lock)
+                _counter = value;
+            }
+        }
+
+        /// <summary>
+        /// max. limit 
+        /// </summary>
+        public int Limit { get; private set; }
+
+        /// <summary>
+        /// RiotGames X-Rate-Limit-Type 
+        /// </summary>
+        public RateLimitType LimitType { get; private set; }
+
+        /// <summary>
+        /// time interval 
+        /// </summary>
+        public TimeSpan Time { get; private set; }
+
+        public override string ToString()
+        {
+            return $"{Time}:{Limit}:{Counter}";
         }
     }
 }

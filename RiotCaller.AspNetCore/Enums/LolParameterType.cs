@@ -6,6 +6,9 @@ using RiotGamesApi.AspNetCore.RiotApi.Enums.GameConstants;
 
 namespace RiotGamesApi.AspNetCore.Enums
 {
+    /// <summary>
+    /// url path parameter data 
+    /// </summary>
     public enum LolParameterType
     {
         [ParameterType(typeof(ServicePlatform))]

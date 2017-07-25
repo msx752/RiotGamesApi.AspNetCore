@@ -11,11 +11,16 @@
     <WarningLevel>1</WarningLevel>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>bin\Debug\netcoreapp1.1\RiotGamesApi.AspNetCore.xml</DocumentationFile>
+  </PropertyGroup>
+
   <ItemGroup>
+    <PackageReference Include="DeepCloner" Version="0.10.1" />
     <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="1.1.2" />
     <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="1.1.2" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="1.1.1" />
     <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
-    <PackageReference Include="RiotGamesApi.AspNetCore.RiotApi" Version="1.7.23.1551" />
+    <PackageReference Include="RiotGamesApi.AspNetCore.RiotApi" Version="1.7.25.2036" />
   </ItemGroup>
 </Project>

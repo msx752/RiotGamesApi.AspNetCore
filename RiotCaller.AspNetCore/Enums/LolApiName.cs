@@ -2,6 +2,9 @@ using RiotGamesApi.AspNetCore.Attributes;
 
 namespace RiotGamesApi.AspNetCore.Enums
 {
+    /// <summary>
+    /// url path name of api 
+    /// </summary>
     public enum LolApiName
     {
         [UrlType(LolUrlType.NonStatic)]

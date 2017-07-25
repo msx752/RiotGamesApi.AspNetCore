@@ -20,11 +20,6 @@ namespace RiotGamesApi.AspNetCore.Extensions
             foreach (var selected in ApiSettings.ApiOptions.RiotGamesApis)
             {
                 var urlType = selected.Key;
-                //if (urlType == LolUrlType.Tournament)
-                //{
-                //    TournamenApis.Add(selected.Key, selected.Value);
-                //    continue;
-                //}
                 string @class = $"\r\n//\"{selected.Value.ApiUrl}\r\n" +
                                 $"public class {urlType.ToString()}\r\n{{";
                 @apiClassProperties += $"private {urlType.ToString()} _{urlType.ToString().ToLower()}Api;\r\n" +
@@ -104,7 +99,6 @@ namespace RiotGamesApi.AspNetCore.Extensions
                                         .Split(new string[] { "," }, StringSplitOptions.None)[0];
                                 paramType = $"List<{paramType_t2}>";
                             }
-                            //string.Join(\"&tags=\", tags)
                             string @defaultParamValue = paramType == "Boolean" ? "false" : "null";
                             if (IsDigitType(paramType))
                             {
@@ -201,7 +195,6 @@ namespace RiotGamesApi.AspNetCore.Extensions
             string @namespaces = @references + $"\r\nnamespace {nameOfNs}\r\n{{";
             string @MainClass = $"\r\n// ReSharper disable InconsistentNaming\r\n" +
                                 $"//AUTO GENERATED CLASS DO NOT MODIFY\r\n ";
-            //$"public class Api\r\n{{\r\n";
 
             string @apiClass = $"public class {nameof(Api)}\r\n{{\r\n" +
                                $"{@apiClassProperties}" +
@@ -213,7 +206,7 @@ namespace RiotGamesApi.AspNetCore.Extensions
             }
             @MainClass += "//\r\n}\r\n";
             @namespaces += @MainClass;
-            //@namespaces += "//\r\n}\r\n";
+
             Classes.Clear();
             return @namespaces;
         }

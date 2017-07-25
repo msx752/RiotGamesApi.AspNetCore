@@ -9,11 +9,18 @@ using System.Linq;
 using System.Net.Http;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using RiotGamesApi.AspNetCore.RateLimit;
+using RiotGamesApi.AspNetCore.RateLimit.Property;
 using RiotGamesApi.AspNetCore.RiotApi.Enums;
 using RiotGamesApi.AspNetCore.RiotApi.TournamentEndPoints;
 
 namespace RiotGamesApi.AspNetCore.Models
 {
+    /// <summary>
+    /// fluent api requesting 
+    /// </summary>
+    /// <typeparam name="T">
+    /// </typeparam>
     internal class LolApiRequest<T> :
      /*   IRSelectApi<T>,*/ IFor<T>, IAddParameter<T>, IBuild<T>, IRequestMethod<T>, IProperty<T> where T : new()
     {
@@ -337,12 +344,25 @@ namespace RiotGamesApi.AspNetCore.Models
             return false;
         }
 
+        public RateLimitProperties Property
+        {
+            get
+            {
+                return new RateLimitProperties()
+                {
+                    UrlType = UrlType,
+                    Platform = Platform,
+                    ApiName = ApiList.ApiName
+                };
+            }
+        }
+
         private async Task GetHttpResponse(HttpMethod method, object bodyData = null)
         {
-            if (UrlType == LolUrlType.NonStatic ||
-                UrlType == LolUrlType.Tournament)
+            //if (UrlType != LolUrlType.Static && UrlType != LolUrlType.Status)
             {
-                ApiSettings.RateLimiter.Handle(Platform);
+                ApiSettings.ApiRate.Handle(Property);
+                //ApiSettings.RateLimiter.Handle(Platform);
             }
 
             StringContent data = null;
@@ -370,6 +390,8 @@ namespace RiotGamesApi.AspNetCore.Models
             else
                 throw new RiotGamesApiException("undefined httpMethod request");
 
+            Debug.WriteLine($"----\r\n{Property}\r\n{response.Headers}\r\n");
+
             if (!response.IsSuccessStatusCode)
             {
                 RiotGamesApiException exp = null;
@@ -388,12 +410,31 @@ namespace RiotGamesApi.AspNetCore.Models
                 else if ((int)response.StatusCode == 429)
                 {
                     //handle response
+                    Debug.WriteLine("# RATE LIMIT EXCEEDED #");
+                    if (ApiSettings.ApiOptions.RateLimitOptions.DisableLimiting == false)
+                    {
+                        var rateLimitType = response.Headers.First(p => p.Key == "X-Rate-Limit-Type").Value.First();
+                        RateLimitType rType;
 
-                    //ApiSettings.RateLimiter.SetRetryTime(Platform, DateTime.Now);
-#if DEBUG
-                    Debug.WriteLine(response.Headers);
-#endif
-                    exp = new RiotGamesApiException($"Rate limit exceeded:{(int)response.StatusCode}");
+                        if (rateLimitType == "application")
+                            rType = RateLimitType.AppRate;
+                        else if (rateLimitType == "method")
+                            rType = RateLimitType.MethodRate;
+                        else if (rateLimitType == "service")
+                            rType = RateLimitType.ServiceRate;
+                        else
+                            throw new RiotGamesApiException("UNDEFINED RATELIMIT TYPE: " + rateLimitType);
+
+                        var retryseconds = response.Headers.First(p => p.Key == "Retry-After").Value.First();
+
+                        ApiSettings.ApiRate.SetRetryTime(Property, rType, int.Parse(retryseconds));
+
+                        exp = new RiotGamesApiException($"Rate limit exceeded:{(int)response.StatusCode}|ExceedType:{rateLimitType}|retryAfter: {retryseconds} sec.");
+                    }
+                    else
+                    {
+                        exp = new RiotGamesApiException($"Rate limit exceeded:{(int)response.StatusCode}|RateLimiting is not ACTIVE");
+                    }
                 }
                 else if ((int)response.StatusCode == 500)
                     exp = new RiotGamesApiException($"Internal server error:{(int)response.StatusCode}");

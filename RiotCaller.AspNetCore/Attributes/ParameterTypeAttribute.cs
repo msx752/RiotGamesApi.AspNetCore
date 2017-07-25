@@ -2,6 +2,9 @@
 
 namespace RiotGamesApi.AspNetCore.Attributes
 {
+    /// <summary>
+    /// valueType of Url Path Parameter 
+    /// </summary>
     [AttributeUsage(AttributeTargets.Field, AllowMultiple = false)]
     public class ParameterTypeAttribute : Attribute
     {
