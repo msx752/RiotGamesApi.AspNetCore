@@ -406,8 +406,21 @@ namespace RiotGamesApi.AspNetCore.Models
                 {
                     //handle response
                     Debug.WriteLine("# RATE LIMIT EXCEEDED #");
-                    var retryseconds = response.Headers.First(p => p.Key == "Retry-After").Value.FirstOrDefault();
-                    ApiSettings.ApiRate.SetRetryTime(Property, int.Parse(retryseconds));
+                    var rateLimitType = response.Headers.First(p => p.Key == "X-Rate-Limit-Type").Value.First();
+                    RateLimitType rType;
+
+                    if (rateLimitType == "application")
+                        rType = RateLimitType.AppRate;
+                    else if (rateLimitType == "method")
+                        rType = RateLimitType.MethodRate;
+                    else if (rateLimitType == "service")
+                        rType = RateLimitType.ServiceRate;
+                    else
+                        throw new RiotGamesApiException("UNDEFINED RATELIMIT TYPE: " + rateLimitType);
+
+                    var retryseconds = response.Headers.First(p => p.Key == "Retry-After").Value.First();
+
+                    ApiSettings.ApiRate.SetRetryTime(Property, rType, int.Parse(retryseconds));
 
                     exp = new RiotGamesApiException($"Rate limit exceeded:{(int)response.StatusCode}");
                 }

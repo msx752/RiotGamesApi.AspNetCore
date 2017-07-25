@@ -49,16 +49,15 @@ namespace RiotGamesApi.AspNetCore.RateLimit
             }
         }
 
-        public void SetRetryTime(RateLimitProperties prop, int reTryAfterSeconds)
+        public void SetRetryTime(RateLimitProperties prop, RateLimitType limitType, int retryAfterSeconds)
         {
-            RLolApiName regionLimit = Rates.Find(prop.Platform, prop.UrlType, prop.ApiName);
-            regionLimit.ReTryAfter = DateTime.Now.AddSeconds(reTryAfterSeconds);
+            SetRetryTime(prop.Platform, prop.UrlType, prop.ApiName, limitType, retryAfterSeconds);
         }
 
-        public void SetRetryTime(string region, LolUrlType type, LolApiName name, int reTryAfterSeconds)
+        public void SetRetryTime(string region, LolUrlType type, LolApiName name, RateLimitType limitType, int retryAfterSeconds)
         {
             RLolApiName regionLimit = Rates.Find(region, type, name);
-            regionLimit.ReTryAfter = DateTime.Now.AddSeconds(reTryAfterSeconds);
+            regionLimit.RetryAfter = DateTime.Now.AddSeconds(retryAfterSeconds);
         }
 
         private void Wait(RateLimitProperties prop)
@@ -74,7 +73,7 @@ namespace RiotGamesApi.AspNetCore.RateLimit
             //lock (_lock)
             {
                 if (regionLimit.IsRetryActive)
-                    currentDelay = (regionLimit.ReTryAfter - DateTime.Now);
+                    currentDelay = (regionLimit.RetryAfter - DateTime.Now);
                 foreach (var limit in regionLimit.Limits)
                 {
                     if (limit.Counter < limit.Limit)

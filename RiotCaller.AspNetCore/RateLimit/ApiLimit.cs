@@ -5,9 +5,9 @@ namespace RiotGamesApi.AspNetCore.RateLimit
 {
     public class ApiLimit
     {
-        private object _lock = new object();
-        private object _lock2 = new object();
+        //private object _lock = new object();
         private int _counter;
+
         private DateTime _chainStartTime;
 
         public ApiLimit(TimeSpan ts, int limit, RateLimitType limitType)
@@ -21,13 +21,13 @@ namespace RiotGamesApi.AspNetCore.RateLimit
         {
             get
             {
-                lock (_lock2)
-                    return _chainStartTime;
+                //lock (_lock)
+                return _chainStartTime;
             }
             internal set
             {
-                lock (_lock2)
-                    _chainStartTime = value;
+                //lock (_lock)
+                _chainStartTime = value;
             }
         }
 
@@ -35,13 +35,13 @@ namespace RiotGamesApi.AspNetCore.RateLimit
         {
             get
             {
-                lock (_lock)
-                    return _counter;
+                //lock (_lock)
+                return _counter;
             }
             internal set
             {
-                lock (_lock)
-                    _counter = value;
+                //lock (_lock)
+                _counter = value;
             }
         }
 

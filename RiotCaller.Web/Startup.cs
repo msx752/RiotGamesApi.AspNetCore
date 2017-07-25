@@ -39,7 +39,7 @@ namespace RiotGamesApi.Web
             services.AddMvc();
 
             //necessary
-            services.AddLeagueOfLegendsApi("RGAPI-e4bb22a3-5eeb-40f3-acca-1ffb72b93f1c",
+            services.AddLeagueOfLegendsApi("RGAPI-0-5eeb-40f3-acca-1ffb72b93f1c",
             (cache) =>
             {
                 //overrides default values
@@ -62,7 +62,7 @@ namespace RiotGamesApi.Web
                     {new TimeSpan(0, 0, 10), 20000 }
                 });
 
-                limits.SetMatchXMethodRateLimit(new TimeSpan(0, 0, 10), 500);
+                limits.SetMatchApiXMethodRateLimit(new TimeSpan(0, 0, 10), 500);
                 return limits;
             });
         }

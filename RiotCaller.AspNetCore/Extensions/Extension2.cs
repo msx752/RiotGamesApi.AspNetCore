@@ -257,7 +257,7 @@ namespace RiotGamesApi.AspNetCore.Extensions
                     {new TimeSpan(0, 0, 10), 20000 }
                 });
 
-                limits.SetMatchXMethodRateLimit(new TimeSpan(0, 0, 10), 500);
+                limits.SetMatchApiXMethodRateLimit(new TimeSpan(0, 0, 10), 500);
             }
 
             RateLimitBuilder rlb = new RateLimitBuilder()

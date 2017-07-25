@@ -7,7 +7,7 @@ namespace RiotGamesApi.AspNetCore.RateLimit
     public class RateLimitData
     {
         /// <summary>
-        /// default false 
+        /// default value: false 
         /// </summary>
         public bool DisableLimiting { get; set; } = false;
 
@@ -85,7 +85,7 @@ namespace RiotGamesApi.AspNetCore.RateLimit
         //    XMethodRateLimit.Add(new ApiLimit(ts, limit, RateLimitType.MethodRate));
         //}
 
-        public void SetMatchXMethodRateLimit(TimeSpan ts, int limit)
+        public void SetMatchApiXMethodRateLimit(TimeSpan ts, int limit)
         {
             MatchList_XMethodRateLimit = new ApiLimit(ts, limit, RateLimitType.MethodRate);
         }

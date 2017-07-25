@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using RiotGamesApi.AspNetCore.Enums;
+using Force.DeepCloner;
 
 namespace RiotGamesApi.AspNetCore.RateLimit.Property
 {
@@ -10,6 +11,8 @@ namespace RiotGamesApi.AspNetCore.RateLimit.Property
         private List<LolApiName> _apiNames;
         private object _lock = new object();
         private DateTime _reTryAfter;
+        private List<ApiLimit> _limits;
+        private RateLimitType? _usedRateLimitType;
 
         public RLolApiName(List<LolApiName> names, params ApiLimit[] limit) : this(limit)
         {
@@ -45,17 +48,48 @@ namespace RiotGamesApi.AspNetCore.RateLimit.Property
             }
         }
 
+        public RateLimitType? UsedRateLimitType
+        {
+            get
+            {
+                var isActive = IsRetryActive.DeepClone();
+                lock (_lock)
+                {
+                    if (!isActive)
+                        _usedRateLimitType = null;
+                    return _usedRateLimitType;
+                }
+            }
+            set
+            {
+                lock (_lock)
+                    _usedRateLimitType = value;
+            }
+        }
+
         public bool IsRetryActive
         {
             get
             {
-                return ReTryAfter > DateTime.Now;
+                return RetryAfter > DateTime.Now;
             }
         }
 
-        public List<ApiLimit> Limits { get; private set; }
+        public List<ApiLimit> Limits
+        {
+            get
+            {
+                lock (_lock)
+                    return _limits;
+            }
+            private set
+            {
+                lock (_lock)
+                    _limits = value;
+            }
+        }
 
-        public DateTime ReTryAfter
+        public DateTime RetryAfter
         {
             get
             {
@@ -81,7 +115,7 @@ namespace RiotGamesApi.AspNetCore.RateLimit.Property
 
         public void AddLimit(params ApiLimit[] limit)
         {
-            if (limit == null) return;
+            if (limit == null || !limit.Any()) return;
             Limits.AddRange(limit);
             Limits = Enumerable.OrderByDescending<ApiLimit, TimeSpan>(Limits, p => p.Time).ToList();
         }
@@ -89,12 +123,6 @@ namespace RiotGamesApi.AspNetCore.RateLimit.Property
         public bool ContainsApiName(LolApiName name)
         {
             return ApiNames.Contains(name);
-        }
-
-        public RLolApiName DeepCopy()
-        {
-            RLolApiName other = (RLolApiName)this.MemberwiseClone();
-            return other;
         }
     }
 }
