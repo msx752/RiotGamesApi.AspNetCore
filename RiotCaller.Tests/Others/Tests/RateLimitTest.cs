@@ -73,23 +73,5 @@ namespace RiotGamesApi.Tests.Others.Tests
             var sn = ApiRateLimiting.FindRate(Service_Platform.ToString(), LolUrlType.NonStatic, LolApiName.Match);
             Assert.Equal(3, sn.Limits.Count(p => p.Counter == rateCountPerRegion));//there are app,service and method rate limits
         }
-
-        //[Fact]
-        //public void XRateLimit()
-        //{
-        //    LolApi.NonStaticApi.ChampionMasteryv3.GetChampionMasteriesBySummoner(ServicePlatform.TR1, SummonerId);
-
-        // LolApi.NonStaticApi.Leaguev3.GetChallengerLeaguesByQueue(ServicePlatform.TR1, AspNetCore.RiotApi.Enums.GameConstants.MatchMakingQueue.RANKED_FLEX_SR);
-
-        // LolApi.NonStaticApi.Matchv3.GetMatchesOnlyMatchId(ServicePlatform.TR1, MatchId);
-
-        // LolApi.NonStaticApi.Platformv3.GetChampionsOnlyId(ServicePlatform.TR1, 45);
-
-        // LolApi.NonStaticApi.Summonerv3.GetSummonersByAccount(ServicePlatform.TR1, AccountId);
-
-        // LolApi.StaticApi.StaticDatav3.GetChampionsOnlyId(ServicePlatform.TR1, 45);
-
-        //    LolApi.StatusApi.Statusv3.GetShardData(ServicePlatform.TR1);
-        //}
     }
 }

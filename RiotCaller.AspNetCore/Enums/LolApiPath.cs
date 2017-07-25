@@ -3,7 +3,7 @@
 namespace RiotGamesApi.AspNetCore.Enums
 {
     /// <summary>
-    /// attribute StringValue is a type of 'ParameterType' enum (it should be defined) 
+    /// attribute StringValue is a type of 'LolParameterType' enum (it should be defined) 
     /// </summary>
     public enum LolApiPath
     {

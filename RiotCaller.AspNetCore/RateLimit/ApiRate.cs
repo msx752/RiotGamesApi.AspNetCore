@@ -33,10 +33,6 @@ namespace RiotGamesApi.AspNetCore.RateLimit
             }
         }
 
-        //public void Add(string region, LolUrlType type, List<LolApiName> apiNames, List<ApiLimit> limits)
-        //{
-        //    Rates.Add(region, type, apiNames, limits);
-        //}
         /// <summary>
         /// specify new rate-limit for api 
         /// </summary>
@@ -136,14 +132,9 @@ namespace RiotGamesApi.AspNetCore.RateLimit
                 }
                 foreach (var limit in regionLimit.Limits)
                 {
-                    //if (!regionLimit.IsRetryActive)
-                    //{
                     if (limit.Counter < limit.Limit)
                         continue;
-                    //}
-                    //else
-                    //{
-                    //}
+
                     var largestDelay = limit.ChainStartTime.Add(limit.Time) - DateTime.Now;
 
                     Debug.WriteLine(

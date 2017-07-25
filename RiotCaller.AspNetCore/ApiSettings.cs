@@ -39,19 +39,6 @@ namespace RiotGamesApi.AspNetCore
             }
         }
 
-        //public static RateLimitOption RateOptions
-        //{
-        //    get { return ApiOptions.; }
-        //}
-
-        //public static ApiRate RateLimiter
-        //{
-        //    get
-        //    {
-        //        return (ApiRate)ServiceProvider.GetService(typeof(ApiRate));
-        //    }
-        //}
-
         /// <summary>
         /// RiotGamesApi Rate-Limiter 
         /// </summary>

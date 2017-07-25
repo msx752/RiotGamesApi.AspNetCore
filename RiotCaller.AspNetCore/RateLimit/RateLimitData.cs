@@ -68,23 +68,6 @@ namespace RiotGamesApi.AspNetCore.RateLimit
             return newl;
         }
 
-        //public void AddXAppRateLimit(TimeSpan ts, int limit)
-        //{
-        //    int index = XAppRateLimit.FindIndex(p => p.Time == ts && p.LimitType == RateLimitType.AppRate);
-        //    if (index != -1)
-        //        XAppRateLimit.RemoveAt(index);
-
-        //    XAppRateLimit.Add(new ApiLimit(ts, limit, RateLimitType.AppRate));
-        //}
-        //public void AddXMethodRateLimit(TimeSpan ts, int limit)
-        //{
-        //    int index = XMethodRateLimit.FindIndex(p => p.Time == ts && p.LimitType == RateLimitType.MethodRate);
-        //    if (index != -1)
-        //        XMethodRateLimit.RemoveAt(index);
-
-        //    XMethodRateLimit.Add(new ApiLimit(ts, limit, RateLimitType.MethodRate));
-        //}
-
         public void SetMatchApiXMethodRateLimit(TimeSpan ts, int limit)
         {
             MatchList_XMethodRateLimit = new ApiLimit(ts, limit, RateLimitType.MethodRate);

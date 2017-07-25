@@ -2,6 +2,9 @@
 
 namespace RiotGamesApi.AspNetCore.Enums
 {
+    /// <summary>
+    /// name of Api method 
+    /// </summary>
     public enum LolApiMethodName
     {
         [StringValue("champion-masteries")]
