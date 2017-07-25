@@ -4,10 +4,13 @@ using System.Text;
 
 namespace RiotGamesApi.AspNetCore.Cache
 {
+    /// <summary>
+    /// default of ApiCaching is disabled 
+    /// </summary>
     public class CacheOption
     {
         /// <summary>
-        /// default false 
+        /// default value: false 
         /// </summary>
         public bool EnableStaticApiCaching { get; set; } = false;
 

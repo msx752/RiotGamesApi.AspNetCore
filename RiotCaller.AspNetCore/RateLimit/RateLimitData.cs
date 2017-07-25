@@ -17,6 +17,10 @@ namespace RiotGamesApi.AspNetCore.RateLimit
 
         private List<ApiLimit> XMethodRateLimit { get; } = new List<ApiLimit>();
 
+        /// <summary>
+        /// </summary>
+        /// <param name="limits">
+        /// </param>
         public void AddXAppRateLimits(Dictionary<TimeSpan, int> limits)
         {
             foreach (var li in limits)

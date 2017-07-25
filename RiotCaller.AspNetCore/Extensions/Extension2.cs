@@ -36,17 +36,53 @@ namespace RiotGamesApi.AspNetCore.Extensions
 {
     public static class Extension2
     {
+        /// <summary>
+        /// necessary for using LeagueOfLegendsApi 
+        /// </summary>
+        /// <param name="services">
+        /// </param>
+        /// <param name="riotApiKey">
+        /// RiotGames DeveloperKey or ProductionKey 
+        /// </param>
         public static void AddLeagueOfLegendsApi(this IServiceCollection services, string riotApiKey)
         {
             AddLeagueOfLegendsApi(services, riotApiKey, null);
         }
 
+        /// <summary>
+        /// necessary for using LeagueOfLegendsApi 
+        /// </summary>
+        /// <param name="services">
+        /// </param>
+        /// <param name="riotApiKey">
+        /// RiotGames DeveloperKey or ProductionKey 
+        /// </param>
+        /// <param name="cacheOption">
+        /// custom api caching options (default: ApiCaching is NOT USED ) 
+        /// </param>
         public static void AddLeagueOfLegendsApi(this IServiceCollection services, string riotApiKey,
             Func<CacheOption, CacheOption> cacheOption = null)
         {
             AddLeagueOfLegendsApi(services, riotApiKey, cacheOption, null);
         }
 
+        /// <summary>
+        /// necessary for using LeagueOfLegendsApi 
+        /// </summary>
+        /// <param name="services">
+        /// </param>
+        /// <param name="riotApiKey">
+        /// RiotGames DeveloperKey or ProductionKey 
+        /// </param>
+        /// <param name="cacheOption">
+        /// [overrides all default values] custom api caching options (default: ApiCaching is NOT
+        /// USED )
+        /// </param>
+        /// <param name="rateLimitOption2">
+        /// [overrides all default values] custom rate limit handling options (default: rate-limiting
+        /// is USED) default X-App-Rate-Limit: 100:120,20:1, default X-Method-Rate-Limit:
+        /// 20000:10,1200000:600, default Mathlists X-Method-Rate-Limit: 500:10
+        /// </param>
         public static void AddLeagueOfLegendsApi(this IServiceCollection services, string riotApiKey,
             Func<CacheOption, CacheOption> cacheOption = null,
             Func<RateLimitData, RateLimitData> rateLimitOption2 = null)
@@ -296,6 +332,13 @@ namespace RiotGamesApi.AspNetCore.Extensions
             services.AddSingleton<ApiRate>(new ApiRate());
         }
 
+        /// <summary>
+        /// necessary for using RiotGamesApi wrapper 
+        /// </summary>
+        /// <param name="app">
+        /// </param>
+        /// <returns>
+        /// </returns>
         public static IApplicationBuilder UseRiotGamesApi(this IApplicationBuilder app)
         {
             var sProvider = app.ApplicationServices;
