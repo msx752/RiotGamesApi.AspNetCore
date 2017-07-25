@@ -3,6 +3,9 @@ using System;
 
 namespace RiotGamesApi.AspNetCore.Attributes
 {
+    /// <summary>
+    /// type of request url (static,nonstatic,status or tournament) 
+    /// </summary>
     [AttributeUsage(AttributeTargets.Field, AllowMultiple = false)]
     public class UrlTypeAttribute : Attribute
     {

@@ -16,6 +16,11 @@ using RiotGamesApi.AspNetCore.RiotApi.TournamentEndPoints;
 
 namespace RiotGamesApi.AspNetCore.Models
 {
+    /// <summary>
+    /// fluent api requesting 
+    /// </summary>
+    /// <typeparam name="T">
+    /// </typeparam>
     internal class LolApiRequest<T> :
      /*   IRSelectApi<T>,*/ IFor<T>, IAddParameter<T>, IBuild<T>, IRequestMethod<T>, IProperty<T> where T : new()
     {

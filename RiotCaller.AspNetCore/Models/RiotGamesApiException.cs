@@ -4,6 +4,9 @@ using System.Text;
 
 namespace RiotGamesApi.AspNetCore.Models
 {
+    /// <summary>
+    /// RiotGamesApi custom Exception 
+    /// </summary>
     public class RiotGamesApiException : Exception
     {
         public RiotGamesApiException()

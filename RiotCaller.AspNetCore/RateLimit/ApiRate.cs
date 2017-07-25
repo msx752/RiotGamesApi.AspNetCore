@@ -9,6 +9,9 @@ using RiotGamesApi.AspNetCore.RateLimit.Property;
 
 namespace RiotGamesApi.AspNetCore.RateLimit
 {
+    /// <summary>
+    /// RiotGamesApi special RateLimiter 
+    /// </summary>
     public class ApiRate
     {
         private MyRateLimit _rates = new MyRateLimit();
@@ -34,7 +37,16 @@ namespace RiotGamesApi.AspNetCore.RateLimit
         //{
         //    Rates.Add(region, type, apiNames, limits);
         //}
-
+        /// <summary>
+        /// specify new rate-limit for api 
+        /// </summary>
+        /// <param name="region">
+        /// </param>
+        /// <param name="type">
+        /// </param>
+        /// <param name="rla">
+        /// pre-defined when web-server starts 
+        /// </param>
         public void Add(string region, LolUrlType type, RLolApi rla)
         {
             Rates.Add(region, type, rla);
@@ -50,6 +62,11 @@ namespace RiotGamesApi.AspNetCore.RateLimit
             return Rates.Find(platform, type, apiName);
         }
 
+        /// <summary>
+        /// rate limit handler 
+        /// </summary>
+        /// <param name="prop">
+        /// </param>
         public void Handle(RateLimitProperties prop)
         {
             if (ApiSettings.ApiOptions.RateLimitOptions.DisableLimiting == false)
@@ -60,11 +77,31 @@ namespace RiotGamesApi.AspNetCore.RateLimit
             }
         }
 
+        /// <summary>
+        /// get data from Retry-After 
+        /// </summary>
+        /// <param name="prop">
+        /// </param>
+        /// <param name="limitType">
+        /// </param>
+        /// <param name="retryAfterSeconds">
+        /// value of Retry-After 
+        /// </param>
         public void SetRetryTime(RateLimitProperties prop, RateLimitType limitType, int retryAfterSeconds)
         {
             SetRetryTime(prop.Platform, prop.UrlType, prop.ApiName, limitType, retryAfterSeconds);
         }
 
+        /// <summary>
+        /// get data from Retry-After 
+        /// </summary>
+        /// <param name="prop">
+        /// </param>
+        /// <param name="limitType">
+        /// </param>
+        /// <param name="retryAfterSeconds">
+        /// value of Retry-After 
+        /// </param>
         public void SetRetryTime(string region, LolUrlType type, LolApiName name, RateLimitType limitType, int retryAfterSeconds)
         {
             RLolApiName regionLimit = Rates.Find(region, type, name);
@@ -75,6 +112,11 @@ namespace RiotGamesApi.AspNetCore.RateLimit
             regionLimit.RetryAfter = DateTime.Now.AddSeconds(retryAfterSeconds);
         }
 
+        /// <summary>
+        /// rate-limit main function 
+        /// </summary>
+        /// <param name="prop">
+        /// </param>
         private void Wait(RateLimitProperties prop)
         {
             TimeSpan currentDelay = TimeSpan.Zero;

@@ -7,7 +7,7 @@ namespace RiotGamesApi.AspNetCore.RateLimit
     public class RateLimitData
     {
         /// <summary>
-        /// default value: false 
+        /// disable rate-limiter (default: false) 
         /// </summary>
         public bool DisableLimiting { get; set; } = false;
 

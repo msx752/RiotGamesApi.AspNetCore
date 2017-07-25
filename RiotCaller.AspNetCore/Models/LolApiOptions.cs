@@ -7,6 +7,9 @@ using RiotGamesApi.AspNetCore.RateLimit;
 
 namespace RiotGamesApi.AspNetCore.Models
 {
+    /// <summary>
+    /// global RiotGamesApi Options 
+    /// </summary>
     public class LolApiOptions : IApiOption
     {
         private string _url = "";
@@ -17,8 +20,14 @@ namespace RiotGamesApi.AspNetCore.Models
             RateLimitOptions = new RateLimitOption();
         }
 
+        /// <summary>
+        /// Rate-Limiting options 
+        /// </summary>
         public RateLimitOption RateLimitOptions { get; internal set; }
 
+        /// <summary>
+        /// Api Caching options 
+        /// </summary>
         public CacheOption CacheOptions { get; set; }
 
         public string NonStaticUrl { get { return $"{Url}/lol"; }/* set { _nonStaticUrl = value; }*/ }
@@ -29,6 +38,9 @@ namespace RiotGamesApi.AspNetCore.Models
         public string TournamentUrl { get { return $"{Url}/lol"; } }
         public string StatusUrl { get { return $"{Url}/lol"; } }
 
+        /// <summary>
+        /// main api request url 
+        /// </summary>
         public string Url { get { return _url; } set { _url = value; } }
 
         //private string _staticUrl;

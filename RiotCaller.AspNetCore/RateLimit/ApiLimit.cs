@@ -3,6 +3,9 @@ using System;
 
 namespace RiotGamesApi.AspNetCore.RateLimit
 {
+    /// <summary>
+    /// specified rate limit 
+    /// </summary>
     public class ApiLimit
     {
         //private object _lock = new object();
@@ -10,6 +13,18 @@ namespace RiotGamesApi.AspNetCore.RateLimit
 
         private DateTime _chainStartTime;
 
+        /// <summary>
+        /// specified rate limit 
+        /// </summary>
+        /// <param name="ts">
+        /// timer interval 
+        /// </param>
+        /// <param name="limit">
+        /// max. limit 
+        /// </param>
+        /// <param name="limitType">
+        /// RiotGames X-Rate-Limit-Type 
+        /// </param>
         public ApiLimit(TimeSpan ts, int limit, RateLimitType limitType)
         {
             Limit = limit;
@@ -17,6 +32,9 @@ namespace RiotGamesApi.AspNetCore.RateLimit
             LimitType = limitType;
         }
 
+        /// <summary>
+        /// request start time 
+        /// </summary>
         public DateTime ChainStartTime
         {
             get
@@ -31,6 +49,9 @@ namespace RiotGamesApi.AspNetCore.RateLimit
             }
         }
 
+        /// <summary>
+        /// consumed limit 
+        /// </summary>
         public int Counter
         {
             get
@@ -45,8 +66,19 @@ namespace RiotGamesApi.AspNetCore.RateLimit
             }
         }
 
+        /// <summary>
+        /// max. limit 
+        /// </summary>
         public int Limit { get; private set; }
+
+        /// <summary>
+        /// RiotGames X-Rate-Limit-Type 
+        /// </summary>
         public RateLimitType LimitType { get; private set; }
+
+        /// <summary>
+        /// time interval 
+        /// </summary>
         public TimeSpan Time { get; private set; }
 
         public override string ToString()
