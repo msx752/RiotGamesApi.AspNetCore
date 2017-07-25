@@ -39,32 +39,34 @@ namespace RiotGamesApi.Web
             services.AddMvc();
 
             //necessary
-            services.AddLeagueOfLegendsApi("RGAPI-0-5eeb-40f3-acca-1ffb72b93f1c",
-            (cache) =>
-            {
-                //overrides default values
-                cache.EnableStaticApiCaching = true;
-                cache.StaticApiCacheExpiry = new TimeSpan(1, 0, 0);
-                return cache;
-            },
-            (limits) =>
-            {
-                //overrides default values
-                limits.AddXAppRateLimits(new Dictionary<TimeSpan, int>()
-                {
-                    {new TimeSpan(0, 2, 0), 100 },
-                    {new TimeSpan(0, 0, 1), 20 }
-                });
+            services.AddLeagueOfLegendsApi("RGAPI-0-66f0-42ca-9034-61de55e3a3b7"
+             ,
+          (cache) =>
+          {
+              //overrides default values
+              cache.EnableStaticApiCaching = true;
+              cache.StaticApiCacheExpiry = new TimeSpan(1, 0, 0);
+              return cache;
+          },
+          (limits) =>
+          {
+              //overrides default values
+              limits.DisableLimiting = false;
+              limits.AddXAppRateLimits(new Dictionary<TimeSpan, int>()
+              {
+                  {new TimeSpan(0, 2, 0), 100 },
+                  {new TimeSpan(0, 0, 1), 20 }
+              });
 
-                limits.AddXMethodRateLimits(new Dictionary<TimeSpan, int>()
-                {
-                    {new TimeSpan(0, 10, 0), 1200000 },
-                    {new TimeSpan(0, 0, 10), 20000 }
-                });
+              limits.AddXMethodRateLimits(new Dictionary<TimeSpan, int>()
+              {
+                  {new TimeSpan(0, 10, 0), 1200000 },
+                  {new TimeSpan(0, 0, 10), 20000 }
+              });
 
-                limits.SetMatchApiXMethodRateLimit(new TimeSpan(0, 0, 10), 500);
-                return limits;
-            });
+              limits.SetMatchApiXMethodRateLimit(new TimeSpan(0, 0, 10), 500);
+              return limits;
+          });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
