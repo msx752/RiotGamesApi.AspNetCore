@@ -38,7 +38,7 @@ namespace RiotGamesApi.AspNetCore.RateLimit.Property
         {
             var rut = new RUrlType();
             rut.Add(type, rla);
-            Regions.TryAdd(region, rut);
+            Add(region, rut);
         }
 
         public void Add(string region, RUrlType rut)

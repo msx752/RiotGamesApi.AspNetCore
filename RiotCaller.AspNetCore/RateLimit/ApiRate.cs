@@ -4,13 +4,14 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using RiotGamesApi.AspNetCore.Models;
 using RiotGamesApi.AspNetCore.RateLimit.Property;
 
 namespace RiotGamesApi.AspNetCore.RateLimit
 {
     public class ApiRate
     {
-        private readonly MyRateLimit _rates = new MyRateLimit();
+        private MyRateLimit _rates = new MyRateLimit();
 
         //private object _lock = new object();
         private object _lock2 = new object();
@@ -22,11 +23,21 @@ namespace RiotGamesApi.AspNetCore.RateLimit
                 lock (_lock2)
                     return _rates;
             }
+            set
+            {
+                lock (_lock2)
+                    _rates = value;
+            }
         }
 
-        public void Add(string region, LolUrlType type, List<LolApiName> apiNames, List<ApiLimit> limits)
+        //public void Add(string region, LolUrlType type, List<LolApiName> apiNames, List<ApiLimit> limits)
+        //{
+        //    Rates.Add(region, type, apiNames, limits);
+        //}
+
+        public void Add(string region, LolUrlType type, RLolApi rla)
         {
-            Rates.Add(region, type, apiNames, limits);
+            Rates.Add(region, type, rla);
         }
 
         public RLolApiName FindRate(RateLimitProperties prop)
@@ -57,6 +68,10 @@ namespace RiotGamesApi.AspNetCore.RateLimit
         public void SetRetryTime(string region, LolUrlType type, LolApiName name, RateLimitType limitType, int retryAfterSeconds)
         {
             RLolApiName regionLimit = Rates.Find(region, type, name);
+            if (regionLimit == null)
+            {
+                throw new RiotGamesApiException($"Undefined {limitType} limit type for region:{region},type:{type},name:{name}");
+            }
             regionLimit.RetryAfter = DateTime.Now.AddSeconds(retryAfterSeconds);
         }
 
@@ -67,18 +82,26 @@ namespace RiotGamesApi.AspNetCore.RateLimit
             if (regionLimit == null)
             {
                 var snc = ApiSettings.ApiOptions.RateLimitOptions.All[prop.UrlType];
-                Rates.Add(prop.Platform, prop.UrlType, snc.DeepClone());
+                Add(prop.Platform, prop.UrlType, snc);
                 regionLimit = Rates.Find(prop.Platform, prop.UrlType, prop.ApiName);
             }
             //lock (_lock)
             {
                 if (regionLimit.IsRetryActive)
+                {
                     currentDelay = (regionLimit.RetryAfter - DateTime.Now);
+                    Debug.WriteLine($"UsedRateLimitType: {regionLimit.UsedRateLimitType}");
+                }
                 foreach (var limit in regionLimit.Limits)
                 {
+                    //if (!regionLimit.IsRetryActive)
+                    //{
                     if (limit.Counter < limit.Limit)
                         continue;
-
+                    //}
+                    //else
+                    //{
+                    //}
                     var largestDelay = limit.ChainStartTime.Add(limit.Time) - DateTime.Now;
 
                     Debug.WriteLine(
