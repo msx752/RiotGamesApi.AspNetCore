@@ -82,7 +82,7 @@ namespace RiotGamesApi.AspNetCore.RateLimit
             if (regionLimit == null)
             {
                 var snc = ApiSettings.ApiOptions.RateLimitOptions.All[prop.UrlType];
-                Add(prop.Platform, prop.UrlType, snc);
+                Add(prop.Platform, prop.UrlType, snc.DeepClone());
                 regionLimit = Rates.Find(prop.Platform, prop.UrlType, prop.ApiName);
             }
             //lock (_lock)
