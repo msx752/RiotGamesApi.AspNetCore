@@ -1,23 +1,41 @@
-﻿using System;
-using System.Collections.Concurrent;
+﻿using RiotGamesApi.AspNetCore.Enums;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Force.DeepCloner;
-using RiotGamesApi.AspNetCore.Enums;
 
 namespace RiotGamesApi.AspNetCore.RateLimit
 {
     public class RateLimitData
     {
-        public List<ApiLimit> MergeNormal()
+        /// <summary>
+        /// default false 
+        /// </summary>
+        public bool DisableLimiting { get; set; } = false;
+
+        private ApiLimit MatchList_XMethodRateLimit { get; set; }
+
+        private List<ApiLimit> XAppRateLimit { get; } = new List<ApiLimit>();
+
+        private List<ApiLimit> XMethodRateLimit { get; } = new List<ApiLimit>();
+
+        public void AddXAppRateLimits(Dictionary<TimeSpan, int> limits)
         {
-            List<ApiLimit> newl = new List<ApiLimit>();
+            foreach (var li in limits)
+            {
+                XAppRateLimit.Add(new ApiLimit(li.Key, li.Value));
+            }
+        }
 
-            newl.AddRange(GetXAppRateLimit());
-            newl.AddRange(GetXMethodRateLimit());
+        public void AddXMethodRateLimits(Dictionary<TimeSpan, int> limits)
+        {
+            foreach (var li in limits)
+            {
+                XMethodRateLimit.Add(new ApiLimit(li.Key, li.Value));
+            }
+        }
 
-            return newl;
+        public ApiLimit GetMatchList_XMethodRateLimit()
+        {
+            return MatchList_XMethodRateLimit;
         }
 
         public List<ApiLimit> GetXAppRateLimit()
@@ -30,9 +48,14 @@ namespace RiotGamesApi.AspNetCore.RateLimit
             return XMethodRateLimit;
         }
 
-        public ApiLimit GetMatchList_XMethodRateLimit()
+        public List<ApiLimit> MergeNormal()
         {
-            return MatchList_XMethodRateLimit;
+            List<ApiLimit> newl = new List<ApiLimit>();
+
+            newl.AddRange(GetXAppRateLimit());
+            newl.AddRange(GetXMethodRateLimit());
+
+            return newl;
         }
 
         public List<ApiLimit> MergeWithMatch()
@@ -45,25 +68,6 @@ namespace RiotGamesApi.AspNetCore.RateLimit
             return newl;
         }
 
-        /// <summary>
-        /// default false 
-        /// </summary>
-        public bool DisableLimiting { get; set; } = false;
-
-        private List<ApiLimit> XAppRateLimit { get; } = new List<ApiLimit>();
-
-        private List<ApiLimit> XMethodRateLimit { get; } = new List<ApiLimit>();
-
-        private ApiLimit MatchList_XMethodRateLimit { get; set; }
-
-        public void AddXAppRateLimits(Dictionary<TimeSpan, int> limits)
-        {
-            foreach (var li in limits)
-            {
-                XAppRateLimit.Add(new ApiLimit(li.Key, li.Value));
-            }
-        }
-
         //public void AddXAppRateLimit(TimeSpan ts, int limit)
         //{
         //    int index = XAppRateLimit.FindIndex(p => p.Time == ts && p.LimitType == RateLimitType.AppRate);
@@ -72,15 +76,6 @@ namespace RiotGamesApi.AspNetCore.RateLimit
 
         //    XAppRateLimit.Add(new ApiLimit(ts, limit, RateLimitType.AppRate));
         //}
-
-        public void AddXMethodRateLimits(Dictionary<TimeSpan, int> limits)
-        {
-            foreach (var li in limits)
-            {
-                XMethodRateLimit.Add(new ApiLimit(li.Key, li.Value));
-            }
-        }
-
         //public void AddXMethodRateLimit(TimeSpan ts, int limit)
         //{
         //    int index = XMethodRateLimit.FindIndex(p => p.Time == ts && p.LimitType == RateLimitType.MethodRate);

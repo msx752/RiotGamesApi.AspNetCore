@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Concurrent;
+﻿using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using RiotGamesApi.AspNetCore.Enums;
+using RiotGamesApi.AspNetCore.RateLimit.Property;
 
-namespace RiotGamesApi.AspNetCore.RateLimit
+namespace RiotGamesApi.AspNetCore.RateLimit.Builder
 {
     public class RateLimitBuilder
     {

@@ -1,15 +1,17 @@
-﻿using System;
+﻿using Force.DeepCloner;
+using RiotGamesApi.AspNetCore.Enums;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Text;
 using System.Threading.Tasks;
-using Force.DeepCloner;
-using RiotGamesApi.AspNetCore.Enums;
+using RiotGamesApi.AspNetCore.RateLimit.Property;
 
 namespace RiotGamesApi.AspNetCore.RateLimit
 {
     public class ApiRate
     {
+        private readonly MyRateLimit _rates = new MyRateLimit();
+        private object _lock = new object();
         private object _lock2 = new object();
 
         public MyRateLimit Rates
@@ -18,19 +20,6 @@ namespace RiotGamesApi.AspNetCore.RateLimit
             {
                 lock (_lock2)
                     return _rates;
-            }
-        }
-
-        private object _lock = new object();
-        private readonly MyRateLimit _rates = new MyRateLimit();
-
-        public void Handle(RateLimitProperties prop)
-        {
-            if (ApiSettings.ApiOptions.RateLimitOptions.DisableLimiting == false)
-            {
-                //DateTime start = DateTime.Now;
-                Wait(prop);
-                //Debug.WriteLine($"{(DateTime.Now - start).Milliseconds} ms elapsed.");
             }
         }
 
@@ -47,6 +36,16 @@ namespace RiotGamesApi.AspNetCore.RateLimit
         public RLolApiName FindRate(string platform, LolUrlType type, LolApiName apiName)
         {
             return Rates.Find(platform, type, apiName);
+        }
+
+        public void Handle(RateLimitProperties prop)
+        {
+            if (ApiSettings.ApiOptions.RateLimitOptions.DisableLimiting == false)
+            {
+                //DateTime start = DateTime.Now;
+                Wait(prop);
+                //Debug.WriteLine($"{(DateTime.Now - start).Milliseconds} ms elapsed.");
+            }
         }
 
         public void SetRetryTime(RateLimitProperties prop, int reTryAfterSeconds)

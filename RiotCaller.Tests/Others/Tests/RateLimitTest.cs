@@ -1,10 +1,10 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using RiotGamesApi.AspNetCore;
-using RiotGamesApi.AspNetCore.Enums;
+﻿using RiotGamesApi.AspNetCore.Enums;
 using RiotGamesApi.AspNetCore.RateLimit;
 using RiotGamesApi.AspNetCore.RiotApi.Enums;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using RiotGamesApi.AspNetCore.RateLimit.Property;
 using Xunit;
 
 namespace RiotGamesApi.Tests.Others.Tests
