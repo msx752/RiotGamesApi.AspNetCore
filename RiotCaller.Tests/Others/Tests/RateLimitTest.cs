@@ -12,11 +12,12 @@ namespace RiotGamesApi.Tests.Others.Tests
     public class RateLimitTest : BaseTestClass
     {
         [Fact]
-        public void RespecToRegionLimits()
+        public void RespecToRegionLimits()//run with DebugMode
         {
             for (int i = 0; i < 1000; i++)
             {
-                var snc = LolApi.NonStaticApi.Summonerv3.GetSummonersOnlySummonerId(ServicePlatform.TR1, SummonerId);
+                LolApi.NonStaticApi.Summonerv3
+                    .GetSummonersOnlySummonerId(ServicePlatform.TR1, SummonerId);
             }
         }
 
