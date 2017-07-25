@@ -17,8 +17,8 @@
 	- Sync/Async 
 	- Caching (default: false)
 	- RateLimiting[respects by region] (default: Active)
-		- X-App-Rate is supported
-		- X-Method-App-Rate is supported
+		- X-App-Rate-Limit is supported
+		- X-Method-Rate-Limit is supported
 		- Find current ratelimit for any regions and any apiTypes
 		- ReTryAfterSeconds feature
 		- Enable/Disable feature
