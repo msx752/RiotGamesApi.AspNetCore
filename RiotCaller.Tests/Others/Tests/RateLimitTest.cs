@@ -12,7 +12,7 @@ namespace RiotGamesApi.Tests.Others.Tests
     public class RateLimitTest : BaseTestClass
     {
         [Fact]
-        public void RespecToRegionLimits()//run with DebugMode
+        public void DebugRespecToRegionLimits()//run with DebugMode
         {
             for (int i = 0; i < 1000; i++)
             {

@@ -219,9 +219,10 @@ namespace RiotGamesApi.AspNetCore.Extensions
                         .GetMethod(LolApiMethodName.MasterLeagues, typeof(LeagueListDTO), LolApiPath.ByQueue)
                         .GetMethod(LolApiMethodName.Positions, typeof(List<LeaguePositionDTO>), LolApiPath.BySummoner);
 
-                    //version testing
-                    //apis.AddApi(ApiName.League, 3.1)
-                    //    .SubApi(ApiMiddleName.ChallengerLeagues, typeof(LeagueListDTO), ApiParam.ByQueue);
+                    // "version 3.1 testing (NOT WORKS only for displaying)
+                    apis.AddApi(LolApiName.League, 3.1)
+                        .GetMethod(LolApiMethodName.ChallengerLeagues, typeof(RiotApi.v31.Empty), LolApiPath.ByQueue);
+                    //
 
                     apis.AddApi(LolApiName.Match, 3.0)
                         .GetMethod(LolApiMethodName.Matches, typeof(MatchDto), LolApiPath.OnlyMatchId)
