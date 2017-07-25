@@ -41,7 +41,7 @@
 
 	- Dependency Injections
 		 - [RiotGamesApi.AspNetCore.Api CLASS] >> Sync/Async, static/non-static/status/tournament apis (auto generated class)
-		 - [RiotGamesApi.AspNetCore.RateLimit.ApiRate CLASS] >> api rate limiter for non-static-api/tournament-api (default: 20 requests in 1 sec, 200 requests in 2 minutes)
+		 - [RiotGamesApi.AspNetCore.RateLimit.ApiRate CLASS] >> api rate limiter for non-static-api/tournament-api (default: 20 requests in 1 sec, 100 requests in 2 minutes)
 		 - [RiotGamesApi.AspNetCore.Interfaces.IApiCache INTERFACE] >> caching static-api (default: false)
 
 # Issues
