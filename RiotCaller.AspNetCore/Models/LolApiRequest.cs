@@ -319,7 +319,7 @@ namespace RiotGamesApi.AspNetCore.Models
 
         public IRequestMethod<T> UseCache(bool useCache = false)
         {
-            if (ApiSettings.ApiOptions.CacheOptions.EnableStaticApiCaching && this.UrlType == LolUrlType.Static)
+            if (ApiSettings.ApiOptions.CacheOptions.EnableStaticApiCaching)
                 Caching = useCache;
             else
             {
