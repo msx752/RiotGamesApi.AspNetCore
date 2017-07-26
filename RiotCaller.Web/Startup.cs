@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using RiotGamesApi.AspNetCore.Enums;
 using RiotGamesApi.AspNetCore.Extensions;
 using RiotGamesApi.AspNetCore.RateLimit;
 
@@ -46,6 +47,12 @@ namespace RiotGamesApi.Web
               //overrides default values
               cache.EnableStaticApiCaching = true;
               cache.StaticApiCacheExpiry = new TimeSpan(1, 0, 0);
+
+              //working for any api except static-api
+              cache.EnableCustomApiCaching = true;
+              cache.AddCacheRule(LolUrlType.NonStatic, LolApiName.Summoner, new TimeSpan(0, 0, 10));
+              //
+
               return cache;
           },
           (limits) =>

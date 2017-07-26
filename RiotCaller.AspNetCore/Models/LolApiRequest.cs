@@ -319,17 +319,28 @@ namespace RiotGamesApi.AspNetCore.Models
 
         public IRequestMethod<T> UseCache(bool useCache = false)
         {
-            if (ApiSettings.ApiOptions.CacheOptions.EnableStaticApiCaching)
+            if (ApiSettings.ApiOptions.CacheOptions.EnableStaticApiCaching && UrlType == LolUrlType.Static)
                 Caching = useCache;
             else
-            {
                 Caching = false;
-            }
+
             return this;
         }
 
         private bool CacheControl()
         {
+            if (UrlType != LolUrlType.Static)//custom api rules
+            {
+                if (ApiSettings.ApiOptions.CacheOptions.EnableStaticApiCaching)
+                {
+                    var found = ApiSettings.ApiOptions.CacheOptions.FindCacheRule(UrlType, ApiList.ApiName);
+                    if (found != null)
+                        Caching = true;
+                    else
+                        Caching = false;
+                }
+            }
+
             if (Caching)
             {
                 T data;

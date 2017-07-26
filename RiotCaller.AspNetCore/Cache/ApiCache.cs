@@ -35,15 +35,16 @@ namespace RiotGamesApi.AspNetCore.Cache
         {
             Remove<T>(data);
             var cacheEntryOptions = new MemoryCacheEntryOptions();
-            //if (data.UrlType == LolUrlType.Static)
+            if (data.UrlType == LolUrlType.Static)
             {
                 cacheEntryOptions.SlidingExpiration = CacheOption.StaticApiCacheExpiry;
             }
-            //else
+            else
             {
+                var selectRule = CacheOption.FindCacheRule(data.UrlType, data.ApiList.ApiName);
+                cacheEntryOptions.SlidingExpiration = selectRule.ExpiryTime;
                 // throw new RiotGamesApiException("cache works with static api for now!");
             }
-
             MemoryCache.Set(data.CacheKey, data.RiotResult.Result, cacheEntryOptions);
         }
 

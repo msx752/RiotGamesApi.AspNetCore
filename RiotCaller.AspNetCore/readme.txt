@@ -1,12 +1,12 @@
 
-# Configuration Startup.cs
-- add reference 'using RiotGamesApi.AspNetCore.Extensions;' To Startup.cs
-- configure 'ConfigureServices' method as mentioned in wiki
+# API Wrapper Configuration
+- add reference 'using RiotGamesApi.AspNetCore.Extensions;' to begining of the Startup.cs
+- add 'services.AddLeagueOfLegendsApi("RiotApiKey");' to end of the ConfigureServices() method which contains in Startup.cs
 - determine your RiotApiKey in Startup.cs
-- configure 'Configure' method as mentioned in wiki
-- prefers to using with services [DI]
+- add ' app.UseRiotGamesApi();' to end of the Configure() method which contains in Startup.cs
+- default settings Caching:disable, RateLimiting:enable, 
 
-- IMPORTANT NOTICE: web-server setting must be "full-trust" for System.Reflection
+- IMPORTANT NOTICE: web-server setting must be "full-trust" for accessing to 'System.Reflection' when you published the web-site-project
 
 # RiotGamesApi.AspNetCore Wiki
 	- https://github.com/msx752/RiotGamesApi.AspNetCore/wiki
@@ -15,7 +15,9 @@
 
 	- V3-api
 	- Sync/Async 
-	- Caching (default: false)
+	- Caching
+		- StaticApiCaching is supported (default: false)
+	    - CustomApiCaching is supported (for type of non-static api i.e. SummonerProfile) (default: false)
 	- RateLimiting[more reliable for respects to regional limits] (default: Active)
 		- reads response headers (X-Rate-Limit-Type and Retry-After)
 		- supports special limits for any api path
@@ -27,6 +29,7 @@
 		- Find current ratelimit for any regions and any apiTypes
 		- ReTryAfterSeconds feature
 		- Enabling/Disabling feature
+		- [Thread-Safety is separated for each region (notice for developers)]
 	- TournamentApi  (there may be a bug)
 	- StaticApi
 	- NonStaticApi
