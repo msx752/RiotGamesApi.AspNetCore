@@ -29,6 +29,16 @@ namespace RiotGamesApi.AspNetCore.RateLimit
             }
         }
 
+        public void ClearXAppRateLimits()
+        {
+            XAppRateLimit.Clear();
+        }
+
+        public void ClearXMethodRateLimits()
+        {
+            XMethodRateLimit.Clear();
+        }
+
         public void AddXMethodRateLimits(Dictionary<TimeSpan, int> limits)
         {
             foreach (var li in limits)
@@ -70,6 +80,11 @@ namespace RiotGamesApi.AspNetCore.RateLimit
             newl.Add(GetMatchList_XMethodRateLimit());
 
             return newl;
+        }
+
+        public void ClearMatchApiXMethodRateLimit()
+        {
+            MatchList_XMethodRateLimit = new ApiLimit(new TimeSpan(0), 9, RateLimitType.MethodRate);
         }
 
         public void SetMatchApiXMethodRateLimit(TimeSpan ts, int limit)

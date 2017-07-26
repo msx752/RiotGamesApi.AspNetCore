@@ -88,6 +88,49 @@ namespace RiotGamesApi.AspNetCore.Extensions
             Func<RateLimitData, RateLimitData> rateLimitOption2 = null)
         {
             //can convertable to json
+            var riotGamesApiBuilder = RiotGamesApiBuilder(riotApiKey);
+            var riotGamesApiOption = riotGamesApiBuilder.Build();
+
+            var cOptions = new CacheOption();
+            riotGamesApiOption.CacheOptions = cacheOption != null ? cacheOption(cOptions) : cOptions;
+
+            RateLimitData limits = RateLimitData();//default settings
+            if (rateLimitOption2 != null)
+                limits = rateLimitOption2(limits); //user settings
+
+            RateLimitBuilder rlb = RateLimitBuilder(limits);//default settings
+            riotGamesApiOption.RateLimitOptions.All = rlb.Build();
+            riotGamesApiOption.RateLimitOptions.DisableLimiting = limits.DisableLimiting;
+
+            services.AddSingleton<IApiOption>(riotGamesApiOption);
+            services.AddMemoryCache();
+            services.AddSingleton<IApiCache>(new ApiCache());
+            services.AddSingleton<Api>(new Api());
+            services.AddSingleton<ApiRate>(new ApiRate());
+        }
+
+        private static RateLimitData RateLimitData()
+        {
+            RateLimitData limits = new RateLimitData();
+            limits.DisableLimiting = false;
+            limits.AddXAppRateLimits(new Dictionary<TimeSpan, int>()
+            {
+                {new TimeSpan(0, 2, 0), 100 },
+                {new TimeSpan(0, 0, 1), 20 }
+            });
+
+            limits.AddXMethodRateLimits(new Dictionary<TimeSpan, int>()
+            {
+                {new TimeSpan(0, 10, 0), 1200000 },
+                {new TimeSpan(0, 0, 10), 20000 }
+            });
+
+            limits.SetMatchApiXMethodRateLimit(new TimeSpan(0, 0, 10), 500);
+            return limits;
+        }
+
+        private static IApiBuilder RiotGamesApiBuilder(string riotApiKey)
+        {
             var riotGamesApiBuilder = new RiotGamesApiBuilder()
                 .UseRiotApiKey(riotApiKey)
                 .UseApiUrl("api.riotgames.com")
@@ -266,71 +309,38 @@ namespace RiotGamesApi.AspNetCore.Extensions
 
                     return apis;
                 });
+            return riotGamesApiBuilder;
+        }
 
-            var riotGamesApiOption = riotGamesApiBuilder.Build();
-
-            if (cacheOption != null)
-                riotGamesApiOption.CacheOptions = cacheOption(new CacheOption());//user settings
-            else
-                riotGamesApiOption.CacheOptions = new CacheOption();//default settings
-
-            RateLimitData limits = new RateLimitData();
-            if (rateLimitOption2 != null)
-            {
-                limits = rateLimitOption2(new RateLimitData()); //user settings
-            }
-            else
-            {
-                limits.DisableLimiting = false;
-                limits.AddXAppRateLimits(new Dictionary<TimeSpan, int>()
-                {
-                    {new TimeSpan(0, 2, 0), 100 },
-                    {new TimeSpan(0, 0, 1), 20 }
-                });
-
-                limits.AddXMethodRateLimits(new Dictionary<TimeSpan, int>()
-                {
-                    {new TimeSpan(0, 10, 0), 1200000 },
-                    {new TimeSpan(0, 0, 10), 20000 }
-                });
-
-                limits.SetMatchApiXMethodRateLimit(new TimeSpan(0, 0, 10), 500);
-            }
-
+        private static RateLimitBuilder RateLimitBuilder(RateLimitData limits)
+        {
             RateLimitBuilder rlb = new RateLimitBuilder()
-            .AddRateLimitFor(LolUrlType.Status, new List<LolApiName>()
-            {
-                LolApiName.Status
-            }, limits.GetXMethodRateLimit())
-            .AddRateLimitFor(LolUrlType.Static, new List<LolApiName>()
-            {
-                LolApiName.StaticData
-            }, limits.GetXMethodRateLimit())
-            .AddRateLimitFor(LolUrlType.NonStatic, new List<LolApiName>()
-            {
-                LolApiName.Match
-            }, limits.MergeWithMatch())
-            .AddRateLimitFor(LolUrlType.Tournament, new List<LolApiName>()
+                .AddRateLimitFor(LolUrlType.Status, new List<LolApiName>()
                 {
-                LolApiName.Tournament,
-                LolApiName.TournamentStub
-            }, limits.MergeNormal())
-            .AddRateLimitFor(LolUrlType.NonStatic, new List<LolApiName>()
-            {
-                LolApiName.ChampionMastery,
-                LolApiName.Platform,
-                LolApiName.League,
-                LolApiName.Spectator,
-                LolApiName.Summoner
-            }, limits.MergeNormal());
-
-            riotGamesApiOption.RateLimitOptions.All = rlb.Build();
-            riotGamesApiOption.RateLimitOptions.DisableLimiting = limits.DisableLimiting;
-            services.AddSingleton<IApiOption>(riotGamesApiOption);
-            services.AddMemoryCache();
-            services.AddSingleton<IApiCache>(new ApiCache());
-            services.AddSingleton<Api>(new Api());
-            services.AddSingleton<ApiRate>(new ApiRate());
+                    LolApiName.Status
+                }, limits.GetXMethodRateLimit())
+                .AddRateLimitFor(LolUrlType.Static, new List<LolApiName>()
+                {
+                    LolApiName.StaticData
+                }, limits.GetXMethodRateLimit())
+                .AddRateLimitFor(LolUrlType.NonStatic, new List<LolApiName>()
+                {
+                    LolApiName.Match
+                }, limits.MergeWithMatch())
+                .AddRateLimitFor(LolUrlType.Tournament, new List<LolApiName>()
+                {
+                    LolApiName.Tournament,
+                    LolApiName.TournamentStub
+                }, limits.MergeNormal())
+                .AddRateLimitFor(LolUrlType.NonStatic, new List<LolApiName>()
+                {
+                    LolApiName.ChampionMastery,
+                    LolApiName.Platform,
+                    LolApiName.League,
+                    LolApiName.Spectator,
+                    LolApiName.Summoner
+                }, limits.MergeNormal());
+            return rlb;
         }
 
         /// <summary>
