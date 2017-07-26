@@ -63,6 +63,8 @@ namespace RiotGamesApi.AspNetCore
             }
         }
 
+        private static object _lock = new object();
+
         /// <summary>
         /// .net core controller of memory caching 
         /// </summary>
@@ -70,7 +72,8 @@ namespace RiotGamesApi.AspNetCore
         {
             get
             {
-                return (IMemoryCache)ServiceProvider.GetService(typeof(IMemoryCache));
+                lock (_lock)
+                    return (IMemoryCache)ServiceProvider.GetService(typeof(IMemoryCache));
             }
         }
     }
