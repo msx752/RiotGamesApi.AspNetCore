@@ -11,20 +11,64 @@ namespace RiotGamesApi.AspNetCore.Cache
     /// </summary>
     public class CacheOption
     {
+        private object _lock2 = new object();
+        private List<CustomCacheRule> _customCacheRules = new List<CustomCacheRule>();
+
         /// <summary>
         /// default value: false 
         /// </summary>
-        public bool EnableStaticApiCaching { get; set; } = false;
+        public bool EnableStaticApiCaching
+        {
+            get
+            {
+                lock (_lock2)
+                    return _enableStaticApiCaching;
+            }
+            set
+            {
+                lock (_lock2)
+                    _enableStaticApiCaching = value;
+            }
+        }
 
         /// <summary>
         /// custom api rules for type of non-static api (default value: false) 
         /// </summary>
-        public bool EnableCustomApiCaching { get; set; } = false;
+        public bool EnableCustomApiCaching
+        {
+            get
+            {
+                lock (_lock)
+                    return _enableCustomApiCaching;
+            }
+            set
+            {
+                lock (_lock)
+                    _enableCustomApiCaching = value;
+            }
+        }
 
-        private List<CustomCacheRule> CustomCacheRules { get; } = new List<CustomCacheRule>();
+        private object _lock = new object();
+        private bool _enableCustomApiCaching = false;
+        private bool _enableStaticApiCaching = false;
+        private TimeSpan _staticApiCacheExpiry = new TimeSpan(0, 30, 0);
+
+        private List<CustomCacheRule> CustomCacheRules
+        {
+            get
+            {
+                lock (_lock)
+                    return _customCacheRules;
+            }
+            set
+            {
+                lock (_lock)
+                    _customCacheRules = value;
+            }
+        }
 
         /// <summary>
-        /// add cache rule for non-static api (only calls in Startup.cs) 
+        /// add cache rule for non-static api 
         /// </summary>
         /// <param name="urlType">
         /// api url type 
@@ -43,15 +87,26 @@ namespace RiotGamesApi.AspNetCore.Cache
                     expiryTime = new TimeSpan(1, 0, 0);
 
                 var found = FindCacheRule(urlType, apiName);
-                if (found == null)
-                    CustomCacheRules.Add(new CustomCacheRule(urlType, apiName, expiryTime));
-                else
-                    found.ExpiryTime = expiryTime;
+                if (found != null)
+                    CustomCacheRules.Remove(found);
+                CustomCacheRules.Add(new CustomCacheRule(urlType, apiName, expiryTime));
             }
         }
 
         /// <summary>
-        /// [FOR DEVELOPERS] clears all cache rules (only calls in Startup.cs) 
+        /// removs cache rule 
+        /// </summary>
+        /// <param name="urlType">
+        /// </param>
+        /// <param name="apiName">
+        /// </param>
+        public void RemoveCacheRule(LolUrlType urlType, LolApiName apiName)
+        {
+            CustomCacheRules.RemoveAll(p => p.UrlType == urlType && p.ApiName == apiName);
+        }
+
+        /// <summary>
+        /// clears all cache rules 
         /// </summary>
         public void ClearCacheRules()
         {
@@ -76,6 +131,18 @@ namespace RiotGamesApi.AspNetCore.Cache
         /// <summary>
         /// default expiry time: 30min 
         /// </summary>
-        public TimeSpan StaticApiCacheExpiry { get; set; } = new TimeSpan(0, 30, 0);
+        public TimeSpan StaticApiCacheExpiry
+        {
+            get
+            {
+                lock (_lock2)
+                    return _staticApiCacheExpiry;
+            }
+            set
+            {
+                lock (_lock2)
+                    _staticApiCacheExpiry = value;
+            }
+        }
     }
 }
