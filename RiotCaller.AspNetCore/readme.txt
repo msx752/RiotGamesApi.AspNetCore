@@ -29,7 +29,6 @@
 		- Find current ratelimit for any regions and any apiTypes
 		- ReTryAfterSeconds feature
 		- Enabling/Disabling feature
-		- [Thread-Safety is separated for each region (notice for developers)]
 	- TournamentApi  (there may be a bug)
 	- StaticApi
 	- NonStaticApi
