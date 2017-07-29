@@ -2,10 +2,10 @@
 [![NuGet](https://img.shields.io/nuget/v/RiotGamesApi.AspNetCore.svg?style=flat-square)](https://www.nuget.org/packages/RiotGamesApi.AspNetCore)
 [![Build status](https://ci.appveyor.com/api/projects/status/nli0nlk8trqo57qg)](https://ci.appveyor.com/project/msx752/riotgamesapi-aspnetcore)
 
-# RiotGamesApi.AspNetCore
+## RiotGamesApi.AspNetCore
 League Of Legends v3 API Wrapper for .Net Core 1.1
 
-# Step by Step Configuration
+## Step by Step Configuration
 - add reference `using RiotGamesApi.AspNetCore.Extensions;` to begining of the Startup.cs
 - add `services.AddLeagueOfLegendsApi("RiotApiKey");` to end of the `ConfigureServices()` method which contains in Startup.cs
 - determine your **RiotApiKey** in Startup.cs
@@ -90,7 +90,7 @@ League Of Legends v3 API Wrapper for .Net Core 1.1
 	app.UseRiotGamesApi();//at the end
 	}
 	```
-# Usage
+## Usage
 - **Using with service-layer**
 
 ```c#
@@ -150,7 +150,7 @@ public class HomeController : Controller
 # Global Variables
 - `RiotGamesApi.AspNetCore.ApiSettings` **STATIC-CLASS** >> All Dependency-Injection features in here
 
-# Service Layer
+## Service Layer
 - compatible with using on Controller
 
 - Dependency Injections
@@ -159,11 +159,11 @@ public class HomeController : Controller
   - `RiotGamesApi.AspNetCore.Interfaces.IApiCache` **INTERFACE** >> caching static-api (**default: false**)
 
 
-# More Information
+## More Information
 - [Examples](https://github.com/msx752/RiotGamesApi.AspNetCore/blob/master/RiotCaller.Tests/RiotGamesApis)
 - [Sample Project](https://github.com/msx752/RiotGamesApi.AspNetCore/blob/master/RiotCaller.Web)
 
-# Features
+## Features
 - v3-api (*and upper*)
 - Sync/Async 
 - Caching
@@ -185,5 +185,5 @@ public class HomeController : Controller
 - NonStaticApi
 - StatusApi
 
-# Issues
+## Issues
 - https://github.com/msx752/RiotGamesApi.AspNetCore/issues
