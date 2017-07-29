@@ -17,7 +17,7 @@
 	- Sync/Async 
 	- Caching
 		- StaticApiCaching is supported (default: false)
-	    - CustomApiCaching is supported (for type of non-static api i.e. SummonerProfile) (default: false)
+	    	- CustomApiCaching is supported (for type of non-static api i.e. SummonerProfile) (default: false)
 	- RateLimiting[more reliable for respects to regional limits] (default: Active)
 		- reads response headers (X-Rate-Limit-Type and Retry-After)
 		- supports special limits for any api path
