@@ -118,7 +118,8 @@ public class HomeController : Controller
 - **Using sync-api**
 	1. **method 1** (using with service-layer)
 	 ```c#
-	var rit = LolApi.NonStaticApi.ChampionMasteryv3.GetChampionMasteriesBySummoner(ServicePlatform.TR1, 466244);
+	var rit = LolApi.NonStaticApi.ChampionMasteryv3
+	.GetChampionMasteriesBySummoner(ServicePlatform.TR1, 466244);
 	 ```
 	 
 	2. **method 2** (using as fluent-api-method)
@@ -134,7 +135,8 @@ public class HomeController : Controller
 - **Using async-api**
 	1. **method 1** (using with service-layer)
 	```c#
-	var rit = await LolApi.NonStaticApi.ChampionMasteryv3.GetChampionMasteriesBySummonerAsync(ServicePlatform.TR1, 466244);
+	var rit = await LolApi.NonStaticApi.ChampionMasteryv3
+	.GetChampionMasteriesBySummonerAsync(ServicePlatform.TR1, 466244);
 	```
 	
 	2. **method 2** (using as fluent-api-method)
@@ -148,15 +150,15 @@ public class HomeController : Controller
 	 ```
 
 # Global Variables
-- [`RiotGamesApi.AspNetCore.ApiSettings` *STATIC-CLASS*] >> All Dependency-Injection features in here
+- `RiotGamesApi.AspNetCore.ApiSettings` **STATIC-CLASS** >> All Dependency-Injection features in here
 
 # Service Layer
 - compatible with using on Controller
 
 - Dependency Injections
-  - [`RiotGamesApi.AspNetCore.Api` *CLASS*] >> Sync/Async, static/non-static/status/tournament apis (**auto generated class**)
-  - [`RiotGamesApi.AspNetCore.RateLimit.ApiRate` *CLASS*] >> api rate limiter for non-static-api/tournament-api (**default: 20 requests in 1 sec, 100 requests in 2 minutes**)
-  - [`RiotGamesApi.AspNetCore.Interfaces.IApiCache` *INTERFACE*] >> caching static-api (**default: false**)
+  - `RiotGamesApi.AspNetCore.Api` **CLASS** >> Sync/Async, static/non-static/status/tournament apis (**auto generated class**)
+  - `RiotGamesApi.AspNetCore.RateLimit.ApiRate` **CLASS** >> api rate limiter for non-static-api/tournament-api (**default: 20 requests in 1 sec, 100 requests in 2 minutes**)
+  - `RiotGamesApi.AspNetCore.Interfaces.IApiCache` **INTERFACE** >> caching static-api (**default: false**)
 
 
 # More Information
