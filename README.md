@@ -94,6 +94,7 @@ League Of Legends v3 API Wrapper for .Net Core 1.1
 	```
 # Usage
 - Using with service-layer
+
 ```c#
 using RiotGamesApi.AspNetCore;
 
@@ -113,13 +114,14 @@ public class HomeController : Controller
         }
 }
 ```
+
 - **Using sync-api**
-	- **method 1** (using with service-layer)
-	```c#
-	var rit = LolApi.NonStaticApi.ChampionMasteryv3.
-GetChampionMasteriesBySummoner(ServicePlatform.TR1, 466244);
-	```
-	- **method 2** (using as fluent-api-method)
+	1. **method 1** (using with service-layer)
+	 ```c#
+	var rit = LolApi.NonStaticApi.ChampionMasteryv3.GetChampionMasteriesBySummoner(ServicePlatform.TR1, 466244);
+	 ```
+	 
+	2. **method 2** (using as fluent-api-method)
 	```c#
 	var rit = new ApiCall()
                 .SelectApi<List<ChampionMasteryDto>>(LolApiName.ChampionMastery)
@@ -128,22 +130,22 @@ GetChampionMasteriesBySummoner(ServicePlatform.TR1, 466244);
                 .Build(ServicePlatform.TR1)
                 .Get();
 	```
-
+	 
 - **Using async-api**
-	- **method 1** (using with service-layer)
+	1. **method 1** (using with service-layer)
 	```c#
-	var rit = await LolApi.NonStaticApi.ChampionMasteryv3.
-GetChampionMasteriesBySummonerAsync(ServicePlatform.TR1, 466244);
+	var rit = await LolApi.NonStaticApi.ChampionMasteryv3.GetChampionMasteriesBySummonerAsync(ServicePlatform.TR1, 466244);
 	```
-	- **method 2** (using as fluent-api-method)
-	```c#
+	
+	2. **method 2** (using as fluent-api-method)
+	 ```c#
 	 var rit = await new ApiCall()
                 .SelectApi<List<ChampionMasteryDto>>(LolApiName.ChampionMastery)
                 .For(LolApiMethodName.ChampionMasteries)
                 .AddParameter(new ApiParameter(LolApiPath.BySummoner, (long)466244))
                 .Build(ServicePlatform.TR1)
                 .GetAsync();
-	```
+	 ```
 
 # Global Variables
 - [`RiotGamesApi.AspNetCore.ApiSettings` *STATIC-CLASS*] >> All Dependency-Injection features in here
