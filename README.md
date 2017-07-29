@@ -14,11 +14,7 @@ League Of Legends v3 API Wrapper for .Net Core 1.1
 - determine your **RiotApiKey** in Startup.cs
 - add `app.UseRiotGamesApi();` to end of the `Configure()` method which contains in Startup.cs
 - default settings Caching:disable, RateLimiting:enable, 
-
 - IMPORTANT NOTICE: web-server setting must be `full-trust` for access to `System.Reflection` when you published the web-site-project
-
-# RiotGamesApi.AspNetCore Wiki
-- https://github.com/msx752/RiotGamesApi.AspNetCore/wiki
 
 # Features
 - v3-api (*and upper*)
