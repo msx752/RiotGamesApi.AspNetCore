@@ -5,8 +5,6 @@
 # RiotGamesApi.AspNetCore
 League Of Legends v3 API Wrapper for .Net Core 1.1
 
-### **Usage** https://github.com/msx752/RiotGamesApi.AspNetCore/wiki
-
 # Step by Step Configuration
 - add reference `using RiotGamesApi.AspNetCore.Extensions;` to begining of the Startup.cs
 - add `services.AddLeagueOfLegendsApi("RiotApiKey");` to end of the `ConfigureServices()` method which contains in Startup.cs
