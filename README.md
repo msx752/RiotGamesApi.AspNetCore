@@ -7,14 +7,91 @@ League Of Legends v3 API Wrapper for .Net Core 1.1
 
 ### **Usage** https://github.com/msx752/RiotGamesApi.AspNetCore/wiki
 
-
-# API Wrapper Configuration
+# Step by Step Configuration
 - add reference `using RiotGamesApi.AspNetCore.Extensions;` to begining of the Startup.cs
 - add `services.AddLeagueOfLegendsApi("RiotApiKey");` to end of the `ConfigureServices()` method which contains in Startup.cs
 - determine your **RiotApiKey** in Startup.cs
 - add `app.UseRiotGamesApi();` to end of the `Configure()` method which contains in Startup.cs
-- default settings Caching:disable, RateLimiting:enable, 
+- default settings Caching: *disable*, RateLimiting: *enable*, 
 - IMPORTANT NOTICE: web-server setting must be `full-trust` for access to `System.Reflection` when you published the web-site-project
+
+## Configuration
+- includes `app.AddLeagueOfLegendsApi();` (using necessary)
+	```c#
+	  public void ConfigureServices(IServiceCollection services)
+        {
+	..
+	..
+	app.AddLeagueOfLegendsApi("riot_key");//at the end
+	}
+	```
+	- *types of AddLeagueOfLegendsApi method*
+		1. **AddLeagueOfLegendsApi({ String })**);
+			- String: *RiotApiKey*
+		```c#
+		services.AddLeagueOfLegendsApi("your_key");
+		```
+		2. **AddLeagueOfLegendsApi({ String }, { Func<CacheOption, CacheOption> }))**;
+			- String: *RiotApiKey*
+			- Func<CacheOption, CacheOption> : *custom cache configs*
+		 ```c#
+			services.AddLeagueOfLegendsApi("your_key",(cache) =>{
+		      //overrides default values
+		      cache.EnableStaticApiCaching = true;
+		      cache.StaticApiCacheExpiry = new TimeSpan(1, 0, 0);
+		      
+		      //custom caching is activated
+		      //working for any api except static-api
+		      cache.EnableCustomApiCaching = true;
+		      //summoner-profiles are cached for 5sec
+		      cache.AddCacheRule(LolUrlType.NonStatic, LolApiName.Summoner, new TimeSpan(0, 0, 5));
+		      //
+
+		      return cache;
+		  });
+		```
+		3. **AddLeagueOfLegendsApi({ String },  null , { Func<RateLimitData, RateLimitData> }))**;
+			- String: *RiotApiKey*
+			- null : *default cache configs*
+			- Func<RateLimitData, RateLimitData> : *custom rate-limit configs*
+		 ```c#
+			 services.AddLeagueOfLegendsApi("your_key",null,(limits) =>{
+		      limits.ClearMatchApiXMethodRateLimit();//removes default value
+		      limits.ClearXAppRateLimits();//removes default  value
+		      limits.ClearXMethodRateLimits();//removes default value
+		      //overrides default values
+		      limits.DisableLimiting = false;
+		      limits.AddXAppRateLimits(new Dictionary<TimeSpan, int>()
+		      {
+			  {new TimeSpan(0, 2, 0), 100 },
+			  {new TimeSpan(0, 0, 1), 20 }
+		      });
+
+		      limits.AddXMethodRateLimits(new Dictionary<TimeSpan, int>()
+		      {
+			  {new TimeSpan(0, 10, 0), 1200000 },
+			  {new TimeSpan(0, 0, 10), 20000 }
+		      });
+
+		      limits.SetMatchApiXMethodRateLimit(new TimeSpan(0, 0, 10), 500);
+		      return limits;
+		  });
+		```
+		4. **or we can use both configs at the same time**
+		```c#
+		services.AddLeagueOfLegendsApi("your_key",
+		(cache)=>{ /*as mentioned above*/}, 
+		(limits) => { /*as mentioned above*/});
+		```
+- includes `app.UseRiotGamesApi();` (using necessary)
+	```c#
+	  public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        {
+	..
+	..
+	app.UseRiotGamesApi();//at the end
+	}
+	```
 
 # Features
 - v3-api (*and upper*)
