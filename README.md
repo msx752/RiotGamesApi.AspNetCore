@@ -92,6 +92,74 @@ League Of Legends v3 API Wrapper for .Net Core 1.1
 	app.UseRiotGamesApi();//at the end
 	}
 	```
+# Usage
+- Using with service-layer
+```c#
+using RiotGamesApi.AspNetCore;
+
+public class HomeController : Controller
+{
+        public Api LolApi { get; set; }
+
+        public HomeController(Api _api)//DI
+        {
+            LolApi = _api;
+        }
+	public async Task<IActionResult> Index()
+        {
+            var rit = await LolApi.NonStaticApi.ChampionMasteryv3
+	    .GetChampionMasteriesBySummonerAsync(ServicePlatform.TR1, 466244);
+            return View(rit);
+        }
+}
+```
+- **Using sync-api**
+	- **method 1** (using with service-layer)
+	```c#
+	var rit = LolApi.NonStaticApi.ChampionMasteryv3.
+GetChampionMasteriesBySummoner(ServicePlatform.TR1, 466244);
+	```
+	- **method 2** (using as fluent-api-method)
+	```c#
+	var rit = new ApiCall()
+                .SelectApi<List<ChampionMasteryDto>>(LolApiName.ChampionMastery)
+                .For(LolApiMethodName.ChampionMasteries)
+                .AddParameter(new ApiParameter(LolApiPath.BySummoner, (long)466244))
+                .Build(ServicePlatform.TR1)
+                .Get();
+	```
+
+- **Using async-api**
+	- **method 1** (using with service-layer)
+	```c#
+	var rit = await LolApi.NonStaticApi.ChampionMasteryv3.
+GetChampionMasteriesBySummonerAsync(ServicePlatform.TR1, 466244);
+	```
+	- **method 2** (using as fluent-api-method)
+	```c#
+	 var rit = await new ApiCall()
+                .SelectApi<List<ChampionMasteryDto>>(LolApiName.ChampionMastery)
+                .For(LolApiMethodName.ChampionMasteries)
+                .AddParameter(new ApiParameter(LolApiPath.BySummoner, (long)466244))
+                .Build(ServicePlatform.TR1)
+                .GetAsync();
+	```
+
+# Global Variables
+- [`RiotGamesApi.AspNetCore.ApiSettings` *STATIC-CLASS*] >> All Dependency-Injection features in here
+
+# Service Layer
+- compatible with using on Controller
+
+- Dependency Injections
+  - [`RiotGamesApi.AspNetCore.Api` *CLASS*] >> Sync/Async, static/non-static/status/tournament apis (**auto generated class**)
+  - [`RiotGamesApi.AspNetCore.RateLimit.ApiRate` *CLASS*] >> api rate limiter for non-static-api/tournament-api (**default: 20 requests in 1 sec, 100 requests in 2 minutes**)
+  - [`RiotGamesApi.AspNetCore.Interfaces.IApiCache` *INTERFACE*] >> caching static-api (**default: false**)
+
+
+# More Information
+- [Examples](https://github.com/msx752/RiotGamesApi.AspNetCore/blob/master/RiotCaller.Tests/RiotGamesApis)
+- [Sample Project](https://github.com/msx752/RiotGamesApi.AspNetCore/blob/master/RiotCaller.Web)
 
 # Features
 - v3-api (*and upper*)
@@ -114,18 +182,6 @@ League Of Legends v3 API Wrapper for .Net Core 1.1
 - StaticApi
 - NonStaticApi
 - StatusApi
-
-# Global Variables
-- [`RiotGamesApi.AspNetCore.ApiSettings` *STATIC-CLASS*] >> All Dependency-Injection features in here
-
-
-# Service Layer
-- compatible with using on Controller
-
-- Dependency Injections
-  - [`RiotGamesApi.AspNetCore.Api` *CLASS*] >> Sync/Async, static/non-static/status/tournament apis (**auto generated class**)
-  - [`RiotGamesApi.AspNetCore.RateLimit.ApiRate` *CLASS*] >> api rate limiter for non-static-api/tournament-api (**default: 20 requests in 1 sec, 100 requests in 2 minutes**)
-  - [`RiotGamesApi.AspNetCore.Interfaces.IApiCache` *INTERFACE*] >> caching static-api (**default: false**)
 
 # Issues
 - https://github.com/msx752/RiotGamesApi.AspNetCore/issues
