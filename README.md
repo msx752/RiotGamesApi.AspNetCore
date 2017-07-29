@@ -91,7 +91,7 @@ League Of Legends v3 API Wrapper for .Net Core 1.1
 	}
 	```
 # Usage
-- Using with service-layer
+- **Using with service-layer**
 
 ```c#
 using RiotGamesApi.AspNetCore;
@@ -113,7 +113,7 @@ public class HomeController : Controller
 }
 ```
 
-- **Using sync-api**
+- **Using with sync-api**
 	1. **method 1** (using with service-layer)
 	 ```c#
 	var rit = LolApi.NonStaticApi.ChampionMasteryv3
@@ -130,7 +130,7 @@ public class HomeController : Controller
                 .Get();
 	```
 	 
-- **Using async-api**
+- **Using with async-api**
 	1. **method 1** (using with service-layer)
 	```c#
 	var rit = await LolApi.NonStaticApi.ChampionMasteryv3
