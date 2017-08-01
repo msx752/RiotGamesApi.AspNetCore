@@ -10,7 +10,7 @@ namespace RiotGamesApi.AspNetCore.Cache
     /// </summary>
     public class CacheOption
     {
-        private object _lock2 = new object();
+        private readonly object _lock2 = new object();
         private List<CustomCacheRule> _customCacheRules = new List<CustomCacheRule>();
 
         /// <summary>
@@ -121,6 +121,9 @@ namespace RiotGamesApi.AspNetCore.Cache
         /// </param>
         /// <returns>
         /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="source" /> or <paramref name="predicate" /> is null. 
+        /// </exception>
         public CustomCacheRule FindCacheRule(LolUrlType urlType, LolApiName apiName)
         {
             var found = CustomCacheRules.FirstOrDefault(p => p.UrlType == urlType && p.ApiName == apiName);

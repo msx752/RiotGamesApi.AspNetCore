@@ -9,15 +9,15 @@ namespace RiotGamesApi.AspNetCore.Attributes
     [AttributeUsage(AttributeTargets.Field, AllowMultiple = false)]
     public class UrlTypeAttribute : Attribute
     {
-        private readonly LolUrlType value;
-
         public UrlTypeAttribute(LolUrlType _apitype)
         {
-            this.value = _apitype;
+            this.ApiType = _apitype;
         }
 
-        public LolUrlType ApiType { get { return value; } }
+        public LolUrlType ApiType { get; }
 
+        /// <inheritdoc />
+        ///
         public override string ToString()
         {
             return ApiType.ToString();

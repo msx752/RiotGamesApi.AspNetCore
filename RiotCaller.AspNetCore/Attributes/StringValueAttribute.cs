@@ -8,15 +8,15 @@ namespace RiotGamesApi.AspNetCore.Attributes
     [AttributeUsage(AttributeTargets.Field, AllowMultiple = false)]
     public class StringValueAttribute : Attribute
     {
-        private readonly string _value;
-
         public StringValueAttribute(string value)
         {
-            this._value = value;
+            this.StringValue = value;
         }
 
-        public string StringValue { get { return _value; } }
+        public string StringValue { get; }
 
+        /// <inheritdoc />
+        ///
         public override string ToString()
         {
             return StringValue.ToString();
