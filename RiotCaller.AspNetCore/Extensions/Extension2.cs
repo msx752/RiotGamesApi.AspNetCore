@@ -49,7 +49,7 @@ namespace RiotGamesApi.AspNetCore.Extensions
         /// </exception>
         public static void AddLeagueOfLegendsApi(this IServiceCollection services, string riotApiKey)
         {
-            AddLeagueOfLegendsApi(services, riotApiKey, null);
+            AddLeagueOfLegendsApi(services, riotApiKey, null, null);
         }
 
         /// <summary>
@@ -70,6 +70,15 @@ namespace RiotGamesApi.AspNetCore.Extensions
             Func<CacheOption, CacheOption> cacheOption)
         {
             AddLeagueOfLegendsApi(services, riotApiKey, cacheOption, null);
+        }
+
+        /// <exception cref="Exception">
+        /// A delegate callback throws an exception. 
+        /// </exception>
+        public static void AddLeagueOfLegendsApi(this IServiceCollection services, string riotApiKey,
+            Func<RateLimitData, RateLimitData> rateLimitOption2)
+        {
+            AddLeagueOfLegendsApi(services, riotApiKey, null, rateLimitOption2);
         }
 
         /// <summary>
@@ -93,8 +102,8 @@ namespace RiotGamesApi.AspNetCore.Extensions
         /// A delegate callback throws an exception. 
         /// </exception>
         public static void AddLeagueOfLegendsApi(this IServiceCollection services, string riotApiKey,
-            Func<CacheOption, CacheOption> cacheOption = null,
-            Func<RateLimitData, RateLimitData> rateLimitOption2 = null)
+            Func<CacheOption, CacheOption> cacheOption,
+            Func<RateLimitData, RateLimitData> rateLimitOption2)
         {
             //can convertable to json
             var riotGamesApiBuilder = RiotGamesApiBuilder(riotApiKey);
