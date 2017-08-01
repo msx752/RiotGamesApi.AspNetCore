@@ -9,7 +9,7 @@ namespace RiotGamesApi.Tests.RiotGamesApis
     public class CHAMPION_V3 : BaseTestClass
     {
         [Fact]
-        public void GetChampions1()
+        public void GetChampions()
         {
             var rit = new ApiCall()
                 .SelectApi<ChampionListDto>(LolApiName.Platform)

@@ -140,7 +140,7 @@ namespace RiotGamesApi.AspNetCore.Extensions
 
         private static IApiBuilder RiotGamesApiBuilder(string riotApiKey)
         {
-            var riotGamesApiBuilder = new RiotGamesApiBuilder()
+            var riotGamesApiBuilder = ((IApiBuilder)new RiotGamesApiBuilder())
                 .UseRiotApiKey(riotApiKey)
                 .UseApiUrl("api.riotgames.com")
                 .UseStatusApi((apis) =>
