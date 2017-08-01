@@ -44,6 +44,9 @@ namespace RiotGamesApi.AspNetCore.Extensions
         /// <param name="riotApiKey">
         /// RiotGames DeveloperKey or ProductionKey 
         /// </param>
+        /// <exception cref="Exception">
+        /// A delegate callback throws an exception. 
+        /// </exception>
         public static void AddLeagueOfLegendsApi(this IServiceCollection services, string riotApiKey)
         {
             AddLeagueOfLegendsApi(services, riotApiKey, null);
@@ -60,8 +63,11 @@ namespace RiotGamesApi.AspNetCore.Extensions
         /// <param name="cacheOption">
         /// custom api caching options (default: ApiCaching is NOT USED ) 
         /// </param>
+        /// <exception cref="Exception">
+        /// A delegate callback throws an exception. 
+        /// </exception>
         public static void AddLeagueOfLegendsApi(this IServiceCollection services, string riotApiKey,
-            Func<CacheOption, CacheOption> cacheOption = null)
+            Func<CacheOption, CacheOption> cacheOption)
         {
             AddLeagueOfLegendsApi(services, riotApiKey, cacheOption, null);
         }
@@ -83,6 +89,9 @@ namespace RiotGamesApi.AspNetCore.Extensions
         /// is USED) default X-App-Rate-Limit: 100:120,20:1, default X-Method-Rate-Limit:
         /// 20000:10,1200000:600, default Mathlists X-Method-Rate-Limit: 500:10
         /// </param>
+        /// <exception cref="Exception">
+        /// A delegate callback throws an exception. 
+        /// </exception>
         public static void AddLeagueOfLegendsApi(this IServiceCollection services, string riotApiKey,
             Func<CacheOption, CacheOption> cacheOption = null,
             Func<RateLimitData, RateLimitData> rateLimitOption2 = null)

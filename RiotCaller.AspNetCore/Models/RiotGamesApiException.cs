@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace RiotGamesApi.AspNetCore.Models
 {
@@ -21,6 +19,8 @@ namespace RiotGamesApi.AspNetCore.Models
         {
         }
 
+        /// <inheritdoc />
+        ///
         public override string ToString()
         {
             return Message.ToString();

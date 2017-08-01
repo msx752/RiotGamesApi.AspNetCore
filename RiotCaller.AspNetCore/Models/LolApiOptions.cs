@@ -1,9 +1,8 @@
-﻿using System.Collections.Concurrent;
-using RiotGamesApi.AspNetCore.Cache;
+﻿using RiotGamesApi.AspNetCore.Cache;
 using RiotGamesApi.AspNetCore.Enums;
 using RiotGamesApi.AspNetCore.Interfaces;
-using System.Collections.Generic;
 using RiotGamesApi.AspNetCore.RateLimit;
+using System.Collections.Generic;
 
 namespace RiotGamesApi.AspNetCore.Models
 {
@@ -12,11 +11,9 @@ namespace RiotGamesApi.AspNetCore.Models
     /// </summary>
     public class LolApiOptions : IApiOption
     {
-        private string _url = "";
-
         public LolApiOptions()
         {
-            RiotGamesApis = new Dictionary<LolUrlType, Models.RiotGamesApi>();
+            ((IApiOption)this).RiotGamesApis = new Dictionary<LolUrlType, RiotGamesApi>();
             RateLimitOptions = new RateLimitOption();
         }
 
@@ -30,18 +27,18 @@ namespace RiotGamesApi.AspNetCore.Models
         /// </summary>
         public CacheOption CacheOptions { get; set; }
 
-        public string NonStaticUrl { get { return $"{Url}/lol"; }/* set { _nonStaticUrl = value; }*/ }
+        string IApiOption.NonStaticUrl => $"{Url}/lol";
         public string RiotApiKey { get; set; }
-        public Dictionary<LolUrlType, Models.RiotGamesApi> RiotGamesApis { get; set; }
-        public string StaticUrl { get { return $"{NonStaticUrl}"; }/* set { _staticUrl = value; } */}
+        Dictionary<LolUrlType, RiotGamesApi> IApiOption.RiotGamesApis { get; set; }
+        string IApiOption.StaticUrl => $"{((IApiOption)this).NonStaticUrl}";
 
-        public string TournamentUrl { get { return $"{Url}/lol"; } }
-        public string StatusUrl { get { return $"{Url}/lol"; } }
+        string IApiOption.TournamentUrl => $"{Url}/lol";
+        string IApiOption.StatusUrl => $"{Url}/lol";
 
         /// <summary>
         /// main api request url 
         /// </summary>
-        public string Url { get { return _url; } set { _url = value; } }
+        public string Url { get; set; } = "";
 
         //private string _staticUrl;
         //private string _nonStaticUrl;

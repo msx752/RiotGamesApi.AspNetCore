@@ -38,12 +38,12 @@ namespace RiotGamesApi.Tests.RiotGamesApis
         public void CacheNonStaticApi()
         {
             var rit = LolApi.NonStaticApi.Summonerv3
-                .GetSummonersByAccount(ServicePlatform.TR1, AccountId);
+                .GetSummonersByAccount(ServicePlatform.EUW1, AccountId);
             Assert.False(rit.HasError);
             Assert.False(rit.IsCache);
 
             rit = LolApi.NonStaticApi.Summonerv3
-                .GetSummonersByAccount(ServicePlatform.TR1, AccountId);
+                .GetSummonersByAccount(ServicePlatform.EUW1, AccountId);
             Assert.False(rit.HasError);
             Assert.True(rit.IsCache);
         }

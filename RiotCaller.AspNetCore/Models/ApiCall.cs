@@ -3,6 +3,7 @@ using RiotGamesApi.AspNetCore.Extensions;
 using RiotGamesApi.AspNetCore.Interfaces;
 using System;
 using System.Linq;
+using static RiotGamesApi.AspNetCore.ApiSettings;
 
 namespace RiotGamesApi.AspNetCore.Models
 {
@@ -25,12 +26,14 @@ namespace RiotGamesApi.AspNetCore.Models
         /// </param>
         /// <returns>
         /// </returns>
+        /// <exception cref="RiotGamesApiException">
+        /// Condition. 
+        /// </exception>
         public IFor<T> SelectApi<T>(LolApiName apiType, double version = 3.0) where T : new()
         {
-            LolApiRequest<T> rit = new LolApiRequest<T>();
-            rit.UrlType = apiType.GetUrlType();
-            rit.BaseUrl = ApiSettings.ApiOptions.RiotGamesApis[rit.UrlType].ApiUrl;
-            rit.ApiList = ApiSettings.ApiOptions.RiotGamesApis[rit.UrlType].RiotGamesApiUrls
+            var rit = new LolApiRequest<T> { UrlType = apiType.GetUrlType() };
+            rit.BaseUrl = ApiOptions.RiotGamesApis[rit.UrlType].ApiUrl;
+            rit.ApiList = ApiOptions.RiotGamesApis[rit.UrlType].RiotGamesApiUrls
                 .FirstOrDefault(p => p.ApiName == apiType && p.CompareVersion(version));
             if (rit.ApiList == null)
                 throw new RiotGamesApiException($"{rit.UrlType} is not defined in RiotGamesApiBuilder or selected version:{version} is not defined");

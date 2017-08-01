@@ -179,7 +179,7 @@ namespace RiotGamesApi.AspNetCore.Extensions
                                           $".AddParameter({@RiotGamesApiParameters})\r\n" +
                                           ".Build(platform)\r\n" +
                                           @useCacheMethod +
-                                          $".{urlSub.RequestType}Async({@optionalParameters});";
+                                          $".{urlSub.RequestType}Async({@optionalParameters}).ConfigureAwait(false);";
                         @methodAsync += @apiCall;
                         @methodAsync += "\r\nreturn rit;\r\n}";
                         class2 += @methodAsync;

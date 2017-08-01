@@ -47,7 +47,7 @@ namespace RiotGamesApi.AspNetCore
                     .For(LolApiMethodName.ShardData)
                     .AddParameter()
                     .Build(platform)
-                    .GetAsync();
+                    .GetAsync().ConfigureAwait(false);
                 return rit;
             }
         }
@@ -86,7 +86,7 @@ namespace RiotGamesApi.AspNetCore
                             {"tags",string.Join("&tags=", _tags  ?? new List<RiotGamesApi.AspNetCore.RiotApi.Enums.ChampionTag>()) },
                             {"dataById",_dataById.ToString().ToLower() },
                         }
-                    );
+                    ).ConfigureAwait(false);
                 return rit;
             }
 
@@ -113,7 +113,7 @@ namespace RiotGamesApi.AspNetCore
                             {"tags",string.Join("&tags=", _tags  ?? new List<RiotGamesApi.AspNetCore.RiotApi.Enums.ChampionTag>()) },
                             {"dataById",_dataById.ToString().ToLower() },
                         }
-                    );
+                    ).ConfigureAwait(false);
                 return rit;
             }
 
@@ -139,7 +139,7 @@ namespace RiotGamesApi.AspNetCore
                             {"version",_version },
                             {"tags",string.Join("&tags=", _tags  ?? new List<RiotGamesApi.AspNetCore.RiotApi.Enums.ItemTag>()) },
                         }
-                    );
+                    ).ConfigureAwait(false);
                 return rit;
             }
 
@@ -165,7 +165,7 @@ namespace RiotGamesApi.AspNetCore
                             {"version",_version },
                             {"tags",string.Join("&tags=", _tags  ?? new List<RiotGamesApi.AspNetCore.RiotApi.Enums.ItemTag>()) },
                         }
-                    );
+                    ).ConfigureAwait(false);
                 return rit;
             }
 
@@ -190,7 +190,7 @@ namespace RiotGamesApi.AspNetCore
                             {"locale",_locale },
                             {"version",_version },
                         }
-                    );
+                    ).ConfigureAwait(false);
                 return rit;
             }
 
@@ -210,7 +210,7 @@ namespace RiotGamesApi.AspNetCore
                     .AddParameter()
                     .Build(platform)
                     .UseCache(_useCache)
-                    .GetAsync();
+                    .GetAsync().ConfigureAwait(false);
                 return rit;
             }
 
@@ -235,7 +235,7 @@ namespace RiotGamesApi.AspNetCore
                             {"locale",_locale },
                             {"version",_version },
                         }
-                    );
+                    ).ConfigureAwait(false);
                 return rit;
             }
 
@@ -261,7 +261,7 @@ namespace RiotGamesApi.AspNetCore
                             {"version",_version },
                             {"tags",string.Join("&tags=", _tags  ?? new List<RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.Masteries.MasteryTag>()) },
                         }
-                    );
+                    ).ConfigureAwait(false);
                 return rit;
             }
 
@@ -287,7 +287,7 @@ namespace RiotGamesApi.AspNetCore
                             {"version",_version },
                             {"tags",string.Join("&tags=", _tags  ?? new List<RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.Masteries.MasteryTag>()) },
                         }
-                    );
+                    ).ConfigureAwait(false);
                 return rit;
             }
 
@@ -312,7 +312,7 @@ namespace RiotGamesApi.AspNetCore
                             {"locale",_locale },
                             {"version",_version },
                         }
-                    );
+                    ).ConfigureAwait(false);
                 return rit;
             }
 
@@ -332,7 +332,7 @@ namespace RiotGamesApi.AspNetCore
                     .AddParameter()
                     .Build(platform)
                     .UseCache(_useCache)
-                    .GetAsync();
+                    .GetAsync().ConfigureAwait(false);
                 return rit;
             }
 
@@ -358,7 +358,7 @@ namespace RiotGamesApi.AspNetCore
                             {"version",_version },
                             {"tags",string.Join("&tags=", _tags  ?? new List<RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.Runes.RuneTag>()) },
                         }
-                    );
+                    ).ConfigureAwait(false);
                 return rit;
             }
 
@@ -384,7 +384,7 @@ namespace RiotGamesApi.AspNetCore
                             {"version",_version },
                             {"tags",string.Join("&tags=", _tags  ?? new List<RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.Runes.RuneTag>()) },
                         }
-                    );
+                    ).ConfigureAwait(false);
                 return rit;
             }
 
@@ -411,7 +411,7 @@ namespace RiotGamesApi.AspNetCore
                             {"dataById",_dataById.ToString().ToLower() },
                             {"tags",string.Join("&tags=", _tags  ?? new List<RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.SummonerSpell.SummonerSpellTag>()) },
                         }
-                    );
+                    ).ConfigureAwait(false);
                 return rit;
             }
 
@@ -438,7 +438,7 @@ namespace RiotGamesApi.AspNetCore
                             {"dataById",_dataById.ToString().ToLower() },
                             {"tags",string.Join("&tags=", _tags  ?? new List<RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.SummonerSpell.SummonerSpellTag>()) },
                         }
-                    );
+                    ).ConfigureAwait(false);
                 return rit;
             }
 
@@ -458,7 +458,7 @@ namespace RiotGamesApi.AspNetCore
                     .AddParameter()
                     .Build(platform)
                     .UseCache(_useCache)
-                    .GetAsync();
+                    .GetAsync().ConfigureAwait(false);
                 return rit;
             }
         }
@@ -489,7 +489,7 @@ namespace RiotGamesApi.AspNetCore
                     .For(LolApiMethodName.ChampionMasteries)
                     .AddParameter(new ApiParameter(LolApiPath.BySummoner, _BySummoner))
                     .Build(platform)
-                    .GetAsync();
+                    .GetAsync().ConfigureAwait(false);
                 return rit;
             }
 
@@ -509,7 +509,7 @@ namespace RiotGamesApi.AspNetCore
                     .AddParameter(new ApiParameter(LolApiPath.BySummoner, _BySummoner),
                         new ApiParameter(LolApiPath.ByChampion, _ByChampion))
                     .Build(platform)
-                    .GetAsync();
+                    .GetAsync().ConfigureAwait(false);
                 return rit;
             }
 
@@ -528,7 +528,7 @@ namespace RiotGamesApi.AspNetCore
                     .For(LolApiMethodName.Scores)
                     .AddParameter(new ApiParameter(LolApiPath.BySummoner, _BySummoner))
                     .Build(platform)
-                    .GetAsync();
+                    .GetAsync().ConfigureAwait(false);
                 return rit;
             }
         }
@@ -554,7 +554,7 @@ namespace RiotGamesApi.AspNetCore
                     .For(LolApiMethodName.Summoners)
                     .AddParameter(new ApiParameter(LolApiPath.ByAccount, _ByAccount))
                     .Build(platform)
-                    .GetAsync();
+                    .GetAsync().ConfigureAwait(false);
                 return rit;
             }
 
@@ -573,7 +573,7 @@ namespace RiotGamesApi.AspNetCore
                     .For(LolApiMethodName.Summoners)
                     .AddParameter(new ApiParameter(LolApiPath.ByName, _ByName))
                     .Build(platform)
-                    .GetAsync();
+                    .GetAsync().ConfigureAwait(false);
                 return rit;
             }
 
@@ -592,7 +592,7 @@ namespace RiotGamesApi.AspNetCore
                     .For(LolApiMethodName.Summoners)
                     .AddParameter(new ApiParameter(LolApiPath.OnlySummonerId, _OnlySummonerId))
                     .Build(platform)
-                    .GetAsync();
+                    .GetAsync().ConfigureAwait(false);
                 return rit;
             }
         }
@@ -618,7 +618,7 @@ namespace RiotGamesApi.AspNetCore
                     .For(LolApiMethodName.Champions)
                     .AddParameter()
                     .Build(platform)
-                    .GetAsync();
+                    .GetAsync().ConfigureAwait(false);
                 return rit;
             }
 
@@ -637,7 +637,7 @@ namespace RiotGamesApi.AspNetCore
                     .For(LolApiMethodName.Champions)
                     .AddParameter(new ApiParameter(LolApiPath.OnlyId, _OnlyId))
                     .Build(platform)
-                    .GetAsync();
+                    .GetAsync().ConfigureAwait(false);
                 return rit;
             }
 
@@ -656,7 +656,7 @@ namespace RiotGamesApi.AspNetCore
                     .For(LolApiMethodName.Masteries)
                     .AddParameter(new ApiParameter(LolApiPath.BySummoner, _BySummoner))
                     .Build(platform)
-                    .GetAsync();
+                    .GetAsync().ConfigureAwait(false);
                 return rit;
             }
 
@@ -675,7 +675,7 @@ namespace RiotGamesApi.AspNetCore
                     .For(LolApiMethodName.Runes)
                     .AddParameter(new ApiParameter(LolApiPath.BySummoner, _BySummoner))
                     .Build(platform)
-                    .GetAsync();
+                    .GetAsync().ConfigureAwait(false);
                 return rit;
             }
         }
@@ -701,7 +701,7 @@ namespace RiotGamesApi.AspNetCore
                     .For(LolApiMethodName.ChallengerLeagues)
                     .AddParameter(new ApiParameter(LolApiPath.ByQueue, _ByQueue))
                     .Build(platform)
-                    .GetAsync();
+                    .GetAsync().ConfigureAwait(false);
                 return rit;
             }
 
@@ -720,7 +720,7 @@ namespace RiotGamesApi.AspNetCore
                     .For(LolApiMethodName.Leagues)
                     .AddParameter(new ApiParameter(LolApiPath.BySummoner, _BySummoner))
                     .Build(platform)
-                    .GetAsync();
+                    .GetAsync().ConfigureAwait(false);
                 return rit;
             }
 
@@ -739,7 +739,7 @@ namespace RiotGamesApi.AspNetCore
                     .For(LolApiMethodName.MasterLeagues)
                     .AddParameter(new ApiParameter(LolApiPath.ByQueue, _ByQueue))
                     .Build(platform)
-                    .GetAsync();
+                    .GetAsync().ConfigureAwait(false);
                 return rit;
             }
 
@@ -758,7 +758,7 @@ namespace RiotGamesApi.AspNetCore
                     .For(LolApiMethodName.Positions)
                     .AddParameter(new ApiParameter(LolApiPath.BySummoner, _BySummoner))
                     .Build(platform)
-                    .GetAsync();
+                    .GetAsync().ConfigureAwait(false);
                 return rit;
             }
         }
@@ -766,14 +766,9 @@ namespace RiotGamesApi.AspNetCore
         private League_v3_1 _Leaguev31;
         public League_v3_1 Leaguev31 { get { return _Leaguev31 ?? (_Leaguev31 = new League_v3_1()); } }
 
-        /// <summary>
-        /// "League/v3.1 version 3.1 testing (NOT WORKS only for displaying) 
-        /// </summary>
+        //"League/v3.1
         public class League_v3_1
         {
-            /// <summary>
-            /// "League/v3.1 version 3.1 testing (NOT WORKS only for displaying) 
-            /// </summary>
             public RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.v31.Empty> GetChallengerLeaguesByQueue(ServicePlatform platform, MatchMakingQueue _ByQueue)
             {
                 var t = GetChallengerLeaguesByQueueAsync(platform, _ByQueue);
@@ -782,9 +777,6 @@ namespace RiotGamesApi.AspNetCore
                 return rit;
             }
 
-            /// <summary>
-            /// "League/v3.1 version 3.1 testing (NOT WORKS only for displaying) 
-            /// </summary>
             public async Task<RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.v31.Empty>> GetChallengerLeaguesByQueueAsync(ServicePlatform platform, MatchMakingQueue _ByQueue)
             {
                 RiotGamesApi.AspNetCore.Interfaces.IResult<RiotGamesApi.AspNetCore.RiotApi.v31.Empty> rit = await new ApiCall()
@@ -792,7 +784,7 @@ namespace RiotGamesApi.AspNetCore
                     .For(LolApiMethodName.ChallengerLeagues)
                     .AddParameter(new ApiParameter(LolApiPath.ByQueue, _ByQueue))
                     .Build(platform)
-                    .GetAsync();
+                    .GetAsync().ConfigureAwait(false);
                 return rit;
             }
         }
@@ -818,7 +810,7 @@ namespace RiotGamesApi.AspNetCore
                     .For(LolApiMethodName.Matches)
                     .AddParameter(new ApiParameter(LolApiPath.OnlyMatchId, _OnlyMatchId))
                     .Build(platform)
-                    .GetAsync();
+                    .GetAsync().ConfigureAwait(false);
                 return rit;
             }
 
@@ -837,7 +829,7 @@ namespace RiotGamesApi.AspNetCore
                     .For(LolApiMethodName.MatchLists)
                     .AddParameter(new ApiParameter(LolApiPath.ByAccount, _ByAccount))
                     .Build(platform)
-                    .GetAsync();
+                    .GetAsync().ConfigureAwait(false);
                 return rit;
             }
 
@@ -856,7 +848,7 @@ namespace RiotGamesApi.AspNetCore
                     .For(LolApiMethodName.MatchLists)
                     .AddParameter(new ApiParameter(LolApiPath.ByAccountRecent, _ByAccountRecent))
                     .Build(platform)
-                    .GetAsync();
+                    .GetAsync().ConfigureAwait(false);
                 return rit;
             }
 
@@ -875,7 +867,7 @@ namespace RiotGamesApi.AspNetCore
                     .For(LolApiMethodName.Timelines)
                     .AddParameter(new ApiParameter(LolApiPath.ByMatch, _ByMatch))
                     .Build(platform)
-                    .GetAsync();
+                    .GetAsync().ConfigureAwait(false);
                 return rit;
             }
 
@@ -894,7 +886,7 @@ namespace RiotGamesApi.AspNetCore
                     .For(LolApiMethodName.Matches)
                     .AddParameter(new ApiParameter(LolApiPath.ByTournamentCodeIds, _ByTournamentCodeIds))
                     .Build(platform)
-                    .GetAsync();
+                    .GetAsync().ConfigureAwait(false);
                 return rit;
             }
 
@@ -914,7 +906,7 @@ namespace RiotGamesApi.AspNetCore
                     .AddParameter(new ApiParameter(LolApiPath.OnlyMatchId, _OnlyMatchId),
                         new ApiParameter(LolApiPath.ByTournamentCode, _ByTournamentCode))
                     .Build(platform)
-                    .GetAsync();
+                    .GetAsync().ConfigureAwait(false);
                 return rit;
             }
         }
@@ -940,7 +932,7 @@ namespace RiotGamesApi.AspNetCore
                     .For(LolApiMethodName.ActiveGames)
                     .AddParameter(new ApiParameter(LolApiPath.BySummoner, _BySummoner))
                     .Build(platform)
-                    .GetAsync();
+                    .GetAsync().ConfigureAwait(false);
                 return rit;
             }
 
@@ -959,7 +951,7 @@ namespace RiotGamesApi.AspNetCore
                     .For(LolApiMethodName.FeaturedGames)
                     .AddParameter()
                     .Build(platform)
-                    .GetAsync();
+                    .GetAsync().ConfigureAwait(false);
                 return rit;
             }
         }
@@ -995,7 +987,7 @@ namespace RiotGamesApi.AspNetCore
                             {"count",_count },
                             {"tournamentId",_tournamentId },
                         }
-                        , _tournamentcodeparameters);
+                        , _tournamentcodeparameters).ConfigureAwait(false);
                 return rit;
             }
 
@@ -1014,7 +1006,7 @@ namespace RiotGamesApi.AspNetCore
                     .For(LolApiMethodName.LobbyEvents)
                     .AddParameter(new ApiParameter(LolApiPath.ByCode, _ByCode))
                     .Build(platform)
-                    .GetAsync();
+                    .GetAsync().ConfigureAwait(false);
                 return rit;
             }
 
@@ -1033,7 +1025,7 @@ namespace RiotGamesApi.AspNetCore
                     .For(LolApiMethodName.Providers)
                     .AddParameter()
                     .Build(platform)
-                    .PostAsync(_providerregistrationparameters);
+                    .PostAsync(_providerregistrationparameters).ConfigureAwait(false);
                 return rit;
             }
 
@@ -1052,7 +1044,7 @@ namespace RiotGamesApi.AspNetCore
                     .For(LolApiMethodName.Tournaments)
                     .AddParameter()
                     .Build(platform)
-                    .PostAsync(_tournamentregistrationparameters);
+                    .PostAsync(_tournamentregistrationparameters).ConfigureAwait(false);
                 return rit;
             }
         }
@@ -1083,7 +1075,7 @@ namespace RiotGamesApi.AspNetCore
                             {"count",_count },
                             {"tournamentId",_tournamentId },
                         }
-                        , _tournamentcodeparameters);
+                        , _tournamentcodeparameters).ConfigureAwait(false);
                 return rit;
             }
 
@@ -1102,7 +1094,7 @@ namespace RiotGamesApi.AspNetCore
                     .For(LolApiMethodName.Codes)
                     .AddParameter(new ApiParameter(LolApiPath.OnlyTournamentCode, _OnlyTournamentCode))
                     .Build(platform)
-                    .PutAsync(_tournamentcodeupdateparameters);
+                    .PutAsync(_tournamentcodeupdateparameters).ConfigureAwait(false);
                 return rit;
             }
 
@@ -1121,7 +1113,7 @@ namespace RiotGamesApi.AspNetCore
                     .For(LolApiMethodName.Codes)
                     .AddParameter(new ApiParameter(LolApiPath.OnlyTournamentCode, _OnlyTournamentCode))
                     .Build(platform)
-                    .GetAsync();
+                    .GetAsync().ConfigureAwait(false);
                 return rit;
             }
 
@@ -1140,7 +1132,7 @@ namespace RiotGamesApi.AspNetCore
                     .For(LolApiMethodName.LobbyEvents)
                     .AddParameter(new ApiParameter(LolApiPath.ByCode, _ByCode))
                     .Build(platform)
-                    .GetAsync();
+                    .GetAsync().ConfigureAwait(false);
                 return rit;
             }
 
@@ -1159,7 +1151,7 @@ namespace RiotGamesApi.AspNetCore
                     .For(LolApiMethodName.Providers)
                     .AddParameter()
                     .Build(platform)
-                    .PostAsync(_providerregistrationparameters);
+                    .PostAsync(_providerregistrationparameters).ConfigureAwait(false);
                 return rit;
             }
 
@@ -1178,7 +1170,7 @@ namespace RiotGamesApi.AspNetCore
                     .For(LolApiMethodName.Tournaments)
                     .AddParameter()
                     .Build(platform)
-                    .PostAsync(_tournamentregistrationparameters);
+                    .PostAsync(_tournamentregistrationparameters).ConfigureAwait(false);
                 return rit;
             }
         }
