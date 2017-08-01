@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using RiotGamesApi.AspNetCore.Enums;
+﻿using RiotGamesApi.AspNetCore.Enums;
+using System.Collections.Generic;
 
 namespace RiotGamesApi.AspNetCore.Models
 {
@@ -14,9 +14,9 @@ namespace RiotGamesApi.AspNetCore.Models
         public string ApiUrl { get; set; }
         public List<LolApiUrl> RiotGamesApiUrls { get; }
 
-        public LolApiUrl AddApi(LolApiName suffix1, double _version)
+        public LolApiUrl AddApi(LolApiName suffix1, double version)
         {
-            LolApiUrl sff1 = new LolApiUrl(suffix1, _version);
+            LolApiUrl sff1 = new LolApiUrl(suffix1, version);
             this.RiotGamesApiUrls.Add(sff1);
             return sff1;
         }

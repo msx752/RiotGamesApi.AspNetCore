@@ -1,11 +1,10 @@
 ﻿using Force.DeepCloner;
 using RiotGamesApi.AspNetCore.Enums;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Threading.Tasks;
 using RiotGamesApi.AspNetCore.Models;
 using RiotGamesApi.AspNetCore.RateLimit.Property;
+using System;
+using System.Diagnostics;
+using System.Threading.Tasks;
 
 namespace RiotGamesApi.AspNetCore.RateLimit
 {
@@ -17,7 +16,7 @@ namespace RiotGamesApi.AspNetCore.RateLimit
         private MyRateLimit _rates = new MyRateLimit();
 
         //private object _lock = new object();
-        private object _lock2 = new object();
+        private readonly object _lock2 = new object();
 
         public MyRateLimit Rates
         {
@@ -93,14 +92,23 @@ namespace RiotGamesApi.AspNetCore.RateLimit
         /// </summary>
         /// <param name="prop">
         /// </param>
+        /// <param name="name">
+        /// </param>
         /// <param name="limitType">
         /// </param>
         /// <param name="retryAfterSeconds">
         /// value of Retry-After 
         /// </param>
+        /// <param name="region">
+        /// </param>
+        /// <param name="type">
+        /// </param>
+        /// <exception cref="RiotGamesApiException">
+        /// Condition. 
+        /// </exception>
         public void SetRetryTime(string region, LolUrlType type, LolApiName name, RateLimitType limitType, int retryAfterSeconds)
         {
-            RLolApiName regionLimit = Rates.Find(region, type, name);
+            var regionLimit = Rates.Find(region, type, name);
             if (regionLimit == null)
             {
                 throw new RiotGamesApiException($"Undefined {limitType} limit type for region:{region},type:{type},name:{name}");

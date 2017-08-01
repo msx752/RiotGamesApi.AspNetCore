@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using RiotGamesApi.AspNetCore.Enums;
+﻿using RiotGamesApi.AspNetCore.Enums;
+using System;
 
 namespace RiotGamesApi.AspNetCore.Cache
 {
@@ -14,8 +12,8 @@ namespace RiotGamesApi.AspNetCore.Cache
             this.ExpiryTime = expiryTime;
         }
 
-        public LolUrlType UrlType { get; set; }
         public LolApiName ApiName { get; set; }
         public TimeSpan ExpiryTime { get; set; }
+        public LolUrlType UrlType { get; set; }
     }
 }

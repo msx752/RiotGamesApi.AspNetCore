@@ -1,8 +1,8 @@
 ﻿using RiotGamesApi.AspNetCore.Enums;
-using RiotGamesApi.AspNetCore.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 
 namespace RiotGamesApi.AspNetCore.Models
 {
@@ -33,25 +33,38 @@ namespace RiotGamesApi.AspNetCore.Models
         public string Version { get; set; }
         public int LastApiMethodIndex { get; set; }
 
-        public bool CompareVersion(double _destinationVersion)
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="oldValue" /> is null. 
+        /// </exception>
+        public bool CompareVersion(double destinationVersion)
         {
-            string version = _destinationVersion.ToString("F1", CultureInfo.InvariantCulture);
+            var version = destinationVersion.ToString("F1", CultureInfo.InvariantCulture);
             version = version.Replace(".0", "");
             return Version == $"v{version}";
         }
 
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="oldValue" /> is null. 
+        /// </exception>
         public void SetVersion(double _version)
         {
-            string version = _version.ToString("F1", CultureInfo.InvariantCulture);
+            var version = _version.ToString("F1", CultureInfo.InvariantCulture);
             version = version.Replace(".0", "");
             Version = $"v{version}";
         }
 
+        /// <exception cref="OverflowException">
+        /// <paramref name="s" /> represents a number that is less than
+        /// <see cref="F:System.Double.MinValue" /> or greater than <see cref="F:System.Double.MaxValue" />.
+        /// </exception>
         public double GetVersion()
         {
             return double.Parse(Version.Substring(1), CultureInfo.InvariantCulture);
         }
 
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="s" /> is null. 
+        /// </exception>
         public string VersionToString()
         {
             return double.Parse(Version.Substring(1), CultureInfo.InvariantCulture)
@@ -89,6 +102,15 @@ namespace RiotGamesApi.AspNetCore.Models
         /// </param>
         /// <returns>
         /// </returns>
+        /// <exception cref="IOException">
+        /// An I/O error occurred. 
+        /// </exception>
+        /// <exception cref="Exception">
+        /// Condition. 
+        /// </exception>
+        /// <exception cref="IOException">
+        /// An I/O error occurred. 
+        /// </exception>
         public LolApiUrl AddQueryParameter(Dictionary<string, Type> queryParameterTypes)
         {
             try
@@ -110,49 +132,6 @@ namespace RiotGamesApi.AspNetCore.Models
                 throw;
             }
             return this;
-        }
-    }
-
-    public class Method
-    {
-        public Method(LolApiMethodName md, LolApiPath[] array, Type returnValueType, ApiMethodType requestType, Type _bodyValueType, bool _isBodyRequired)
-            : this(md, array, returnValueType, requestType)
-        {
-            BodyValueType = _bodyValueType;
-            IsBodyRequired = _isBodyRequired;
-        }
-
-        public Method(LolApiMethodName md, LolApiPath[] array, Type returnValueType, ApiMethodType requestType)
-        {
-            this.ApiMethodName = md;
-            this.RiotGamesApiPaths = array ?? new LolApiPath[0];
-            ReturnValueType = returnValueType;
-            TypesOfQueryParameter = new Dictionary<string, Type>();
-            RequestType = requestType;
-        }
-
-        public bool IsBodyRequired { get; set; }
-        public Type BodyValueType { get; set; }
-        public ApiMethodType RequestType { get; set; }
-        public LolApiMethodName ApiMethodName { get; set; }
-
-        public LolApiPath[] RiotGamesApiPaths { get; set; }
-
-        public Type ReturnValueType { get; }
-        public Dictionary<string, Type> TypesOfQueryParameter { get; set; }
-
-        public override string ToString()
-        {
-            string newSubUrl = $"{ApiMethodName.GetStringValue()}/";
-            for (int i = 0; i < RiotGamesApiPaths.Length; i++)
-            {
-                newSubUrl += $"{RiotGamesApiPaths[i].GetStringValue()}";
-                if (i != RiotGamesApiPaths.Length - 1)
-                {
-                    newSubUrl += "/";
-                }
-            }
-            return newSubUrl;
         }
     }
 }

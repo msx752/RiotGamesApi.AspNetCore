@@ -14,45 +14,48 @@ namespace RiotGamesApi.AspNetCore.Builder
 
         public IApiOption RiotGamesApiOptions { get; }
 
-        public IApiOption Build()
+        IApiOption IApiBuilder.Build()
         {
             return RiotGamesApiOptions;
         }
 
-        public IApiBuilder UseApiUrl(string _url)
+        IApiBuilder IApiBuilder.UseApiUrl(string _url)
         {
             RiotGamesApiOptions.Url = $"https://{{platformId}}.{_url}";
             return this;
         }
 
+        /// <exception cref="Exception">
+        /// A delegate callback throws an exception. 
+        /// </exception>
         public IApiBuilder UseNonStaticApi(Func<Models.RiotGamesApi, Models.RiotGamesApi> action)
         {
-            this.RiotGamesApiOptions.RiotGamesApis[LolUrlType.NonStatic] =
+            RiotGamesApiOptions.RiotGamesApis[LolUrlType.NonStatic] =
                 action(new Models.RiotGamesApi(this.RiotGamesApiOptions.NonStaticUrl));
             return this;
         }
 
-        public IApiBuilder UseRiotApiKey(string riotApiKey)
+        IApiBuilder IApiBuilder.UseRiotApiKey(string riotApiKey)
         {
             RiotGamesApiOptions.RiotApiKey = riotApiKey;
             return this;
         }
 
-        public IApiBuilder UseStaticApi(Func<Models.RiotGamesApi, Models.RiotGamesApi> action)
+        IApiBuilder IApiBuilder.UseStaticApi(Func<Models.RiotGamesApi, Models.RiotGamesApi> action)
         {
             this.RiotGamesApiOptions.RiotGamesApis[LolUrlType.Static] =
                 action(new Models.RiotGamesApi(this.RiotGamesApiOptions.StaticUrl));
             return this;
         }
 
-        public IApiBuilder UseStatusApi(Func<Models.RiotGamesApi, Models.RiotGamesApi> action)
+        IApiBuilder IApiBuilder.UseStatusApi(Func<Models.RiotGamesApi, Models.RiotGamesApi> action)
         {
             this.RiotGamesApiOptions.RiotGamesApis[LolUrlType.Status] =
                 action(new Models.RiotGamesApi(this.RiotGamesApiOptions.StatusUrl));
             return this;
         }
 
-        public IApiBuilder UseTournamentApi(Func<Models.RiotGamesApi, Models.RiotGamesApi> action)
+        IApiBuilder IApiBuilder.UseTournamentApi(Func<Models.RiotGamesApi, Models.RiotGamesApi> action)
         {
             this.RiotGamesApiOptions.RiotGamesApis[LolUrlType.Tournament] =
                 action(new Models.RiotGamesApi(this.RiotGamesApiOptions.TournamentUrl));

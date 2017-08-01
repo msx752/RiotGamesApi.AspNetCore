@@ -1,5 +1,5 @@
-using System.Collections.Concurrent;
 using RiotGamesApi.AspNetCore.Enums;
+using System.Collections.Concurrent;
 
 namespace RiotGamesApi.AspNetCore.RateLimit.Property
 {

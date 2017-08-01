@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace RiotGamesApi.AspNetCore.Enums
+﻿namespace RiotGamesApi.AspNetCore.Enums
 {
     /// <summary>
     /// RiotGames X-Rate-Limit-Type 

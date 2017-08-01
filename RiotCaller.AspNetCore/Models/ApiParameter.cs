@@ -7,15 +7,15 @@ namespace RiotGamesApi.AspNetCore.Models
         /// <summary>
         /// url path parameter for apis 
         /// </summary>
-        /// <param name="SubApiType">
+        /// <param name="subApiType">
         /// Name of UrlPath 
         /// </param>
         /// <param name="value">
         /// value of UrlPath 
         /// </param>
-        public ApiParameter(LolApiPath SubApiType, object value)
+        public ApiParameter(LolApiPath subApiType, object value)
         {
-            this.Type = SubApiType;
+            this.Type = subApiType;
             this.Value = value;
         }
 

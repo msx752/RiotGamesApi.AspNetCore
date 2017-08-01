@@ -2,17 +2,16 @@
 using RiotGamesApi.AspNetCore.Enums;
 using RiotGamesApi.AspNetCore.Extensions;
 using RiotGamesApi.AspNetCore.Interfaces;
+using RiotGamesApi.AspNetCore.RateLimit.Property;
+using RiotGamesApi.AspNetCore.RiotApi.Enums;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using RiotGamesApi.AspNetCore.RateLimit;
-using RiotGamesApi.AspNetCore.RateLimit.Property;
-using RiotGamesApi.AspNetCore.RiotApi.Enums;
-using RiotGamesApi.AspNetCore.RiotApi.TournamentEndPoints;
 
 namespace RiotGamesApi.AspNetCore.Models
 {
@@ -26,22 +25,18 @@ namespace RiotGamesApi.AspNetCore.Models
     {
         private IResult<T> _riotResult;
 
-        public LolApiRequest()
-        {
-        }
-
         public LolApiUrl ApiList { get; internal set; }
         public string BaseUrl { get; internal set; }
         public string Platform { get; private set; }
 
-        public String CacheKey
-        {
-            get
-            {
-                return RequestUrl
-                    .Replace($"?api_key={ApiSettings.ApiOptions.RiotApiKey}", "");
-            }
-        }
+        /// <exception cref="ArgumentNullException">
+        /// <paramref> <name> oldValue </name></paramref> is null. 
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        /// <paramref name="oldValue" /> is the empty string (""). 
+        /// </exception>
+        public string CacheKey => RequestUrl
+            .Replace($"?api_key={ApiSettings.ApiOptions.RiotApiKey}", "");
 
         public bool Caching { get; internal set; }
         public List<ApiParameter> ParametersWithValue { get; private set; }
@@ -49,14 +44,29 @@ namespace RiotGamesApi.AspNetCore.Models
 
         public IResult<T> RiotResult
         {
-            get { return _riotResult ?? (_riotResult = new RiotGamesApiResult<T>()); }
-            set { _riotResult = value; }
+            get => _riotResult ?? (_riotResult = new RiotGamesApiResult<T>());
+            set => _riotResult = value;
         }
 
         public int SelectedApiIndex { get; private set; } = -1;
         public List<Method> SelectedSubUrlCache { get; internal set; }
         public LolUrlType UrlType { get; internal set; }
 
+        /// <exception cref="IOException">
+        /// An I/O error occurred. 
+        /// </exception>
+        /// <exception cref="RiotGamesApiException">
+        /// Condition. 
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref> <name> source </name></paramref> is null. 
+        /// </exception>
+        /// <exception cref="Exception">
+        /// Condition. 
+        /// </exception>
+        /// <exception cref="OverflowException">
+        /// The number of elements in <paramref name="source" /> is larger than <see cref="F:System.Int32.MaxValue" />. 
+        /// </exception>
         public IBuild<T> AddParameter(params ApiParameter[] parameters)
         {
             if (parameters.Any())
@@ -107,17 +117,35 @@ namespace RiotGamesApi.AspNetCore.Models
             return this;
         }
 
+        /// <exception cref="IOException">
+        /// An I/O error occurred. 
+        /// </exception>
+        /// <exception cref="RiotGamesApiException">
+        /// Condition. 
+        /// </exception>
+        /// <exception cref="Exception">
+        /// Condition. 
+        /// </exception>
         public IRequestMethod<T> Build(PhysicalRegion platform)
         {
             return Build(platform.ToString());
         }
 
+        /// <exception cref="IOException">
+        /// An I/O error occurred. 
+        /// </exception>
+        /// <exception cref="RiotGamesApiException">
+        /// Condition. 
+        /// </exception>
+        /// <exception cref="Exception">
+        /// Condition. 
+        /// </exception>
         public IRequestMethod<T> Build(string platform)
         {
             try
             {
                 Platform = platform;
-                Method selected = null;
+                Method selected;
                 if (SelectedApiIndex != -1)
                 {
                     selected = ApiList.ApiMethods[SelectedApiIndex];
@@ -132,7 +160,7 @@ namespace RiotGamesApi.AspNetCore.Models
                 var newUrl =
                     $"{BaseUrl}/{ApiList.ApiName.GetStringValue()}/{ApiList.Version}/{selected.ApiMethodName.GetStringValue()}";
                 newUrl = newUrl.Replace("{platformId}", Platform);
-                List<LolParameterType> array =
+                var array =
                     ((LolParameterType[])Enum.GetValues(typeof(LolParameterType)))
                     .ToList();
                 //url replace value
@@ -148,7 +176,7 @@ namespace RiotGamesApi.AspNetCore.Models
                         string nameOfParameterType = m.Value;
                         string paramStringVl = parameter.GetStringValue();
                         var para = ParametersWithValue.First(
-                            p => p.Type.GetStringValue().IndexOf(paramStringVl) != -1);
+                            p => p.Type.GetStringValue().IndexOf(paramStringVl, StringComparison.Ordinal) != -1);
                         var parameterType = array.First(p => $"{{{p.ToString()}}}" == nameOfParameterType);
                         Type paraValueGetType = para.Value.GetType();
                         string paraValueToString = para.Value.ToString();
@@ -190,6 +218,12 @@ namespace RiotGamesApi.AspNetCore.Models
             return this;
         }
 
+        /// <exception cref="IOException">
+        /// An I/O error occurred. 
+        /// </exception>
+        /// <exception cref="Exception">
+        /// Condition. 
+        /// </exception>
         public IRequestMethod<T> Build(ServicePlatform platform)
         {
             return Build(platform.ToString());
@@ -201,56 +235,32 @@ namespace RiotGamesApi.AspNetCore.Models
             return this;
         }
 
+        /// <exception cref="IOException">
+        /// An I/O error occurred. 
+        /// </exception>
+        /// <exception cref="ObjectDisposedException">
+        /// The <see cref="T:System.Threading.Tasks.Task" /> has been disposed. 
+        /// </exception>
+        /// <exception cref="AggregateException">
+        /// The task was canceled. The <see cref="P:System.AggregateException.InnerExceptions" />
+        /// collection contains a <see cref="T:System.Threading.Tasks.TaskCanceledException" />
+        /// object. -or-An exception was thrown during the execution of the task. The
+        /// <see cref="P:System.AggregateException.InnerExceptions" /> collection contains
+        /// information about the exception or exceptions.
+        /// </exception>
         public IResult<T> Get(Dictionary<string, object> optionalParameters = null)
         {
             GetAsync(optionalParameters).Wait();
             return RiotResult;
         }
 
+        /// <exception cref="IOException">
+        /// An I/O error occurred. 
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// The <paramref> <name> function </name></paramref> parameter was null. 
+        /// </exception>
         public async Task<IResult<T>> GetAsync(Dictionary<string, object> optionalParameters = null)
-        {
-            return await Task.Run(async () =>
-             {
-                 try
-                 {
-                     RegisterApiKey();
-                     RegisterQueryParameter(optionalParameters);
-                     if (CacheControl())
-                         return RiotResult;
-
-                     await GetHttpResponse(HttpMethod.Get);
-                 }
-                 catch (RiotGamesApiException e)
-                 {
-                     RiotResult.Exception = e;
-                     Console.WriteLine(e);
-                 }
-                 catch (Exception e)
-                 {
-                     RiotResult.Exception = e;
-                     Console.WriteLine(e);
-                 }
-                 return RiotResult;
-             });
-        }
-
-        public IResult<T> Post(object bodyParameter = null)
-        {
-            return Post(new Dictionary<string, object>(), bodyParameter);
-        }
-
-        public IResult<T> Post(Dictionary<string, object> optionalParameters = null, object bodyParameter = null)
-        {
-            PostAsync(optionalParameters, bodyParameter).Wait();
-            return RiotResult;
-        }
-
-        public Task<IResult<T>> PostAsync(object bodyParameter = null)
-        {
-            return PostAsync(null, bodyParameter);
-        }
-
-        public async Task<IResult<T>> PostAsync(Dictionary<string, object> optionalParameters = null, object bodyParameter = null)
         {
             return await Task.Run(async () =>
             {
@@ -261,7 +271,7 @@ namespace RiotGamesApi.AspNetCore.Models
                     if (CacheControl())
                         return RiotResult;
 
-                    await GetHttpResponse(HttpMethod.Post);
+                    await GetHttpResponse(HttpMethod.Get).ConfigureAwait(false);
                 }
                 catch (RiotGamesApiException e)
                 {
@@ -274,9 +284,77 @@ namespace RiotGamesApi.AspNetCore.Models
                     Console.WriteLine(e);
                 }
                 return RiotResult;
-            });
+            }).ConfigureAwait(false);
         }
 
+        public IResult<T> Post(object bodyParameter = null)
+        {
+            return Post(new Dictionary<string, object>(), bodyParameter);
+        }
+
+        /// <exception cref="IOException">
+        /// An I/O error occurred. 
+        /// </exception>
+        public IResult<T> Post(Dictionary<string, object> optionalParameters = null, object bodyParameter = null)
+        {
+            PostAsync(optionalParameters, bodyParameter).Wait();
+            return RiotResult;
+        }
+
+        /// <exception cref="IOException">
+        /// An I/O error occurred. 
+        /// </exception>
+        public Task<IResult<T>> PostAsync(object bodyParameter = null)
+        {
+            return PostAsync(null, bodyParameter);
+        }
+
+        /// <exception cref="ArgumentNullException">
+        /// The <paramref> <name> function </name></paramref> parameter was null. 
+        /// </exception>
+        /// <exception cref="IOException">
+        /// An I/O error occurred. 
+        /// </exception>
+        public async Task<IResult<T>> PostAsync(Dictionary<string, object> optionalParameters = null, object bodyParameter = null)
+        {
+            return await Task.Run(async () =>
+            {
+                try
+                {
+                    RegisterApiKey();
+                    RegisterQueryParameter(optionalParameters);
+                    if (CacheControl())
+                        return RiotResult;
+
+                    await GetHttpResponse(HttpMethod.Post).ConfigureAwait(false);
+                }
+                catch (RiotGamesApiException e)
+                {
+                    RiotResult.Exception = e;
+                    Console.WriteLine(e);
+                }
+                catch (Exception e)
+                {
+                    RiotResult.Exception = e;
+                    Console.WriteLine(e);
+                }
+                return RiotResult;
+            }).ConfigureAwait(false);
+        }
+
+        /// <exception cref="AggregateException">
+        /// The task was canceled. The <see cref="P:System.AggregateException.InnerExceptions" />
+        /// collection contains a <see cref="T:System.Threading.Tasks.TaskCanceledException" />
+        /// object. -or-An exception was thrown during the execution of the task. The
+        /// <see cref="P:System.AggregateException.InnerExceptions" /> collection contains
+        /// information about the exception or exceptions.
+        /// </exception>
+        /// <exception cref="ObjectDisposedException">
+        /// The <see cref="T:System.Threading.Tasks.Task" /> has been disposed. 
+        /// </exception>
+        /// <exception cref="IOException">
+        /// An I/O error occurred. 
+        /// </exception>
         public IResult<T> Put(object bodyParameter = null)
         {
             PutAsync(bodyParameter).Wait();
@@ -293,7 +371,7 @@ namespace RiotGamesApi.AspNetCore.Models
                     if (CacheControl())
                         return RiotResult;
 
-                    await GetHttpResponse(HttpMethod.Put);
+                    await GetHttpResponse(HttpMethod.Put).ConfigureAwait(false);
                 }
                 catch (RiotGamesApiException e)
                 {
@@ -306,15 +384,12 @@ namespace RiotGamesApi.AspNetCore.Models
                     Console.WriteLine(e);
                 }
                 return RiotResult;
-            });
+            }).ConfigureAwait(false);
         }
 
         public override string ToString()
         {
-            if (RequestUrl != null)
-                return RequestUrl;
-            else
-                return base.ToString();
+            return RequestUrl ?? base.ToString();
         }
 
         public IRequestMethod<T> UseCache(bool useCache = false)
@@ -334,38 +409,44 @@ namespace RiotGamesApi.AspNetCore.Models
                 if (ApiSettings.ApiOptions.CacheOptions.EnableStaticApiCaching)
                 {
                     var found = ApiSettings.ApiOptions.CacheOptions.FindCacheRule(UrlType, ApiList.ApiName);
-                    if (found != null)
-                        Caching = true;
-                    else
-                        Caching = false;
+                    Caching = found != null;
                 }
             }
 
-            if (Caching)
-            {
-                T data;
-                var rslt = ApiSettings.ApiCache.Get<T>(this, out data);
-                if (rslt)
-                {
-                    RiotResult.IsCache = true;
-                    RiotResult.Result = data;
-                    return true;
-                }
-            }
-            return false;
+            if (!Caching) return false;
+            var rslt = ApiSettings.ApiCache.Get(this, out T data);
+            if (!rslt) return false;
+            RiotResult.IsCache = true;
+            RiotResult.Result = data;
+            return true;
         }
 
-        public RateLimitProperties Property
+        public RateLimitProperties Property => new RateLimitProperties
         {
-            get
-            {
-                return new RateLimitProperties()
-                {
-                    UrlType = UrlType,
-                    Platform = Platform,
-                    ApiName = ApiList.ApiName
-                };
-            }
+            UrlType = UrlType,
+            Platform = Platform,
+            ApiName = ApiList.ApiName
+        };
+
+        private async Task<HttpResponseMessage> CreateHttpRequestMessage(HttpMethod method, StringContent data)
+        {
+            var request = new HttpRequestMessage(HttpMethod.Get, RequestUrl);
+            request.Headers.Add("UserAgent", "RiotGamesApi.AspNetCore");
+            request.Headers.Add("Accept-Language", "tr-TR,tr;q=0.8,en-US;q=0.6,en;q=0.4,ru;q=0.2");
+            request.Headers.Add("Accept-Charset", "ISO-8859-1,UTF-8");
+
+            var httpClient = new HttpClient();
+            HttpResponseMessage response;
+            if (method == HttpMethod.Get)
+                response = await httpClient.GetAsync(request.RequestUri).ConfigureAwait(false);
+            else if (method == HttpMethod.Post)
+                response = await httpClient.PostAsync(request.RequestUri, data).ConfigureAwait(false);
+            else if (method == HttpMethod.Put)
+                response = await httpClient.PutAsync(request.RequestUri, data).ConfigureAwait(false);
+            else
+                throw new RiotGamesApiException("undefined httpMethod request");
+
+            return response;
         }
 
         private async Task GetHttpResponse(HttpMethod method, object bodyData = null)
@@ -379,117 +460,115 @@ namespace RiotGamesApi.AspNetCore.Models
             StringContent data = null;
             if (method == HttpMethod.Put || method == HttpMethod.Post)
             {
-                if (bodyData != null)
-                    data = new StringContent(JsonConvert.SerializeObject(bodyData));
-                else
-                    data = new StringContent("");
+                data = bodyData != null ? new StringContent(JsonConvert.SerializeObject(bodyData)) : new StringContent("");
             }
-
-            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, this.RequestUrl);
-            request.Headers.Add("UserAgent", "RiotGamesApi.AspNetCore");
-            request.Headers.Add("Accept-Language", "tr-TR,tr;q=0.8,en-US;q=0.6,en;q=0.4,ru;q=0.2");
-            request.Headers.Add("Accept-Charset", "ISO-8859-1,UTF-8");
-
-            HttpClient httpClient = new HttpClient();
-            HttpResponseMessage response = null;
-            if (method == HttpMethod.Get)
-                response = await httpClient.GetAsync(request.RequestUri);
-            else if (method == HttpMethod.Post)
-                response = await httpClient.PostAsync(request.RequestUri, data);
-            else if (method == HttpMethod.Put)
-                response = await httpClient.PutAsync(request.RequestUri, data);
-            else
-                throw new RiotGamesApiException("undefined httpMethod request");
-
+            var response = await CreateHttpRequestMessage(method, data).ConfigureAwait(false);
             Debug.WriteLine($"----\r\n{Property}\r\n{response.Headers}\r\n");
 
             if (!response.IsSuccessStatusCode)
             {
-                RiotGamesApiException exp = null;
-                if ((int)response.StatusCode == 400)
-                    exp = new RiotGamesApiException($"Bad request:{(int)response.StatusCode}");
-                else if ((int)response.StatusCode == 401)
-                    exp = new RiotGamesApiException($"Unauthorized:{(int)response.StatusCode}");
-                else if ((int)response.StatusCode == 403)
-                    exp = new RiotGamesApiException($"Forbidden:{(int)response.StatusCode}");
-                else if ((int)response.StatusCode == 404)
-                    exp = new RiotGamesApiException($"Data not found:{(int)response.StatusCode}");
-                else if ((int)response.StatusCode == 405)
-                    exp = new RiotGamesApiException($"Method not allowed:{(int)response.StatusCode}");
-                else if ((int)response.StatusCode == 415)
-                    exp = new RiotGamesApiException($"Unsupported media type:{(int)response.StatusCode}");
-                else if ((int)response.StatusCode == 429)
+                RiotGamesApiException exp;
+                switch ((int)response.StatusCode)
                 {
-                    //handle response
-                    Debug.WriteLine("# RATE LIMIT EXCEEDED #");
-                    if (ApiSettings.ApiOptions.RateLimitOptions.DisableLimiting == false)
-                    {
-                        var rateLimitType = response.Headers.First(p => p.Key == "X-Rate-Limit-Type").Value.First();
-                        RateLimitType rType;
+                    case 400:
+                        exp = new RiotGamesApiException($"Bad request:{(int)response.StatusCode}");
+                        break;
 
-                        if (rateLimitType == "application")
-                            rType = RateLimitType.AppRate;
-                        else if (rateLimitType == "method")
-                            rType = RateLimitType.MethodRate;
-                        else if (rateLimitType == "service")
-                            rType = RateLimitType.ServiceRate;
+                    case 401:
+                        exp = new RiotGamesApiException($"Unauthorized:{(int)response.StatusCode}");
+                        break;
+
+                    case 403:
+                        exp = new RiotGamesApiException($"Forbidden:{(int)response.StatusCode}");
+                        break;
+
+                    case 404:
+                        exp = new RiotGamesApiException($"Data not found:{(int)response.StatusCode}");
+                        break;
+
+                    case 405:
+                        exp = new RiotGamesApiException($"Method not allowed:{(int)response.StatusCode}");
+                        break;
+
+                    case 415:
+                        exp = new RiotGamesApiException($"Unsupported media type:{(int)response.StatusCode}");
+                        break;
+
+                    case 429:
+                        //handle response
+                        Debug.WriteLine("# RATE LIMIT EXCEEDED #");
+                        if (ApiSettings.ApiOptions.RateLimitOptions.DisableLimiting == false)
+                        {
+                            var rateLimitType = response.Headers.First(p => p.Key == "X-Rate-Limit-Type").Value.First();
+                            RateLimitType rType;
+
+                            if (rateLimitType == "application")
+                                rType = RateLimitType.AppRate;
+                            else if (rateLimitType == "method")
+                                rType = RateLimitType.MethodRate;
+                            else if (rateLimitType == "service")
+                                rType = RateLimitType.ServiceRate;
+                            else
+                                throw new RiotGamesApiException("UNDEFINED RATELIMIT TYPE: " + rateLimitType);
+
+                            var retryseconds = response.Headers.First(p => p.Key == "Retry-After").Value.First();
+
+                            ApiSettings.ApiRate.SetRetryTime(Property, rType, int.Parse(retryseconds));
+
+                            exp = new RiotGamesApiException($"Rate limit exceeded:{(int)response.StatusCode}|ExceedType:{rateLimitType}|retryAfter: {retryseconds} sec.");
+                        }
                         else
-                            throw new RiotGamesApiException("UNDEFINED RATELIMIT TYPE: " + rateLimitType);
+                        {
+                            exp = new RiotGamesApiException($"Rate limit exceeded:{(int)response.StatusCode}|RateLimiting is not ACTIVE");
+                        }
+                        break;
 
-                        var retryseconds = response.Headers.First(p => p.Key == "Retry-After").Value.First();
+                    case 500:
+                        exp = new RiotGamesApiException($"Internal server error:{(int)response.StatusCode}");
+                        break;
 
-                        ApiSettings.ApiRate.SetRetryTime(Property, rType, int.Parse(retryseconds));
+                    case 502:
+                        exp = new RiotGamesApiException($"Bad gateway:{(int)response.StatusCode}");
+                        break;
 
-                        exp = new RiotGamesApiException($"Rate limit exceeded:{(int)response.StatusCode}|ExceedType:{rateLimitType}|retryAfter: {retryseconds} sec.");
-                    }
-                    else
-                    {
-                        exp = new RiotGamesApiException($"Rate limit exceeded:{(int)response.StatusCode}|RateLimiting is not ACTIVE");
-                    }
+                    case 503:
+                        exp = new RiotGamesApiException($"Service unavailable:{(int)response.StatusCode}");
+                        break;
+
+                    case 504:
+                        exp = new RiotGamesApiException($"Gateway timeout:{(int)response.StatusCode}");
+                        break;
+
+                    default:
+                        exp = new RiotGamesApiException($"Unknown Error code:{(int)response.StatusCode}");
+                        break;
                 }
-                else if ((int)response.StatusCode == 500)
-                    exp = new RiotGamesApiException($"Internal server error:{(int)response.StatusCode}");
-                else if ((int)response.StatusCode == 502)
-                    exp = new RiotGamesApiException($"Bad gateway:{(int)response.StatusCode}");
-                else if ((int)response.StatusCode == 503)
-                    exp = new RiotGamesApiException($"Service unavailable:{(int)response.StatusCode}");
-                else if ((int)response.StatusCode == 504)
-                    exp = new RiotGamesApiException($"Gateway timeout:{(int)response.StatusCode}");
-                else
-                    exp = new RiotGamesApiException($"Unknown Error code:{(int)response.StatusCode}");
                 throw exp;
             }
-            else
+            using (var content = response.Content)
             {
-                using (HttpContent content = response.Content)
-                {
-                    string json = await content.ReadAsStringAsync();
-                    RiotResult.Result = JsonConvert.DeserializeObject<T>(json);
-                }
+                string json = await content.ReadAsStringAsync().ConfigureAwait(false);
+                RiotResult.Result = JsonConvert.DeserializeObject<T>(json);
             }
 
             if (Caching)
-            {
-                ApiSettings.ApiCache.Add<T>(this);
-            }
+                ApiSettings.ApiCache.Add(this);
         }
 
         private void RegisterApiKey()
         {
             if (string.IsNullOrWhiteSpace(ApiSettings.ApiOptions.RiotApiKey))
                 throw new RiotGamesApiException("api_key is not found, please set key to 'RiotApiMain.Api_Key' ");
-            this.RequestUrl += $"?api_key={ApiSettings.ApiOptions.RiotApiKey}";
+            RequestUrl += $"?api_key={ApiSettings.ApiOptions.RiotApiKey}";
         }
 
         private void RegisterQueryParameter(Dictionary<string, object> optionalParameters)
         {
-            if (optionalParameters != null)
+            if (optionalParameters == null) return;
+            foreach (var parameter in optionalParameters)
             {
-                foreach (var parameter in optionalParameters)
-                {
-                    if (parameter.Value != null)
-                        this.RequestUrl += $"&{parameter.Key}={parameter.Value}";
-                }
+                if (parameter.Value != null)
+                    RequestUrl += $"&{parameter.Key}={parameter.Value}";
             }
         }
     }

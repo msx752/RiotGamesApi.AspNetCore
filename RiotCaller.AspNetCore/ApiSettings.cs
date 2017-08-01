@@ -1,15 +1,7 @@
-using RiotGamesApi.AspNetCore.Enums;
-using RiotGamesApi.AspNetCore.Extensions;
-using RiotGamesApi.AspNetCore.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
 using Microsoft.Extensions.Caching.Memory;
-using RiotGamesApi.AspNetCore.Cache;
-using RiotGamesApi.AspNetCore.Models;
+using RiotGamesApi.AspNetCore.Interfaces;
 using RiotGamesApi.AspNetCore.RateLimit;
-using RiotGamesApi.AspNetCore.RiotApi.Enums;
+using System;
 
 namespace RiotGamesApi.AspNetCore
 {

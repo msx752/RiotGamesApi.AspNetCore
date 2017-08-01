@@ -5,6 +5,7 @@ using RiotGamesApi.AspNetCore.Cache;
 using RiotGamesApi.AspNetCore.Enums;
 using RiotGamesApi.AspNetCore.Interfaces;
 using RiotGamesApi.AspNetCore.RateLimit;
+using RiotGamesApi.AspNetCore.RateLimit.Builder;
 using RiotGamesApi.AspNetCore.RiotApi.Enums;
 using RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.ChampionMastery;
 using RiotGamesApi.AspNetCore.RiotApi.NonStaticEndPoints.League;
@@ -26,7 +27,6 @@ using RiotGamesApi.AspNetCore.RiotApi.StatusEndPoints;
 using RiotGamesApi.AspNetCore.RiotApi.TournamentEndPoints;
 using System;
 using System.Collections.Generic;
-using RiotGamesApi.AspNetCore.RateLimit.Builder;
 using LobbyEventDTOWrapper = RiotGamesApi.AspNetCore.RiotApi.TournamentEndPoints.LobbyEventDTOWrapper;
 using MasteryDto = RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.Masteries.MasteryDto;
 using RuneDto = RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.Runes.RuneDto;
@@ -44,9 +44,12 @@ namespace RiotGamesApi.AspNetCore.Extensions
         /// <param name="riotApiKey">
         /// RiotGames DeveloperKey or ProductionKey 
         /// </param>
+        /// <exception cref="Exception">
+        /// A delegate callback throws an exception. 
+        /// </exception>
         public static void AddLeagueOfLegendsApi(this IServiceCollection services, string riotApiKey)
         {
-            AddLeagueOfLegendsApi(services, riotApiKey, null);
+            AddLeagueOfLegendsApi(services, riotApiKey, null, null);
         }
 
         /// <summary>
@@ -60,10 +63,22 @@ namespace RiotGamesApi.AspNetCore.Extensions
         /// <param name="cacheOption">
         /// custom api caching options (default: ApiCaching is NOT USED ) 
         /// </param>
+        /// <exception cref="Exception">
+        /// A delegate callback throws an exception. 
+        /// </exception>
         public static void AddLeagueOfLegendsApi(this IServiceCollection services, string riotApiKey,
-            Func<CacheOption, CacheOption> cacheOption = null)
+            Func<CacheOption, CacheOption> cacheOption)
         {
             AddLeagueOfLegendsApi(services, riotApiKey, cacheOption, null);
+        }
+
+        /// <exception cref="Exception">
+        /// A delegate callback throws an exception. 
+        /// </exception>
+        public static void AddLeagueOfLegendsApi(this IServiceCollection services, string riotApiKey,
+            Func<RateLimitData, RateLimitData> rateLimitOption2)
+        {
+            AddLeagueOfLegendsApi(services, riotApiKey, null, rateLimitOption2);
         }
 
         /// <summary>
@@ -83,9 +98,12 @@ namespace RiotGamesApi.AspNetCore.Extensions
         /// is USED) default X-App-Rate-Limit: 100:120,20:1, default X-Method-Rate-Limit:
         /// 20000:10,1200000:600, default Mathlists X-Method-Rate-Limit: 500:10
         /// </param>
+        /// <exception cref="Exception">
+        /// A delegate callback throws an exception. 
+        /// </exception>
         public static void AddLeagueOfLegendsApi(this IServiceCollection services, string riotApiKey,
-            Func<CacheOption, CacheOption> cacheOption = null,
-            Func<RateLimitData, RateLimitData> rateLimitOption2 = null)
+            Func<CacheOption, CacheOption> cacheOption,
+            Func<RateLimitData, RateLimitData> rateLimitOption2)
         {
             //can convertable to json
             var riotGamesApiBuilder = RiotGamesApiBuilder(riotApiKey);
@@ -131,7 +149,7 @@ namespace RiotGamesApi.AspNetCore.Extensions
 
         private static IApiBuilder RiotGamesApiBuilder(string riotApiKey)
         {
-            var riotGamesApiBuilder = new RiotGamesApiBuilder()
+            var riotGamesApiBuilder = ((IApiBuilder)new RiotGamesApiBuilder())
                 .UseRiotApiKey(riotApiKey)
                 .UseApiUrl("api.riotgames.com")
                 .UseStatusApi((apis) =>

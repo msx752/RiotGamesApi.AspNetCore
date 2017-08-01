@@ -8,15 +8,15 @@ namespace RiotGamesApi.AspNetCore.Attributes
     [AttributeUsage(AttributeTargets.Field, AllowMultiple = false)]
     public class ParameterTypeAttribute : Attribute
     {
-        private readonly Type _parameterType;
-
         public ParameterTypeAttribute(Type _apitype)
         {
-            this._parameterType = _apitype;
+            this.ParameterType = _apitype;
         }
 
-        public Type ParameterType { get { return _parameterType; } }
+        public Type ParameterType { get; }
 
+        /// <inheritdoc />
+        ///
         public override string ToString()
         {
             return ParameterType.ToString();

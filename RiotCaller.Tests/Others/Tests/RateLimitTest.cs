@@ -17,7 +17,7 @@ namespace RiotGamesApi.Tests.Others.Tests
             for (int i = 0; i < 1000; i++)
             {
                 LolApi.NonStaticApi.Summonerv3
-                    .GetSummonersOnlySummonerId(ServicePlatform.TR1, SummonerId);
+                    .GetSummonersOnlySummonerId(ServicePlatform.EUW1, SummonerId);
             }
         }
 
@@ -35,7 +35,7 @@ namespace RiotGamesApi.Tests.Others.Tests
                     {
                         ApiRateLimiting.Handle(new RateLimitProperties()
                         {
-                            Platform = ServicePlatform.TR1.ToString(),
+                            Platform = ServicePlatform.EUW1.ToString(),
                             ApiName = LolApiName.Match,
                             UrlType = LolUrlType.NonStatic
                         });
@@ -66,7 +66,7 @@ namespace RiotGamesApi.Tests.Others.Tests
 
             var na1 = ApiRateLimiting.Rates.Find(ServicePlatform.NA1.ToString(), LolUrlType.NonStatic, LolApiName.Match);
             var c1 = na1.Limits.First().Counter;
-            var tr1 = ApiRateLimiting.Rates.Find(ServicePlatform.TR1.ToString(), LolUrlType.NonStatic, LolApiName.Match);
+            var tr1 = ApiRateLimiting.Rates.Find(ServicePlatform.EUW1.ToString(), LolUrlType.NonStatic, LolApiName.Match);
             var c2 = tr1.Limits.First().Counter;
 
             Assert.Equal(c1, c2 * 2);
