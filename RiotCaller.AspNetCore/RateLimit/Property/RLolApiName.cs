@@ -1,8 +1,8 @@
-﻿using System;
+﻿using Force.DeepCloner;
+using RiotGamesApi.AspNetCore.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using RiotGamesApi.AspNetCore.Enums;
-using Force.DeepCloner;
 
 namespace RiotGamesApi.AspNetCore.RateLimit.Property
 {

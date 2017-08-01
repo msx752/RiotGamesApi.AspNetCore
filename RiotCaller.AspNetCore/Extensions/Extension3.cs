@@ -1,11 +1,10 @@
 using RiotGamesApi.AspNetCore.Attributes;
 using RiotGamesApi.AspNetCore.Enums;
+using RiotGamesApi.AspNetCore.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Newtonsoft.Json;
-using RiotGamesApi.AspNetCore.Models;
 
 namespace RiotGamesApi.AspNetCore.Extensions
 {

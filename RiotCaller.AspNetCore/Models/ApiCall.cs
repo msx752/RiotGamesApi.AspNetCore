@@ -1,7 +1,6 @@
 using RiotGamesApi.AspNetCore.Enums;
 using RiotGamesApi.AspNetCore.Extensions;
 using RiotGamesApi.AspNetCore.Interfaces;
-using System;
 using System.Linq;
 using static RiotGamesApi.AspNetCore.ApiSettings;
 
