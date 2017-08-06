@@ -248,7 +248,7 @@ namespace RiotGamesApi.AspNetCore.Models
         /// <see cref="P:System.AggregateException.InnerExceptions" /> collection contains
         /// information about the exception or exceptions.
         /// </exception>
-        public IResult<T> Get(Dictionary<string, object> optionalParameters = null)
+        public IResult<T> Get(params QueryParameter[] optionalParameters)
         {
             GetAsync(optionalParameters).Wait();
             return RiotResult;
@@ -260,7 +260,7 @@ namespace RiotGamesApi.AspNetCore.Models
         /// <exception cref="ArgumentNullException">
         /// The <paramref> <name> function </name></paramref> parameter was null. 
         /// </exception>
-        public async Task<IResult<T>> GetAsync(Dictionary<string, object> optionalParameters = null)
+        public async Task<IResult<T>> GetAsync(params QueryParameter[] optionalParameters)
         {
             return await Task.Run(async () =>
             {
@@ -289,15 +289,15 @@ namespace RiotGamesApi.AspNetCore.Models
 
         public IResult<T> Post(object bodyParameter = null)
         {
-            return Post(new Dictionary<string, object>(), bodyParameter);
+            return Post(bodyParameter, new QueryParameter());
         }
 
         /// <exception cref="IOException">
         /// An I/O error occurred. 
         /// </exception>
-        public IResult<T> Post(Dictionary<string, object> optionalParameters = null, object bodyParameter = null)
+        public IResult<T> Post(object bodyParameter = null, params QueryParameter[] optionalParameters)
         {
-            PostAsync(optionalParameters, bodyParameter).Wait();
+            PostAsync(bodyParameter, optionalParameters).Wait();
             return RiotResult;
         }
 
@@ -306,7 +306,7 @@ namespace RiotGamesApi.AspNetCore.Models
         /// </exception>
         public Task<IResult<T>> PostAsync(object bodyParameter = null)
         {
-            return PostAsync(null, bodyParameter);
+            return PostAsync(bodyParameter, new QueryParameter());
         }
 
         /// <exception cref="ArgumentNullException">
@@ -315,7 +315,7 @@ namespace RiotGamesApi.AspNetCore.Models
         /// <exception cref="IOException">
         /// An I/O error occurred. 
         /// </exception>
-        public async Task<IResult<T>> PostAsync(Dictionary<string, object> optionalParameters = null, object bodyParameter = null)
+        public async Task<IResult<T>> PostAsync(object bodyParameter = null, params QueryParameter[] optionalParameters)
         {
             return await Task.Run(async () =>
             {
@@ -562,12 +562,12 @@ namespace RiotGamesApi.AspNetCore.Models
             RequestUrl += $"?api_key={ApiSettings.ApiOptions.RiotApiKey}";
         }
 
-        private void RegisterQueryParameter(Dictionary<string, object> optionalParameters)
+        private void RegisterQueryParameter(params QueryParameter[] optionalParameters)
         {
-            if (optionalParameters == null) return;
+            if (optionalParameters.Count() == 0) return;
             foreach (var parameter in optionalParameters)
             {
-                if (parameter.Value != null)
+                if (parameter.Value != null && !string.IsNullOrWhiteSpace(parameter.Value.ToString()))
                     RequestUrl += $"&{parameter.Key}={parameter.Value}";
             }
         }

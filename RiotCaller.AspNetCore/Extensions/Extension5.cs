@@ -86,7 +86,7 @@ namespace RiotGamesApi.AspNetCore.Extensions
                             @SecondaryMethodRefParameters += $",_useCache";
                         }
                         string @queryParameters = "";
-                        string @optionalParameters = "new Dictionary<string, object>()\r\n{\r\n";
+                        string @optionalParameters = "";
                         foreach (var query in urlSub.TypesOfQueryParameter)
                         {
                             string paramName = $"_{query.Key}";
@@ -107,21 +107,25 @@ namespace RiotGamesApi.AspNetCore.Extensions
                             @SecondaryMethodRefParameters += $",{paramName}";
                             if (paramType.StartsWith("List<"))
                             {
-                                @optionalParameters += $"{{\"{query.Key}\",string.Join(\"&tags=\", {paramName}  ?? new {paramType}()) }},\r\n";
+                                optionalParameters += $"new QueryParameter(\"{query.Key}\", string.Join(\"&tags=\", {paramName}  ?? new {paramType}()) ),\r\n";
+                                //@optionalParameters += $"{{\"{query.Key}\",string.Join(\"&tags=\", {paramName}  ?? new {paramType}()) }},\r\n";
                             }
                             else
                             {
                                 if (paramType == "Boolean")
                                 {
-                                    @optionalParameters += $"{{\"{query.Key}\",{paramName}.ToString().ToLower() }},\r\n";
+                                    @optionalParameters += $"new QueryParameter(\"{query.Key}\",{paramName}.ToString().ToLower()),\r\n";
+                                    //@optionalParameters += $"{{\"{query.Key}\",{paramName}.ToString().ToLower() }},\r\n";
                                 }
                                 else
                                 {
-                                    @optionalParameters += $"{{\"{query.Key}\",{paramName} }},\r\n";
+                                    @optionalParameters += $"new QueryParameter(\"{query.Key}\",{paramName}),\r\n";
+                                    //@optionalParameters += $"{{\"{query.Key}\",{paramName} }},\r\n";
                                 }
                             }
                         }
-                        @optionalParameters += "\r\n}\r\n";
+                        @optionalParameters = @optionalParameters.TrimEnd('\n').TrimEnd('\r').TrimEnd(',');
+                        @optionalParameters += "\r\n";
                         if (!string.IsNullOrWhiteSpace(@queryParameters))
                         {
                             @parameters += @queryParameters;
@@ -155,7 +159,9 @@ namespace RiotGamesApi.AspNetCore.Extensions
                                 }
                                 if (@optionalParameters.Length > 0)
                                     @optionalParameters += ",";
-                                optionalParameters += bodyParam;
+                                @optionalParameters = bodyParam + ",\r\n" + @optionalParameters;
+
+                                @optionalParameters = @optionalParameters.TrimEnd('\n').TrimEnd('\r').TrimEnd(',');
                             }
                         }
                         else

@@ -17,9 +17,9 @@ namespace RiotGamesApi.AspNetCore.Interfaces
         /// </returns>
         IRequestMethod<T> UseCache(bool useCache = false);
 
-        Task<IResult<T>> GetAsync(Dictionary<string, object> optionalParameters = null);
+        Task<IResult<T>> GetAsync(params QueryParameter[] optionalParameters);
 
-        IResult<T> Get(Dictionary<string, object> optionalParameters = null);
+        IResult<T> Get(params QueryParameter[] optionalParameters);
 
         IResult<T> Put(object bodyParameter = null);
 
@@ -29,8 +29,8 @@ namespace RiotGamesApi.AspNetCore.Interfaces
 
         Task<IResult<T>> PostAsync(object bodyParameter = null);
 
-        Task<IResult<T>> PostAsync(Dictionary<string, object> optionalParameters = null, object bodyParameter = null);
+        Task<IResult<T>> PostAsync(object bodyParameter = null, params QueryParameter[] optionalParameters);
 
-        IResult<T> Post(Dictionary<string, object> optionalParameters = null, object bodyParameter = null);
+        IResult<T> Post(object bodyParameter = null, params QueryParameter[] optionalParameters);
     }
 }

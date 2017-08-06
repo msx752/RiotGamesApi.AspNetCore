@@ -62,7 +62,18 @@ namespace RiotGamesApi.AspNetCore.RateLimit.Property
         /// </exception>
         public void Add(string region, RUrlType rut)
         {
-            Regions.TryAdd(region, rut);
+            var exists = Regions.ContainsKey(region);
+            if (!exists)
+            {
+                Regions.TryAdd(region, rut);
+            }
+            else
+            {
+                foreach (var itm in rut.UrlTypes)
+                {
+                    Regions[region].Add(itm.Key, itm.Value);
+                }
+            }
         }
 
         /// <exception cref="ArgumentNullException">

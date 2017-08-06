@@ -79,13 +79,10 @@ namespace RiotGamesApi.AspNetCore
                     .AddParameter()
                     .Build(platform)
                     .UseCache(_useCache)
-                    .GetAsync(new Dictionary<string, object>()
-                        {
-                            {"locale",_locale },
-                            {"version",_version },
-                            {"tags",string.Join("&tags=", _tags  ?? new List<RiotGamesApi.AspNetCore.RiotApi.Enums.ChampionTag>()) },
-                            {"dataById",_dataById.ToString().ToLower() },
-                        }
+                    .GetAsync(new QueryParameter("locale", _locale),
+                        new QueryParameter("version", _version),
+                        new QueryParameter("tags", string.Join("&tags=", _tags ?? new List<RiotGamesApi.AspNetCore.RiotApi.Enums.ChampionTag>())),
+                        new QueryParameter("dataById", _dataById.ToString().ToLower())
                     ).ConfigureAwait(false);
                 return rit;
             }
@@ -106,13 +103,10 @@ namespace RiotGamesApi.AspNetCore
                     .AddParameter(new ApiParameter(LolApiPath.OnlyId, _OnlyId))
                     .Build(platform)
                     .UseCache(_useCache)
-                    .GetAsync(new Dictionary<string, object>()
-                        {
-                            {"locale",_locale },
-                            {"version",_version },
-                            {"tags",string.Join("&tags=", _tags  ?? new List<RiotGamesApi.AspNetCore.RiotApi.Enums.ChampionTag>()) },
-                            {"dataById",_dataById.ToString().ToLower() },
-                        }
+                    .GetAsync(new QueryParameter("locale", _locale),
+                        new QueryParameter("version", _version),
+                        new QueryParameter("tags", string.Join("&tags=", _tags ?? new List<RiotGamesApi.AspNetCore.RiotApi.Enums.ChampionTag>())),
+                        new QueryParameter("dataById", _dataById.ToString().ToLower())
                     ).ConfigureAwait(false);
                 return rit;
             }
@@ -133,12 +127,9 @@ namespace RiotGamesApi.AspNetCore
                     .AddParameter()
                     .Build(platform)
                     .UseCache(_useCache)
-                    .GetAsync(new Dictionary<string, object>()
-                        {
-                            {"locale",_locale },
-                            {"version",_version },
-                            {"tags",string.Join("&tags=", _tags  ?? new List<RiotGamesApi.AspNetCore.RiotApi.Enums.ItemTag>()) },
-                        }
+                    .GetAsync(new QueryParameter("locale", _locale),
+                        new QueryParameter("version", _version),
+                        new QueryParameter("tags", string.Join("&tags=", _tags ?? new List<RiotGamesApi.AspNetCore.RiotApi.Enums.ItemTag>()))
                     ).ConfigureAwait(false);
                 return rit;
             }
@@ -159,12 +150,9 @@ namespace RiotGamesApi.AspNetCore
                     .AddParameter(new ApiParameter(LolApiPath.OnlyId, _OnlyId))
                     .Build(platform)
                     .UseCache(_useCache)
-                    .GetAsync(new Dictionary<string, object>()
-                        {
-                            {"locale",_locale },
-                            {"version",_version },
-                            {"tags",string.Join("&tags=", _tags  ?? new List<RiotGamesApi.AspNetCore.RiotApi.Enums.ItemTag>()) },
-                        }
+                    .GetAsync(new QueryParameter("locale", _locale),
+                        new QueryParameter("version", _version),
+                        new QueryParameter("tags", string.Join("&tags=", _tags ?? new List<RiotGamesApi.AspNetCore.RiotApi.Enums.ItemTag>()))
                     ).ConfigureAwait(false);
                 return rit;
             }
@@ -185,11 +173,8 @@ namespace RiotGamesApi.AspNetCore
                     .AddParameter()
                     .Build(platform)
                     .UseCache(_useCache)
-                    .GetAsync(new Dictionary<string, object>()
-                        {
-                            {"locale",_locale },
-                            {"version",_version },
-                        }
+                    .GetAsync(new QueryParameter("locale", _locale),
+                        new QueryParameter("version", _version)
                     ).ConfigureAwait(false);
                 return rit;
             }
@@ -230,11 +215,8 @@ namespace RiotGamesApi.AspNetCore
                     .AddParameter()
                     .Build(platform)
                     .UseCache(_useCache)
-                    .GetAsync(new Dictionary<string, object>()
-                        {
-                            {"locale",_locale },
-                            {"version",_version },
-                        }
+                    .GetAsync(new QueryParameter("locale", _locale),
+                        new QueryParameter("version", _version)
                     ).ConfigureAwait(false);
                 return rit;
             }
@@ -255,12 +237,9 @@ namespace RiotGamesApi.AspNetCore
                     .AddParameter()
                     .Build(platform)
                     .UseCache(_useCache)
-                    .GetAsync(new Dictionary<string, object>()
-                        {
-                            {"locale",_locale },
-                            {"version",_version },
-                            {"tags",string.Join("&tags=", _tags  ?? new List<RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.Masteries.MasteryTag>()) },
-                        }
+                    .GetAsync(new QueryParameter("locale", _locale),
+                        new QueryParameter("version", _version),
+                        new QueryParameter("tags", string.Join("&tags=", _tags ?? new List<RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.Masteries.MasteryTag>()))
                     ).ConfigureAwait(false);
                 return rit;
             }
@@ -281,12 +260,9 @@ namespace RiotGamesApi.AspNetCore
                     .AddParameter(new ApiParameter(LolApiPath.OnlyId, _OnlyId))
                     .Build(platform)
                     .UseCache(_useCache)
-                    .GetAsync(new Dictionary<string, object>()
-                        {
-                            {"locale",_locale },
-                            {"version",_version },
-                            {"tags",string.Join("&tags=", _tags  ?? new List<RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.Masteries.MasteryTag>()) },
-                        }
+                    .GetAsync(new QueryParameter("locale", _locale),
+                        new QueryParameter("version", _version),
+                        new QueryParameter("tags", string.Join("&tags=", _tags ?? new List<RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.Masteries.MasteryTag>()))
                     ).ConfigureAwait(false);
                 return rit;
             }
@@ -307,11 +283,8 @@ namespace RiotGamesApi.AspNetCore
                     .AddParameter()
                     .Build(platform)
                     .UseCache(_useCache)
-                    .GetAsync(new Dictionary<string, object>()
-                        {
-                            {"locale",_locale },
-                            {"version",_version },
-                        }
+                    .GetAsync(new QueryParameter("locale", _locale),
+                        new QueryParameter("version", _version)
                     ).ConfigureAwait(false);
                 return rit;
             }
@@ -352,12 +325,9 @@ namespace RiotGamesApi.AspNetCore
                     .AddParameter()
                     .Build(platform)
                     .UseCache(_useCache)
-                    .GetAsync(new Dictionary<string, object>()
-                        {
-                            {"locale",_locale },
-                            {"version",_version },
-                            {"tags",string.Join("&tags=", _tags  ?? new List<RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.Runes.RuneTag>()) },
-                        }
+                    .GetAsync(new QueryParameter("locale", _locale),
+                        new QueryParameter("version", _version),
+                        new QueryParameter("tags", string.Join("&tags=", _tags ?? new List<RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.Runes.RuneTag>()))
                     ).ConfigureAwait(false);
                 return rit;
             }
@@ -378,12 +348,9 @@ namespace RiotGamesApi.AspNetCore
                     .AddParameter(new ApiParameter(LolApiPath.OnlyId, _OnlyId))
                     .Build(platform)
                     .UseCache(_useCache)
-                    .GetAsync(new Dictionary<string, object>()
-                        {
-                            {"locale",_locale },
-                            {"version",_version },
-                            {"tags",string.Join("&tags=", _tags  ?? new List<RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.Runes.RuneTag>()) },
-                        }
+                    .GetAsync(new QueryParameter("locale", _locale),
+                        new QueryParameter("version", _version),
+                        new QueryParameter("tags", string.Join("&tags=", _tags ?? new List<RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.Runes.RuneTag>()))
                     ).ConfigureAwait(false);
                 return rit;
             }
@@ -404,13 +371,10 @@ namespace RiotGamesApi.AspNetCore
                     .AddParameter()
                     .Build(platform)
                     .UseCache(_useCache)
-                    .GetAsync(new Dictionary<string, object>()
-                        {
-                            {"locale",_locale },
-                            {"version",_version },
-                            {"dataById",_dataById.ToString().ToLower() },
-                            {"tags",string.Join("&tags=", _tags  ?? new List<RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.SummonerSpell.SummonerSpellTag>()) },
-                        }
+                    .GetAsync(new QueryParameter("locale", _locale),
+                        new QueryParameter("version", _version),
+                        new QueryParameter("dataById", _dataById.ToString().ToLower()),
+                        new QueryParameter("tags", string.Join("&tags=", _tags ?? new List<RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.SummonerSpell.SummonerSpellTag>()))
                     ).ConfigureAwait(false);
                 return rit;
             }
@@ -431,13 +395,10 @@ namespace RiotGamesApi.AspNetCore
                     .AddParameter(new ApiParameter(LolApiPath.OnlyId, _OnlyId))
                     .Build(platform)
                     .UseCache(_useCache)
-                    .GetAsync(new Dictionary<string, object>()
-                        {
-                            {"locale",_locale },
-                            {"version",_version },
-                            {"dataById",_dataById.ToString().ToLower() },
-                            {"tags",string.Join("&tags=", _tags  ?? new List<RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.SummonerSpell.SummonerSpellTag>()) },
-                        }
+                    .GetAsync(new QueryParameter("locale", _locale),
+                        new QueryParameter("version", _version),
+                        new QueryParameter("dataById", _dataById.ToString().ToLower()),
+                        new QueryParameter("tags", string.Join("&tags=", _tags ?? new List<RiotGamesApi.AspNetCore.RiotApi.StaticEndPoints.SummonerSpell.SummonerSpellTag>()))
                     ).ConfigureAwait(false);
                 return rit;
             }
@@ -982,12 +943,10 @@ namespace RiotGamesApi.AspNetCore
                     .For(LolApiMethodName.Codes)
                     .AddParameter()
                     .Build(platform)
-                    .PostAsync(new Dictionary<string, object>()
-                        {
-                            {"count",_count },
-                            {"tournamentId",_tournamentId },
-                        }
-                        , _tournamentcodeparameters).ConfigureAwait(false);
+                    .PostAsync(_tournamentcodeparameters,
+                        new QueryParameter("count", _count),
+                        new QueryParameter("tournamentId", _tournamentId)
+                    ).ConfigureAwait(false);
                 return rit;
             }
 
@@ -1070,12 +1029,10 @@ namespace RiotGamesApi.AspNetCore
                     .For(LolApiMethodName.Codes)
                     .AddParameter()
                     .Build(platform)
-                    .PostAsync(new Dictionary<string, object>()
-                        {
-                            {"count",_count },
-                            {"tournamentId",_tournamentId },
-                        }
-                        , _tournamentcodeparameters).ConfigureAwait(false);
+                    .PostAsync(_tournamentcodeparameters,
+                        new QueryParameter("count", _count),
+                        new QueryParameter("tournamentId", _tournamentId)
+                    ).ConfigureAwait(false);
                 return rit;
             }
 

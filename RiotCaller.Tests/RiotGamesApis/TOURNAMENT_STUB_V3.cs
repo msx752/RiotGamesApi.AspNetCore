@@ -32,11 +32,9 @@ namespace RiotGamesApi.Tests.RiotGamesApis
                 .For(LolApiMethodName.Codes)
                 .AddParameter()
                 .Build(PhysicalRegion.americas)
-                .Post(new Dictionary<string, object>()
-                {
-                    {"count",1},
-                    {"tournamentId", 1}
-                }, new TournamentCodeParameters() { });
+                .Post(new TournamentCodeParameters() { },
+                new QueryParameter("count", 1),
+                    new QueryParameter("tournamentId", 1));
             Assert.False(rit.HasError);
         }
 
