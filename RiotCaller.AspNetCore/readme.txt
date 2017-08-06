@@ -2,11 +2,14 @@
 
 # Usage
 	- https://riotgamesapi.readme.io/docs
-	
+
+# Supported Features
+	- https://riotgamesapi.readme.io/docs/features
+
 # Support
 	- https://riotgamesapi.readme.io/discuss
 
-# Issues
+# Known Issues
 	- https://github.com/msx752/RiotGamesApi.AspNetCore/issues
 
 
