@@ -2,11 +2,12 @@
 
 # Usage
 	- https://riotgamesapi.readme.io/docs
+	
+# Support
+	- https://riotgamesapi.readme.io/discuss
 
 # Issues
 	- https://github.com/msx752/RiotGamesApi.AspNetCore/issues
 
-# Support
-	- https://riotgamesapi.readme.io/discuss
 
 - by Mustafa Salih ASLIM
