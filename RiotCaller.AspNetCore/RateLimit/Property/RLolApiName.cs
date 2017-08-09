@@ -149,10 +149,9 @@ namespace RiotGamesApi.AspNetCore.RateLimit.Property
             Limits = Limits.OrderByDescending<ApiLimit, TimeSpan>(p => p.Time).ToList();
         }
 
-        public bool ContainsApiName(LolApiName name, LolApiMethodName? method = null)
+        public bool ContainsApiName(LolApiName name, LolApiMethodName method)
         {
-            bool q1;
-            q1 = !method.HasValue ? ApiMethods.Count == 0 : ApiMethods.Contains(method.Value);
+            bool q1 = ApiMethods.Contains(method);
             bool q2 = Names.Contains(name);
             return q1 && q2;
         }

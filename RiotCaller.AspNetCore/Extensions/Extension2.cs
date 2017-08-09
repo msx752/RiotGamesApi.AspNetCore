@@ -332,7 +332,17 @@ namespace RiotGamesApi.AspNetCore.Extensions
                 new List<ApiLimit>()
                 {
                         new ApiLimit(new TimeSpan(1,0,0),10,RateLimitType.MethodRate)
-                });
+                }, LolApiMethodName.Champions,
+                LolApiMethodName.Items,
+                LolApiMethodName.LanguageStrings,
+                LolApiMethodName.LanguageStrings,
+                LolApiMethodName.Maps,
+                LolApiMethodName.Masteries,
+                LolApiMethodName.ProfileIcons,
+                LolApiMethodName.Realms,
+                LolApiMethodName.Runes,
+                LolApiMethodName.SummonerSpells,
+                LolApiMethodName.Versions);
 
             rlb.AddRateLimitFor(LolUrlType.NonStatic, LolApiName.Match,
                 new List<ApiLimit>()

@@ -466,7 +466,7 @@ namespace RiotGamesApi.AspNetCore.Models
                 data = bodyData != null ? new StringContent(JsonConvert.SerializeObject(bodyData)) : new StringContent("");
             }
             var response = await CreateHttpRequestMessage(method, data).ConfigureAwait(false);
-            Debug.WriteLine($"----\r\n{Property}\r\n{response.Headers}\r\n");
+            Debug.WriteLine($"----\r\n{Property}\r\n{response.Headers}\r\n----");
 
             if (!response.IsSuccessStatusCode)
             {
@@ -499,7 +499,6 @@ namespace RiotGamesApi.AspNetCore.Models
 
                     case 429:
                         //handle response
-                        Debug.WriteLine("# RATE LIMIT EXCEEDED #");
                         if (ApiSettings.ApiOptions.RateLimitOptions.DisableLimiting == false)
                         {
                             var rateLimitType = response.Headers.First(p => p.Key == "X-Rate-Limit-Type").Value.First();
@@ -515,10 +514,9 @@ namespace RiotGamesApi.AspNetCore.Models
                                 throw new RiotGamesApiException("UNDEFINED RATELIMIT TYPE: " + rateLimitType);
 
                             var retryseconds = response.Headers.First(p => p.Key == "Retry-After").Value.First();
-
                             ApiSettings.ApiRate.SetRetryTime(Property, rType, int.Parse(retryseconds));
 
-                            exp = new RiotGamesApiException($"Rate limit exceeded:{(int)response.StatusCode}|ExceedType:{rateLimitType}|retryAfter: {retryseconds} sec.");
+                            exp = new RiotGamesApiException($"Limit Exceeded Retry-After:{new TimeSpan(0, 0, int.Parse(retryseconds))}, Region:{Property.Platform}, ApiType:{Property.UrlType}, ApiName:{Property.ApiName}, ApiMethod:{Property.ApiMethod} Forced-Limit:{rType}");
                         }
                         else
                         {

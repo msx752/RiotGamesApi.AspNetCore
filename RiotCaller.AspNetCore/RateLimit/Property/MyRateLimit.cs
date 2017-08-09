@@ -90,7 +90,7 @@ namespace RiotGamesApi.AspNetCore.RateLimit.Property
         /// <exception cref="ArgumentNullException">
         /// <paramref name="key" /> is null. 
         /// </exception>
-        public RLolApiMethodName Find(string region, LolUrlType type, LolApiName name, LolApiMethodName? method = null)
+        public RLolApiMethodName Find(string region, LolUrlType type, LolApiName name, LolApiMethodName method)
         {
             var rut = Find(region);
             var rla = rut?.Find(type);
