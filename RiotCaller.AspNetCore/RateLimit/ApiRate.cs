@@ -42,19 +42,19 @@ namespace RiotGamesApi.AspNetCore.RateLimit
         /// <param name="rla">
         /// pre-defined when web-server starts 
         /// </param>
-        public void Add(string region, LolUrlType type, RLolApi rla)
+        public void Add(string region, LolUrlType type, RLolApiName rla)
         {
             Rates.Add(region, type, rla);
         }
 
-        public RLolApiName FindRate(RateLimitProperties prop)
+        public RLolApiMethodName FindRate(RateLimitProperties prop)
         {
-            return Rates.Find(prop.Platform, prop.UrlType, prop.ApiName);
+            return Rates.Find(prop.Platform, prop.UrlType, prop.ApiName, prop.ApiMethod);
         }
 
-        public RLolApiName FindRate(string platform, LolUrlType type, LolApiName apiName)
+        public RLolApiMethodName FindRate(string platform, LolUrlType type, LolApiName apiName, LolApiMethodName method)
         {
-            return Rates.Find(platform, type, apiName);
+            return Rates.Find(platform, type, apiName, method);
         }
 
         /// <summary>
@@ -84,7 +84,7 @@ namespace RiotGamesApi.AspNetCore.RateLimit
         /// </param>
         public void SetRetryTime(RateLimitProperties prop, RateLimitType limitType, int retryAfterSeconds)
         {
-            SetRetryTime(prop.Platform, prop.UrlType, prop.ApiName, limitType, retryAfterSeconds);
+            SetRetryTime(prop.Platform, prop.UrlType, prop.ApiName, limitType, prop.ApiMethod, retryAfterSeconds);
         }
 
         /// <summary>
@@ -106,14 +106,15 @@ namespace RiotGamesApi.AspNetCore.RateLimit
         /// <exception cref="RiotGamesApiException">
         /// Condition. 
         /// </exception>
-        public void SetRetryTime(string region, LolUrlType type, LolApiName name, RateLimitType limitType, int retryAfterSeconds)
+        public void SetRetryTime(string region, LolUrlType type, LolApiName name, RateLimitType limitType, LolApiMethodName method, int retryAfterSeconds)
         {
-            var regionLimit = Rates.Find(region, type, name);
+            var regionLimit = Rates.Find(region, type, name, method);
             if (regionLimit == null)
             {
                 throw new RiotGamesApiException($"Undefined {limitType} limit type for region:{region},type:{type},name:{name}");
             }
             regionLimit.RetryAfter = DateTime.Now.AddSeconds(retryAfterSeconds);
+            regionLimit.UsedRateLimitType = limitType;
         }
 
         /// <summary>
@@ -124,19 +125,19 @@ namespace RiotGamesApi.AspNetCore.RateLimit
         private void Wait(RateLimitProperties prop)
         {
             TimeSpan currentDelay = TimeSpan.Zero;
-            RLolApiName regionLimit = Rates.Find(prop.Platform, prop.UrlType, prop.ApiName);
+            RLolApiMethodName regionLimit = Rates.Find(prop.Platform, prop.UrlType, prop.ApiName, prop.ApiMethod);
             if (regionLimit == null)
             {
                 var snc = ApiSettings.ApiOptions.RateLimitOptions.All[prop.UrlType];
                 Add(prop.Platform, prop.UrlType, snc.DeepClone());
-                regionLimit = Rates.Find(prop.Platform, prop.UrlType, prop.ApiName);
+                regionLimit = Rates.Find(prop.Platform, prop.UrlType, prop.ApiName, prop.ApiMethod);
             }
             //lock (_lock)
             {
                 if (regionLimit.IsRetryActive)
                 {
                     currentDelay = (regionLimit.RetryAfter - DateTime.Now);
-                    Debug.WriteLine($"UsedRateLimitType: {regionLimit.UsedRateLimitType}");
+                    Debug.WriteLine($"Limit Exceeded Retry-After:{currentDelay}, Region:{prop.Platform}, ApiType:{prop.UrlType}, ApiName:{prop.ApiName}, ApiMethod:{prop.ApiMethod} Forced-Limit:{regionLimit.UsedRateLimitType}");
                 }
                 foreach (var limit in regionLimit.Limits)
                 {

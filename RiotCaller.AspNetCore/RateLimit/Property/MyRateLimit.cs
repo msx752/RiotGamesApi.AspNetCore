@@ -34,10 +34,10 @@ namespace RiotGamesApi.AspNetCore.RateLimit.Property
         /// <exception cref="ArgumentNullException">
         /// <paramref name="key" /> is null. 
         /// </exception>
-        public void Add(string region, LolUrlType type, List<LolApiName> apiNames, List<ApiLimit> limits)
+        public void Add(string region, LolUrlType type, LolApiName name, List<LolApiMethodName> apiMethods, List<ApiLimit> limits)
         {
             var rut = new RUrlType();
-            rut.Add(type, new RLolApiName(apiNames, limits.ToArray()));
+            rut.Add(type, new RLolApiMethodName(name, apiMethods, limits.ToArray()));
             Add(region, rut);
         }
 
@@ -47,7 +47,7 @@ namespace RiotGamesApi.AspNetCore.RateLimit.Property
         /// <exception cref="ArgumentNullException">
         /// <paramref name="key" /> is null. 
         /// </exception>
-        public void Add(string region, LolUrlType type, RLolApi rla)
+        public void Add(string region, LolUrlType type, RLolApiName rla)
         {
             var rut = new RUrlType();
             rut.Add(type, rla);
@@ -90,11 +90,11 @@ namespace RiotGamesApi.AspNetCore.RateLimit.Property
         /// <exception cref="ArgumentNullException">
         /// <paramref name="key" /> is null. 
         /// </exception>
-        public RLolApiName Find(string region, LolUrlType type, LolApiName name)
+        public RLolApiMethodName Find(string region, LolUrlType type, LolApiName name, LolApiMethodName method)
         {
             var rut = Find(region);
             var rla = rut?.Find(type);
-            var rlan = rla?.Find(name);
+            var rlan = rla?.Find(name, method);
             return rlan;
         }
 

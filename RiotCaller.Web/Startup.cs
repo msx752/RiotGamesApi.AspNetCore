@@ -40,45 +40,31 @@ namespace RiotGamesApi.Web
             services.AddMvc();
 
             //necessary
-            services.AddLeagueOfLegendsApi("RGAPI-0-67a2-4886-9ec8-44fa07773ea5"
-             ,
-          (cache) =>
-          {
-              //overrides default values
-              cache.EnableStaticApiCaching = true;
-              cache.StaticApiCacheExpiry = new TimeSpan(1, 0, 0);
+            services.AddLeagueOfLegendsApi("RGAPI-0-b125-4f5d-a69a-1f0d83aa3496",
+            (cache) =>
+            {
+                //overrides default values
+                cache.EnableStaticApiCaching = true;
+                cache.StaticApiCacheExpiry = new TimeSpan(1, 0, 0);
 
-              //custom caching is activated
-              //working for any api except static-api
-              cache.EnableCustomApiCaching = true;
-              //summoner-profiles are cached for 5sec
-              cache.AddCacheRule(LolUrlType.NonStatic, LolApiName.Summoner, new TimeSpan(0, 0, 5));
-              //
+                //custom caching is activated
+                //working for any api except static-api
+                cache.EnableCustomApiCaching = true;
+                //summoner-profiles are cached for 5sec
+                cache.AddCacheRule(LolUrlType.NonStatic, LolApiName.Summoner, new TimeSpan(0, 0, 5));
+                return cache;
+            },
+            (limits) =>
+            {
+                limits.DisableLimiting = false;
+                limits.AddXAppRateLimits(new Dictionary<TimeSpan, int>()//your api limits
+                {
+                    {new TimeSpan(0, 2, 0), 100 },
+                    {new TimeSpan(0, 0, 1), 20 }
+                });
 
-              return cache;
-          },
-          (limits) =>
-          {
-              limits.ClearMatchApiXMethodRateLimit();//removes default value
-              limits.ClearXAppRateLimits();//removes default  value
-              limits.ClearXMethodRateLimits();//removes default value
-              //overrides default values
-              limits.DisableLimiting = false;
-              limits.AddXAppRateLimits(new Dictionary<TimeSpan, int>()
-              {
-                  {new TimeSpan(0, 2, 0), 100 },
-                  {new TimeSpan(0, 0, 1), 20 }
-              });
-
-              limits.AddXMethodRateLimits(new Dictionary<TimeSpan, int>()
-              {
-                  {new TimeSpan(0, 10, 0), 1200000 },
-                  {new TimeSpan(0, 0, 10), 20000 }
-              });
-
-              limits.SetMatchApiXMethodRateLimit(new TimeSpan(0, 0, 10), 500);
-              return limits;
-          });
+                return limits;
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

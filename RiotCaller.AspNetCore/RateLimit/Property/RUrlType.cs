@@ -6,9 +6,9 @@ namespace RiotGamesApi.AspNetCore.RateLimit.Property
     public class RUrlType
     {
         private object _lock = new object();
-        private ConcurrentDictionary<LolUrlType, RLolApi> _urlTypes = new ConcurrentDictionary<LolUrlType, RLolApi>();
+        private ConcurrentDictionary<LolUrlType, RLolApiName> _urlTypes = new ConcurrentDictionary<LolUrlType, RLolApiName>();
 
-        public ConcurrentDictionary<LolUrlType, RLolApi> UrlTypes
+        public ConcurrentDictionary<LolUrlType, RLolApiName> UrlTypes
         {
             get
             {
@@ -26,12 +26,12 @@ namespace RiotGamesApi.AspNetCore.RateLimit.Property
             }
         }
 
-        public void Add(LolUrlType val, RLolApiName rlan)
+        public void Add(LolUrlType val, RLolApiMethodName rlan)
         {
-            UrlTypes.TryAdd(val, new RLolApi(rlan));
+            UrlTypes.TryAdd(val, new RLolApiName(rlan));
         }
 
-        public void Add(LolUrlType val, RLolApi rlan)
+        public void Add(LolUrlType val, RLolApiName rlan)
         {
             UrlTypes.TryAdd(val, rlan);
         }
@@ -41,7 +41,7 @@ namespace RiotGamesApi.AspNetCore.RateLimit.Property
             return UrlTypes.ContainsKey(name);
         }
 
-        public RLolApi Find(LolUrlType type)
+        public RLolApiName Find(LolUrlType type)
         {
             if (ContainsUrlTypes(type))
             {
