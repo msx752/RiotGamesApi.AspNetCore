@@ -40,34 +40,31 @@ namespace RiotGamesApi.Web
             services.AddMvc();
 
             //necessary
-            services.AddLeagueOfLegendsApi("RGAPI-0-d648-450a-acd9-28ff573b4b8c"
-             ,
-          (cache) =>
-          {
-              //overrides default values
-              cache.EnableStaticApiCaching = true;
-              cache.StaticApiCacheExpiry = new TimeSpan(1, 0, 0);
+            services.AddLeagueOfLegendsApi("RGAPI-0-b125-4f5d-a69a-1f0d83aa3496",
+            (cache) =>
+            {
+                //overrides default values
+                cache.EnableStaticApiCaching = true;
+                cache.StaticApiCacheExpiry = new TimeSpan(1, 0, 0);
 
-              //custom caching is activated
-              //working for any api except static-api
-              cache.EnableCustomApiCaching = true;
-              //summoner-profiles are cached for 5sec
-              cache.AddCacheRule(LolUrlType.NonStatic, LolApiName.Summoner, new TimeSpan(0, 0, 5));
-              //
+                //custom caching is activated
+                //working for any api except static-api
+                cache.EnableCustomApiCaching = true;
+                //summoner-profiles are cached for 5sec
+                cache.AddCacheRule(LolUrlType.NonStatic, LolApiName.Summoner, new TimeSpan(0, 0, 5));
+                return cache;
+            },
+            (limits) =>
+            {
+                limits.DisableLimiting = false;
+                limits.AddXAppRateLimits(new Dictionary<TimeSpan, int>()//your api limits
+                {
+                    {new TimeSpan(0, 2, 0), 100 },
+                    {new TimeSpan(0, 0, 1), 20 }
+                });
 
-              return cache;
-          },
-          (limits) =>
-          {
-              limits.DisableLimiting = false;
-              limits.AddXAppRateLimits(new Dictionary<TimeSpan, int>()//your api limits
-              {
-                  {new TimeSpan(0, 2, 0), 100 },
-                  {new TimeSpan(0, 0, 1), 20 }
-              });
-
-              return limits;
-          });
+                return limits;
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
