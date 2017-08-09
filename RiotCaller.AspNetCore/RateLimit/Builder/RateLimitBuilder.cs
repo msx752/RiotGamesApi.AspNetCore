@@ -11,25 +11,21 @@ namespace RiotGamesApi.AspNetCore.RateLimit.Builder
     {
         public RateLimitBuilder()
         {
-            Limits = new ConcurrentDictionary<LolUrlType, RLolApi>();
+            Limits = new ConcurrentDictionary<LolUrlType, RLolApiName>();
         }
 
-        public ConcurrentDictionary<LolUrlType, RLolApi> Limits { get; private set; }
+        public ConcurrentDictionary<LolUrlType, RLolApiName> Limits { get; private set; }
 
-        /// <exception cref="ArgumentNullException">
-        /// <paramref name="key" /> is null. 
-        /// </exception>
-        /// <exception cref="KeyNotFoundException">
-        /// The property is retrieved and <paramref name="key" /> does not exist in the collection. 
-        /// </exception>
-        /// <exception cref="OverflowException">
-        /// The dictionary already contains the maximum number of elements ( <see cref="F:System.Int32.MaxValue" />). 
-        /// </exception>
-        public RateLimitBuilder AddRateLimitFor(LolUrlType type, List<LolApiName> names, List<ApiLimit> limits)
+        public RateLimitBuilder AddRateLimitFor(LolUrlType type, LolApiName name, List<ApiLimit> limits, params LolApiMethodName[] methods)
         {
-            var rla = new RLolApi();
-            var rlan = new RLolApiName();
-            rlan.Add(names.Distinct().ToArray());
+            return AddRateLimitFor(type, new List<LolApiName>() { name }, limits, methods);
+        }
+
+        public RateLimitBuilder AddRateLimitFor(LolUrlType type, List<LolApiName> names, List<ApiLimit> limits, params LolApiMethodName[] methods)
+        {
+            var rla = new RLolApiName();
+            var rlan = new RLolApiMethodName();
+            rlan.Add(names, methods.Distinct().ToArray());
             rlan.AddLimit(limits.ToArray());
             rla.Add(rlan);
             if (!Limits.ContainsKey(type))
@@ -43,7 +39,7 @@ namespace RiotGamesApi.AspNetCore.RateLimit.Builder
             return this;
         }
 
-        public ConcurrentDictionary<LolUrlType, RLolApi> Build()
+        public ConcurrentDictionary<LolUrlType, RLolApiName> Build()
         {
             return Limits;
         }

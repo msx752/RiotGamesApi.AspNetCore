@@ -4,22 +4,35 @@ using System.Linq;
 
 namespace RiotGamesApi.AspNetCore.RateLimit.Property
 {
-    public class RLolApi
+    public class RLolApiName
     {
         private object _lock = new object();
-        private List<RLolApiName> _names;
+        private List<RLolApiMethodName> _names;
+        private LolApiName _name;
 
-        public RLolApi(RLolApiName rlan) : this()
+        public RLolApiName(RLolApiMethodName rlan) : this()
         {
             Add(rlan);
         }
 
-        public RLolApi()
+        public RLolApiName()
         {
-            Names = new List<RLolApiName>();
+            Names = new List<RLolApiMethodName>();
         }
 
-        public List<RLolApiName> Names
+        public LolApiName Name
+        {
+            get
+            {
+                return _name;
+            }
+            set
+            {
+                _name = value;
+            }
+        }
+
+        public List<RLolApiMethodName> Names
         {
             get
             {
@@ -33,14 +46,19 @@ namespace RiotGamesApi.AspNetCore.RateLimit.Property
             }
         }
 
-        public void Add(RLolApiName val)
+        public void Add(LolApiName name, RLolApiMethodName val)
         {
             Names.Add(val);
         }
 
-        public RLolApiName Find(LolApiName name)
+        public void Add(RLolApiMethodName val)
         {
-            return Enumerable.FirstOrDefault<RLolApiName>(Names, p => p.ContainsApiName(name));
+            Names.Add(val);
+        }
+
+        public RLolApiMethodName Find(LolApiName name, LolApiMethodName? method = null)
+        {
+            return Enumerable.FirstOrDefault<RLolApiMethodName>(Names, p => p.ContainsApiName(name, method));
         }
     }
 }

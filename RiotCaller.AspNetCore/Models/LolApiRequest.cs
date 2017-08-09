@@ -51,6 +51,7 @@ namespace RiotGamesApi.AspNetCore.Models
         public int SelectedApiIndex { get; private set; } = -1;
         public List<Method> SelectedSubUrlCache { get; internal set; }
         public LolUrlType UrlType { get; internal set; }
+        public LolApiMethodName Method { get; internal set; }
 
         /// <exception cref="IOException">
         /// An I/O error occurred. 
@@ -232,6 +233,7 @@ namespace RiotGamesApi.AspNetCore.Models
         public IAddParameter<T> For(LolApiMethodName middleType)
         {
             SelectedSubUrlCache = ApiList.ApiMethods.Where(p => p.ApiMethodName == middleType).ToList();
+            Method = middleType;
             return this;
         }
 
@@ -425,7 +427,8 @@ namespace RiotGamesApi.AspNetCore.Models
         {
             UrlType = UrlType,
             Platform = Platform,
-            ApiName = ApiList.ApiName
+            ApiName = ApiList.ApiName,
+            ApiMethod = Method
         };
 
         private async Task<HttpResponseMessage> CreateHttpRequestMessage(HttpMethod method, StringContent data)

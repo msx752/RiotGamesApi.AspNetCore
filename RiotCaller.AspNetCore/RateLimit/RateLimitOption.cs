@@ -14,7 +14,7 @@ namespace RiotGamesApi.AspNetCore.RateLimit
         /// <summary>
         /// rate-limits which defined from userSettings 
         /// </summary>
-        public ConcurrentDictionary<LolUrlType, RLolApi> All { get; internal set; }
+        public ConcurrentDictionary<LolUrlType, RLolApiName> All { get; internal set; }
 
         /// <summary>
         /// disable rate-limiter (default: false) 

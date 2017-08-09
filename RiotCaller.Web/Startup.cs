@@ -40,7 +40,7 @@ namespace RiotGamesApi.Web
             services.AddMvc();
 
             //necessary
-            services.AddLeagueOfLegendsApi("RGAPI-0-67a2-4886-9ec8-44fa07773ea5"
+            services.AddLeagueOfLegendsApi("RGAPI-0-d648-450a-acd9-28ff573b4b8c"
              ,
           (cache) =>
           {
@@ -59,24 +59,13 @@ namespace RiotGamesApi.Web
           },
           (limits) =>
           {
-              limits.ClearMatchApiXMethodRateLimit();//removes default value
-              limits.ClearXAppRateLimits();//removes default  value
-              limits.ClearXMethodRateLimits();//removes default value
-              //overrides default values
               limits.DisableLimiting = false;
-              limits.AddXAppRateLimits(new Dictionary<TimeSpan, int>()
+              limits.AddXAppRateLimits(new Dictionary<TimeSpan, int>()//your api limits
               {
                   {new TimeSpan(0, 2, 0), 100 },
                   {new TimeSpan(0, 0, 1), 20 }
               });
 
-              limits.AddXMethodRateLimits(new Dictionary<TimeSpan, int>()
-              {
-                  {new TimeSpan(0, 10, 0), 1200000 },
-                  {new TimeSpan(0, 0, 10), 20000 }
-              });
-
-              limits.SetMatchApiXMethodRateLimit(new TimeSpan(0, 0, 10), 500);
               return limits;
           });
         }

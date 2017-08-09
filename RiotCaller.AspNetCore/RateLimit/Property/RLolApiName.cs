@@ -6,31 +6,50 @@ using System.Linq;
 
 namespace RiotGamesApi.AspNetCore.RateLimit.Property
 {
-    public class RLolApiName
+    public class RLolApiMethodName
     {
-        private List<LolApiName> _apiNames;
+        private List<LolApiMethodName> _apiNames;
         private object _lock = new object();
         private DateTime _reTryAfter;
         private List<ApiLimit> _limits;
         private RateLimitType? _usedRateLimitType;
+        private List<LolApiName> _names;
 
-        public RLolApiName(List<LolApiName> names, params ApiLimit[] limit) : this(limit)
+        public List<LolApiName> Names
+
         {
-            ApiNames = names;
+            get
+            {
+                lock (_lock)
+                    return _names;
+            }
+            set
+            {
+                lock (_lock)
+                    _names = value;
+            }
         }
 
-        public RLolApiName(params ApiLimit[] limit) : this()
+        public RLolApiMethodName(List<LolApiName> names, List<LolApiMethodName> methods, params ApiLimit[] limits) : this()
         {
-            AddLimit(limit);
+            AddLimit(limits);
+            Names.AddRange(names.Distinct());
+            ApiMethods = methods;
         }
 
-        public RLolApiName()
+        public RLolApiMethodName(LolApiName name, List<LolApiMethodName> methods, params ApiLimit[] limits)
+            : this(new List<LolApiName>() { name }, methods, limits)
+        {
+        }
+
+        public RLolApiMethodName()
         {
             Limits = new List<ApiLimit>();
-            ApiNames = new List<LolApiName>();
+            ApiMethods = new List<LolApiMethodName>();
+            Names = new List<LolApiName>();
         }
 
-        public List<LolApiName> ApiNames
+        public List<LolApiMethodName> ApiMethods
         {
             get
             {
@@ -107,22 +126,35 @@ namespace RiotGamesApi.AspNetCore.RateLimit.Property
             }
         }
 
-        public void Add(params LolApiName[] val)
+        public void Add(List<LolApiName> names, params LolApiMethodName[] val)
         {
+            if (names.Count == 0)
+                throw new Exception("you have to specify the LolApiName For rate-limiting");
+
             if (val != null)
-                ApiNames.AddRange(val);
+                ApiMethods.AddRange(val);
+
+            Names.AddRange(names);
+        }
+
+        public void Add(LolApiName name, params LolApiMethodName[] val)
+        {
+            Add(new List<LolApiName>() { name }, val);
         }
 
         public void AddLimit(params ApiLimit[] limit)
         {
             if (limit == null || !limit.Any()) return;
             Limits.AddRange(limit);
-            Limits = Enumerable.OrderByDescending<ApiLimit, TimeSpan>(Limits, p => p.Time).ToList();
+            Limits = Limits.OrderByDescending<ApiLimit, TimeSpan>(p => p.Time).ToList();
         }
 
-        public bool ContainsApiName(LolApiName name)
+        public bool ContainsApiName(LolApiName name, LolApiMethodName? method = null)
         {
-            return ApiNames.Contains(name);
+            bool q1;
+            q1 = !method.HasValue ? ApiMethods.Count == 0 : ApiMethods.Contains(method.Value);
+            bool q2 = Names.Contains(name);
+            return q1 && q2;
         }
     }
 }

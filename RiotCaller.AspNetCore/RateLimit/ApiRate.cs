@@ -42,17 +42,17 @@ namespace RiotGamesApi.AspNetCore.RateLimit
         /// <param name="rla">
         /// pre-defined when web-server starts 
         /// </param>
-        public void Add(string region, LolUrlType type, RLolApi rla)
+        public void Add(string region, LolUrlType type, RLolApiName rla)
         {
             Rates.Add(region, type, rla);
         }
 
-        public RLolApiName FindRate(RateLimitProperties prop)
+        public RLolApiMethodName FindRate(RateLimitProperties prop)
         {
             return Rates.Find(prop.Platform, prop.UrlType, prop.ApiName);
         }
 
-        public RLolApiName FindRate(string platform, LolUrlType type, LolApiName apiName)
+        public RLolApiMethodName FindRate(string platform, LolUrlType type, LolApiName apiName)
         {
             return Rates.Find(platform, type, apiName);
         }
@@ -124,12 +124,12 @@ namespace RiotGamesApi.AspNetCore.RateLimit
         private void Wait(RateLimitProperties prop)
         {
             TimeSpan currentDelay = TimeSpan.Zero;
-            RLolApiName regionLimit = Rates.Find(prop.Platform, prop.UrlType, prop.ApiName);
+            RLolApiMethodName regionLimit = Rates.Find(prop.Platform, prop.UrlType, prop.ApiName, prop.ApiMethod);
             if (regionLimit == null)
             {
                 var snc = ApiSettings.ApiOptions.RateLimitOptions.All[prop.UrlType];
                 Add(prop.Platform, prop.UrlType, snc.DeepClone());
-                regionLimit = Rates.Find(prop.Platform, prop.UrlType, prop.ApiName);
+                regionLimit = Rates.Find(prop.Platform, prop.UrlType, prop.ApiName, prop.ApiMethod);
             }
             //lock (_lock)
             {
